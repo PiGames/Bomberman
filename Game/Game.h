@@ -9,16 +9,16 @@ public:
 	Game();
 	~Game();
 
-	void start();
-	void bomb();
+	void Start();
+	void Bomb();
 
 private:
 	void draw();
 	void update(float);
 	/*			WINDOW			*/
 	sf::RenderWindow window;
-	const int SCREEN_WIDTH = 1024;
-	const int SCREEN_HEIGHT = 768;
+	const int m_SCREEN_WIDTH = 1024;
+	const int m_SCREEN_HEIGHT = 768;
 
 	Player player;
 

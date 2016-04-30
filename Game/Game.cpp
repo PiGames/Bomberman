@@ -2,7 +2,7 @@
 
 Game::Game()
 {
-	window.create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Bomberman v.0.001 - PiGames", sf::Style::Close);
+	window.create(sf::VideoMode(m_SCREEN_WIDTH, m_SCREEN_HEIGHT), "Bomberman v.0.001 - PiGames", sf::Style::Close);
 }
 
 
@@ -10,7 +10,7 @@ Game::~Game()
 {
 }
 
-void Game::start()
+void Game::Start()
 {
 
 	while (window.isOpen())
@@ -26,14 +26,14 @@ void Game::start()
 		draw();
 	}
 
-void Game::bomb()
+void Game::Bomb()
 {
 }
 
 void Game::draw()
 {
 	window.clear(sf::Color::White);
-	player.draw(window);
+	player.Draw(window);
 	window.display();
 }
 //TODO
@@ -41,22 +41,22 @@ void Game::update(float delta)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		player.move(-5 , 0);
+		player.Move(-5 , 0);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		player.move(5, 0);
+		player.Move(5, 0);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		player.move(0, 5);
+		player.Move(0, 5);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		player.move(0, -5);
+		player.Move(0, -5);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-		bomb();
+		Bomb();
 	}
 }

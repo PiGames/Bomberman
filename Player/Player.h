@@ -6,16 +6,16 @@ public:
 	Player();
 	~Player();
 
-	void move(int, int);
-	void setPosition(int, int);
-	void setTexture();
-	void draw(sf::RenderWindow &);
+	void Move(int, int);
+	void SetPosition(int, int);
+	void SetTexture();
+	void Draw(sf::RenderWindow &);
 
 	float getPosX();
 	float getPosY();
 
 protected:
-	sf::Texture texture;
-	sf::Sprite sprite;
+	sf::Texture m_texture;
+	sf::Sprite m_sprite;
 };
 

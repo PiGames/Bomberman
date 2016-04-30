@@ -10,31 +10,31 @@ Player::~Player()
 {
 }
 
-void Player::move(int x, int y)
+void Player::Move(int x, int y)
 {
-	sprite.move(x, y);
+	m_sprite.move(x, y);
 }
-void Player::setPosition(int x, int y)
+void Player::SetPosition(int x, int y)
 {
-	sprite.setPosition(x, y);
+	m_sprite.setPosition(x, y);
 }
-void Player::setTexture()
+void Player::SetTexture()
 {
-	texture.loadFromFile("data/player.png");
-	sprite.setTexture(texture);
+	m_texture.loadFromFile("data/player.png");
+	m_sprite.setTexture(m_texture);
 }
 
-void Player::draw(sf::RenderWindow &window)
+void Player::Draw(sf::RenderWindow &window)
 {
-	window.draw(sprite);
+	window.draw(m_sprite);
 }
 
 float Player::getPosX()
 {
-	return sprite.getPosition().x;
+	return m_sprite.getPosition().x;
 }
 
 float Player::getPosY()
 {
-	return sprite.getPosition().y;
+	return m_sprite.getPosition().y;
 }
