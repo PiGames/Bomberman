@@ -1,17 +1,15 @@
 #pragma once
 #include <SFML\Graphics.hpp>
 #include "../Player/Player.h"
+#include "../Bomb/Bomb.h"
 #include <iostream>
 
-class Game
+class Game :public Bomb
 {
 public:
 	Game();
-	~Game();
-
+	float elapsed;
 	void Start();
-	void Bomb();
-
 private:
 	void draw();
 	void update(float);
@@ -21,6 +19,5 @@ private:
 	const int m_SCREEN_HEIGHT = 768;
 
 	Player player;
-
 };
 

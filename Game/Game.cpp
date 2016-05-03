@@ -1,17 +1,19 @@
 #include "Game.h"
 
-Game::Game()
+Game::Game() :Bomb(0,0)
 {
 	window.create(sf::VideoMode(m_SCREEN_WIDTH, m_SCREEN_HEIGHT), "Bomberman v.0.001 - PiGames", sf::Style::Close);
-}
-
-
-Game::~Game()
-{
+	window.setFramerateLimit(60);
+	player.SetTexture();
 }
 
 void Game::Start()
 {
+	sf::Time lastUpdate = sf::Time::Zero;
+	sf::Clock time;
+
+	elapsed = time.getElapsedTime().asSeconds();
+	GetElapsedTime(elapsed);
 
 	while (window.isOpen())
 	{
@@ -20,43 +22,45 @@ void Game::Start()
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
+			if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Space)
+			{
+				GenerateBomb(player.getPosX(),player.getPosY());
+			}
 		}
-	}
-		std::cout << player.getPosX() << " Y: " << player.getPosY() << std::endl;
+		float delta = time.getElapsedTime().asSeconds() - lastUpdate.asSeconds();
+		update(delta);
+		std::cout << "X: " << player.getPosX() << " Y: " << player.getPosY() << std::endl;
+		lastUpdate = time.getElapsedTime();
+
 		draw();
 	}
-
-void Game::Bomb()
-{
 }
 
 void Game::draw()
 {
 	window.clear(sf::Color::White);
+	Draw(window);
 	player.Draw(window);
 	window.display();
 }
 //TODO
 void Game::update(float delta)
 {
+	float speed = 300.f;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		player.Move(-5 , 0);
+		player.Move(-(speed *delta), 0);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		player.Move(5, 0);
+		player.Move(speed *delta, 0);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		player.Move(0, 5);
+		player.Move(0, speed *delta);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		player.Move(0, -5);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-	{
-		Bomb();
+		player.Move(0, -(speed *delta));
 	}
 }
