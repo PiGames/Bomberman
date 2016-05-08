@@ -1,0 +1,183 @@
+I. GENERAL
+==========
+	1. Jak wygląda (ogólnie) rozgrywka? Czy jest podobna do jakiejś wersji Bombermana? Jakiej?
+		min graczy: 2
+		max graczy: 4 (max 3 lokalnie: 2 klawiatura + pad)
+		spawn graczy: każdy w osobnym rogu planszy; spawn zależny od reguł gry
+		gracze sterowani przez komputer: brak
+		mieszane multi: tak
+		crossplatform: tak jeżeli SFML wspiera
+		wzorzec: http://www.wyspagier.pl/gra-z-ogniem-2.htm
+		język: multilang (eng, pl)
+
+	
+	2. Jakie są warunki zwycięstwa?
+		Zależne od trybu gry
+
+
+	3. Czy są przeszkadzajki nie licząc graczy?
+		Nie
+
+
+	4. Czy są jakieś umiejętności specjalne: czasowe / stałe?
+		A. Stałe (na rundę)
+		  * zasięg bomby zwiększony o 1U 
+		  * zwiększenie ilości kładzionych bomb o 1
+		  * zmniejszenie czasu do wybuchu
+		  * ...
+		B. Czasowe
+		  * możliwość przeskakiwania przez 1 zniszczalny obiekt przez T=10 sekund
+		  * niewrażliwość na obrażenia przez T=3 sekund, w razie otrzymania obrażeń: (-1) kładzionych bomb
+		  * ...
+
+
+	5. Czy gra posiada jeden tryb, czy kilka?
+		A. Deathmatch (default)
+			Wszyscy na Wszystkich;
+			Ilość Rund: 1
+			Limit Czasowy: 10/15/20 min
+			Limit Śmierci (globalnie): brak
+			Limit Śmierci (na gracza): brak
+			Limit bomb / gracz: 10
+			Warunek Zwycięstwa: Gracz z największą ilością zabójstw / największa ilość zwycięstw przez wszystkie rundy
+		
+		B. Team Deathmatch
+			Warunki takie jak w A, tylko z podziałem na drużyny
+		
+		C. Duel
+			Ilość Rund: 2 (+1 gdy remis)
+			Limit bomb / gracz: 1
+			Limit Graczy: 2
+			Warunek Zwycięstwa: większa ilość wygranych
+
+		D. Custom
+			Możliwość stworzenia własnych reguł rozgrywki, dozwolone opcje:
+			* Tryb podziału graczy: 
+			  - ALL-ON-ALL
+			  - TEAM (2players/team)
+			* Ilość Rund: [1,100]
+			* Limit Czasu (na rundę): [0,20]min
+			* Limit Śmierci (global): [0,1000]
+			* Limit Śmierci (na gracza): [0,1000] (if LŚG > 0 this = Clamp(0, LŚG))
+			* Limit Bomb: [0,20]
+			* Dozwolone powerupy:
+			  - Stałe (ALL / NONE / CUSTOM)
+			  - Czasowe (ALL / NONE / CUSTOM)
+			* Warunek Zwycięstwa:
+			  - największa ilość zabójstw
+			  - największa ilość wygranych rund
+			 * ...
+
+
+	6. Czy będzie multi przez sieć? Jeżeli tak to jak zostanie zrealizowane?
+		Lokalne: Tak
+			Max Obsługiwanych Graczy: 3
+		Sieć: Tak
+			Max Obsługiwanych Graczy: 4
+			Architektura: Host (jeden z graczy to klient i serwer), dedykowane serwery
+			OnDisconnect: migracja hosta / koniec gry
+			Wyszukiwanie gier: Manualne (lista gier), Automatyczne
+		Mieszane: Tak
+
+		Rejestracja pokoju będzie odbywała się przez połączenie z Poczekalnią trzymającą informacjami o grze oraz połączonymi graczami.
+
+
+	7. Na jakie platformy gra będzie wydana? (np. PC, Android)
+		PC: Windows, Linux
+		Mobilne: none
+	
+
+	8. Czy gra będzie posiadała rozszerzenia, dodatki?
+		Nie
+
+
+	9. Czy gra będzie zawierała jakieś inne specjalne mechaniki?
+		A. Umiejętności Specjalne (dozwolona jedna wybrana na grę)
+		  * unik (pozwala na uniknięcie wybuchu jeżeli jesteśmy w odległości R-1U od miejsca wybuchu)
+
+
+
+II. PROGRAMMER'S VIEW
+=====================
+	- tutaj pojawi się ogólny rzut oka na to co jest do zrobienia przez programistów -
+
+	0. TERMINOLOGY
+		* Mother-Server(M-S) serwer trzymający listę dostępnych gier
+		* DedicatedServer (DS) serwer potrafiący uruchomić wiele instancji serwerów gier
+		* Server (S) serwer obsługujący logikę gry, posiada informacje o grze
+		* Client (C) instancja programu, którą posiada gracz; nie posiada logiki, wysyła informacje o swojej pozycji i dokonanych akcjach do klienta
+		* GameTimeServer (GTS) czas serwera
+
+
+	1. COMM SCHEME
+
+			    a
+			+--------+
+			|	 b   v
+			C <----- MS
+			^    
+			|    c
+			+ <----> DS
+		   e|        |
+			|        |
+			v    d   |
+			S <------+
+
+
+		Explained:
+		a.
+			C -> MS
+			aa. Client init connection with MS and sends request: GET_AVGAMES
+			ab. Client sends info about created game with request: ADD_NEWGAME and structure (addr, gameinfo)
+
+		b.
+			C <- MS
+			ba. MS sends available games (serveraddr, gameinfo)
+			bb. MS sends response: ADD_GAME_SUCCESS or ADD_NEWGAME_FAIL_[error]
+
+		c. 
+			C -> DS
+			ca. Client request DS about connect with specific server
+			cb. Client sends DS: CREATE_NEW_SERVER_INSTANCE
+
+			C <- DS
+			ca. Server error, server is not available
+			cb. Response: OK and port; FAILURE
+
+		d. DS -> S
+			da. Client Redirection
+
+		e. 
+			C -> S
+			ea. Register player
+			ea. Send player status (recordtime, action)
+
+			C <- S
+			ea. Register Status: REG_SUCCESS, REG_ERR_[err]
+			eb. Send gamedata (recordtime, gamedata)
+
+
+		Client Request Table
+		=====================
+			--------------------------+--------+--------------------------
+	                    NAME          |  CODE  |         DESCRPTION
+			--------------------------+--------+--------------------------
+
+
+
+
+
+
+		
+		Server Response Table
+		======================
+			--------------------------+--------+--------------------------
+	                    NAME          |  CODE  |         DESCRPTION
+			--------------------------+--------+--------------------------
+
+
+
+		
+		Available Structures
+		======================
+
