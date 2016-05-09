@@ -6,6 +6,7 @@
 #include "LevelView.h"
 #include "Types.h"
 #include "Player.h"
+#include "PhysicsEngine.h"
 
 class Game
 {
@@ -25,6 +26,7 @@ private:
 	Level m_level;
 	LevelView m_levelView;
 	Player m_localPlayer;
+	PhysicsEngine m_physicsEngine;
 
 
 	/// Draws all stuff on scene

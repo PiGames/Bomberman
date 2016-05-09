@@ -26,7 +26,7 @@ void Game::Run()
 		m_exit = true; // xd
 		std::exit(1);
 	}
-	
+	/* UNCOMMENT: jezeli wczytuje sie mapa
 	sf::Texture levelTextures; // HACK delete later, only for 1st iteration
 	const std::string terrainPath = "data/sample_terraintextures.png";
 	if (!levelTextures.loadFromFile(terrainPath))
@@ -35,9 +35,24 @@ void Game::Run()
 		m_exit = true;
 		std::exit(2); // diff err codes: too fast console
 	}
-
-	m_levelView.SetLevel(&m_level, &levelTextures, 64 /* HACK: 1st iteration only, add atlas manager later */);
-
+	*/
+	
+	// UNCOMMENT: jezeli widzisz rysujaca sie mape
+	//m_levelView.SetLevel(&m_level, &levelTextures, 64 /* HACK: 1st iteration only, add atlas manager later */);
+	/*
+	sf::Texture playerTexture;
+	const std::string playerTexturePath = "data/sample_playertexture.png";
+	if (!playerTexture.loadFromFile(playerTexturePath))
+	{
+		std::cerr << "[!] Cannot load file: \"" << playerTexturePath << "\"Exiting...\n";
+		m_exit = true;
+		std::exit(3);
+	}
+	m_localPlayer.SetTexture(playerTexture);
+	
+	m_physicsEngine.Init(m_level, m_localPlayer.GetPhysicalBody());
+	*/
+	// main loop
 	while (!m_exit)
 	{
 		processEvents();
@@ -65,7 +80,7 @@ void Game::draw()
 
 void Game::update(float deltaTime)
 {
-	// HACK update some vars, call physics engine later
+	m_physicsEngine.Update(deltaTime);
 	m_localPlayer.Update(deltaTime);
 }
 
