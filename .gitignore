@@ -1,6 +1,7 @@
 # Custom
 *.sln
-
+*.vcxproj
+*.vcxproj.filters
 
 # Compiled Object files
 *.slo
