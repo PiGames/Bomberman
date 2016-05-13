@@ -14,23 +14,16 @@ LevelView::~LevelView()
 
 void LevelView::SetLevel(Level * level, sf::Texture * textures, const size_t & tileSize)
 {
-	// TODO ustawienie spriteów do m_data
-	// HINT: use setTextureRect
+	m_data.resize[level->GetHeight()];
 
-	size_t w = level->GetWidth();
-	size_t h = level->GetHeight();
-
-	m_data.resize(h);
-	for (int i = 0; i < h; ++i)
-		m_data[i].resize(w);
-
-	for (int i = 0; i < h; ++i)
+	for (int y = 0; y < level->GetHeight(); ++y)
 	{
-		for (int j = 0; j < w; ++j)
+		m_data[y].resize(level->GetWidth());
+		for (int x = 0; x < level->GetWidth(); ++x)
 		{
-			m_data[i][j].setTexture(*textures);
-			m_data[i][j].setTextureRect(sf::IntRect(tileSize*level->GetTile(j, i), 0, tileSize, tileSize));
-			m_data[i][j].setPosition(j*tileSize, i*tileSize);
+			m_data[y][x].setTexture(*textures);
+			m_data[y][x].setTextureRect(sf::IntRect(tileSize*level->GetTile(x, y), 0, tileSize, tileSize));
+			m_data[y][x].setPosition(x*tileSize, y*tileSize);
 		}
 	}
 }
