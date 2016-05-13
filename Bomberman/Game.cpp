@@ -5,7 +5,7 @@ Game::Game(size_t width, size_t height)
 {
 	m_windowWidth = width;
 	m_windowHeight = height;
-	m_window.create(sf::VideoMode(m_windowWidth, m_windowHeight), "Bomberman | Created by PiGames", sf::Style::Close);
+	m_window.create(sf::VideoMode(static_cast<int>(m_windowWidth), static_cast<int>(m_windowHeight)), "Bomberman | Created by PiGames", sf::Style::Close);
 }
 
 
@@ -16,6 +16,7 @@ Game::~Game()
 
 void Game::Run()
 {
+	/* TMP INIT BEGIN*/
 	m_exit = false;
 	sf::Clock clock;
 
@@ -49,7 +50,9 @@ void Game::Run()
 	m_localPlayer.SetTexture(playerTexture);
 	
 	m_physicsEngine.Init(m_level, m_localPlayer.GetPhysicalBody());
-	
+	/* TMP INIT END*/
+
+
 	// main loop
 	while (!m_exit)
 	{

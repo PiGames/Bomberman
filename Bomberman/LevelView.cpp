@@ -14,7 +14,7 @@ LevelView::~LevelView()
 
 void LevelView::SetLevel(Level * level, sf::Texture * textures, const size_t & tileSize)
 {
-	m_data.resize[level->GetHeight()];
+	m_data.resize(level->GetHeight());
 
 	for (int y = 0; y < level->GetHeight(); ++y)
 	{

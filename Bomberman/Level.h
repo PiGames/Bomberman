@@ -5,7 +5,7 @@
 #include <vector>
 #include "Types.h"
 
-#define MAGIC_HEDER "BOMBERMAN_LEVEL"
+#define MAGIC_HEADER "BOMBERMAN_LEVEL"
 
 class Level
 {
