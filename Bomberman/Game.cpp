@@ -26,7 +26,7 @@ void Game::Run()
 		m_exit = true; // xd
 		std::exit(1);
 	}
-	/* UNCOMMENT: jezeli wczytuje sie mapa
+	
 	sf::Texture levelTextures; // HACK delete later, only for 1st iteration
 	const std::string terrainPath = "data/sample_terraintextures.png";
 	if (!levelTextures.loadFromFile(terrainPath))
@@ -35,11 +35,9 @@ void Game::Run()
 		m_exit = true;
 		std::exit(2); // diff err codes: too fast console
 	}
-	*/
+	m_levelView.SetLevel(&m_level, &levelTextures, 64 /* HACK: 1st iteration only, add atlas manager later */);
 	
-	// UNCOMMENT: jezeli widzisz rysujaca sie mape
-	//m_levelView.SetLevel(&m_level, &levelTextures, 64 /* HACK: 1st iteration only, add atlas manager later */);
-	/*
+	
 	sf::Texture playerTexture;
 	const std::string playerTexturePath = "data/sample_playertexture.png";
 	if (!playerTexture.loadFromFile(playerTexturePath))
@@ -51,7 +49,7 @@ void Game::Run()
 	m_localPlayer.SetTexture(playerTexture);
 	
 	m_physicsEngine.Init(m_level, m_localPlayer.GetPhysicalBody());
-	*/
+	
 	// main loop
 	while (!m_exit)
 	{
@@ -104,9 +102,9 @@ void Game::processEvents()
 	
 	// handle vertical axis
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		y = 1;
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		y = -1;
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		y = 1;
 
 	m_localPlayer.OnMoveKeyPressed(x, y);
 
