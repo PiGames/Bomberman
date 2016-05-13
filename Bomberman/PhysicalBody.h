@@ -1,5 +1,6 @@
 #pragma once
 
+#include <math.h>
 
 class PhysicalBody
 {
@@ -23,7 +24,10 @@ public:
 	/// <param name="sizeX">width</param>
 	/// <param name="sizeY">height</param>
 	bool IsCollision(const float& x, const float& y, const float& sizeX, const float& sizeY);
-	
+	/// Check collision between objects
+	/// <param name="pyRef">PhysicalBody reference</param>
+	bool IsCollision(PhysicalBody& pyRef);
+
 	/// Updates state of the object, moves the object, called after collsion check
 	/// <param name="dt">delta time in seconds</param>
 	void Update(const float& dt);

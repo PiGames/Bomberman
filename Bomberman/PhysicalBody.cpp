@@ -29,8 +29,17 @@ void PhysicalBody::SetSize(float x, float y)
 
 bool PhysicalBody::IsCollision(const float & x, const float & y, const float & sizeX, const float & sizeY)
 {
-	// TODO simple AABB collision check
+	if (fabs(m_posX - x) < (m_sizeX + sizeX) && fabs(m_posY - y) < (m_sizeY + sizeY))
+	{
+		return true;
+	}
+
 	return false;
+}
+
+bool PhysicalBody::IsCollision(PhysicalBody & pyRef)
+{
+	return IsCollision(pyRef.GetPositionX(), pyRef.GetPositionY(), pyRef.GetSizeX(), pyRef.GetSizeY());
 }
 
 
