@@ -1,12 +1,13 @@
 #pragma once
-
 #include <math.h>
-
+#include "Types.h"
+#include <iostream>
 class PhysicalBody
 {
 public:
 	PhysicalBody();
 	~PhysicalBody();
+
 
 	/// Sets the velocity
 	/// <param name="x">x velocity</param>
@@ -32,15 +33,20 @@ public:
 	/// <param name="dt">delta time in seconds</param>
 	void Update(const float& dt);
 
+	void OnCollision(TT::TileType type);
 	
-	float GetPositionX();
-	float GetPositionY();
+	float const GetPositionX();
+	float const GetPositionY();
 	
-	float GetSizeX();
-	float GetSizeY();
+	float const GetSizeX();
+	float const GetSizeY();
 	
-	float GetVelocityX();
-	float GetVelocityY();
+	float const GetVelocityX();
+	float const GetVelocityY();
+
+	
+	//It is temporary!!
+	void SetLastPosition();
 
 protected:
 	float m_posX;
@@ -51,5 +57,10 @@ protected:
 
 	float m_vX;
 	float m_vY;
+
+	//It is temporary!!
+	float last_pos_x;
+	float last_pos_y;
+
 };
 
