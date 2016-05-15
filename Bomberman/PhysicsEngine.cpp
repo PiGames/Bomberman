@@ -17,50 +17,64 @@ void PhysicsEngine::Init(Level & level, PhysicalBody & player)
 {
 	m_level = &level;
 	m_body = &player;
-	Add_Physical_Body_into_Array(&player);
 }
 
 
-void PhysicsEngine::Update(const float & dt)
+void PhysicsEngine::Update(const float & delta)
 {
-	// TODO check collisions with terrain
-	/*
-		HINT: Najlepiej jest zasymulowac ruch i sprawdzic czy wtedy zaszla kolizja
-		Mozliwe ze trzeba bedzie zreimplementowac pare rzeczy
-		
-		Najprostsza wersja zaklada cos takiego:
-		if (m_body.IsCollision(tileX, tileY, tileSizeX, tileSizeY)
-		{
-			m_body.SetVelocity(0,0);
-		}
-		Jezeli kolizja w jakimkolwiek miejscu to zatrzymaj sie caly, najlepiej sprawdzac na ktorej osi kolizja i zatrzymywac tylko ruch w np pionie albo poziomie
-	*/
+	BodyPositionState bodyState = BodyPositionState(getBodyPositionState(m_body));
 
-	for (int i = 0; i < PhysicalBodys_Pointer_Array.size(); i++)
+	int x = m_body->GetPositionX / TILE_SIZE;
+	int y = m_body->GetPositionY / TILE_SIZE;
+
+	switch (bodyState)
 	{
-		for (int y = 0; y < m_level->GetHeight(); ++y)
-		{
-			for (int x = 0; x < m_level->GetWidth(); ++x)
-			{
-				
-				float distanse = sqrtf(powf(PhysicalBodys_Pointer_Array[i]->GetPositionX() - x*tile_size + tile_size / 2, 2) + powf(PhysicalBodys_Pointer_Array[i]->GetPositionY() - y*tile_size + tile_size / 2, 2));
-				if (distanse < 120.f)
-				{
-					if (PhysicalBodys_Pointer_Array[i]->IsCollision(x*tile_size, y*tile_size, tile_size, tile_size))
-					{	
-						PhysicalBodys_Pointer_Array[i]->OnCollision(m_level->GetTile(x,y));
-					
-					}
-
-				}
-			}
-		}
-
+		case OnSingleTile:
+			checkOnSingleTileCollision(m_body, x, y);
+			break;
+		case OnTwoTilesHorizontal:
+			checkOnTwoTilesHorizontalCollision(m_body, x, y);
+			break;
+		case OnTwoTilesVertical:
+			checkOnTwoTilesVerticalCollision(m_body, x, y);
+	default:
+		break;
 	}
+	
+		
 }
 
-std::vector <PhysicalBody*> PhysicsEngine::PhysicalBodys_Pointer_Array;
-void PhysicsEngine::Add_Physical_Body_into_Array(PhysicalBody* body_pointer)
+int PhysicsEngine::getBodyPositionState(PhysicalBody * body)
 {
-	PhysicalBodys_Pointer_Array.push_back(body_pointer);
+	int	upBound = (body->GetPositionY - body->GetSizeY / 2) / TILE_SIZE;
+	int downBound = (body->GetPositionY + body->GetSizeY / 2) / TILE_SIZE;
+	int leftBound = (body->GetPositionX - body->GetSizeX / 2) / TILE_SIZE;
+	int rightBound = (body->GetPositionX + body->GetSizeX / 2) / TILE_SIZE;
+
+	if (upBound == downBound && rightBound == leftBound)
+		return OnSingleTile;
+
+	else if (upBound != downBound && rightBound == leftBound)
+		return OnTwoTilesVertical;
+
+	else if (upBound == downBound && rightBound != leftBound)
+		return OnTwoTilesHorizontal;
+
+	return OnFourTiles;
+}
+
+void PhysicsEngine::checkOnSingleTileCollision(PhysicalBody * body, int & x, int & y)
+{
+	sf::IntRect* tileRect = new sf::IntRect(0, 0, TILE_SIZE, TILE_SIZE);
+
+	//TODO checkCollisions
+
+}
+
+void PhysicsEngine::checkOnTwoTilesHorizontalCollision(PhysicalBody * body, int & x, int & y)
+{
+}
+
+void PhysicsEngine::checkOnTwoTilesVerticalCollision(PhysicalBody * body, int & x, int & y)
+{
 }

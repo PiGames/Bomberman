@@ -8,13 +8,10 @@
 class PhysicsEngine
 {
 public:
-	const int tile_size = 64;
+	const int TILE_SIZE = 64;
 
 	PhysicsEngine();
 	~PhysicsEngine();
-
-	//Container contating all PhysicalBodys on Scene
-	static std::vector<PhysicalBody*> PhysicalBodys_Pointer_Array;
 
 	/// Sets current level data and reference to player
 	/// <param name="level">level data</param>
@@ -22,15 +19,19 @@ public:
 	void Init(Level& level, PhysicalBody& player /* HACK 1st iteration only, add map later */);
 
 	/// Check collisions, update speeds, ...
-	/// <param name="dt">delta time in ms</param>
-	void Update(const float& dt);
-
-	static void Add_Physical_Body_into_Array(PhysicalBody* body_pointer);
+	/// <param name="delta">delta time in ms</param>
+	void Update(const float& delta);
 
 private:
 	Level* m_level;
 	PhysicalBody* m_body;
 	
-	// add ref to bombs later
+	enum BodyPositionState {OnSingleTile, OnTwoTilesHorizontal, OnTwoTilesVertical, OnFourTiles};
+
+	int getBodyPositionState(PhysicalBody* body);
+
+	void checkOnSingleTileCollision(PhysicalBody * body,int & x, int & y);
+	void checkOnTwoTilesHorizontalCollision(PhysicalBody * body, int & x, int & y);
+	void checkOnTwoTilesVerticalCollision(PhysicalBody * body, int & x, int & y);
 };
 
