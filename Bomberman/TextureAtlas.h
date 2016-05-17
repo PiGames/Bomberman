@@ -49,5 +49,12 @@ public:
 
 private:
 	// TODO miejsce na twoje pola / metody prywatne
+
+	sf::Texture m_texture;
+	size_t m_count;
+	size_t m_cellSizeX;
+	size_t m_cellSizeY;
+	size_t m_textureSizeX;
+	size_t m_textureSizeY;
 };
 

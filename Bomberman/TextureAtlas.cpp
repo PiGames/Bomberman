@@ -14,72 +14,69 @@ TextureAtlas::~TextureAtlas()
 
 bool TextureAtlas::LoadFromFile(const std::string & path)
 {
-	// TODO wczytywanie tekstury z pliku
-	/*
-		tutaj musz wczytaæ teksturê z pliku do jakiejœ prywantj tekstury,
-		zwracasz true je¿eli wszystko posz³o ok,
-		false je¿eli coœ jest nie tak
-		np.
-		return m_texture.LoadFromFile(path);
-	*/
-	return false;
+	if (!m_texture.loadFromFile(path))
+		return false;
+	else
+		return true;
 }
 
 
 bool TextureAtlas::TrimByGrid(const size_t & cellSizeX, const size_t & cellSizeY)
 {
-	// TODO dzielenie tekstury na czêœci
-	/*
-		Raczej "dzielenie", tak naprawdê wci¹¿ powinieneœ mieæ w tej klasie tylko 1 obiekt tekstury
-		a ta metoda powinna raczej czy szerokoœæ i wysokoœæ wczeœniej wczytanej tekstury 
-		jest podzielna przez podane w argumentach szerokoœæ i wysokoœæ (powinna te¿ ustawiaæ pola
-		odpawiadaj¹ce za rozmiar komórek, iloœæ poszczególnych tekstur, ...
-		true jezeli da sie podzielic
-		false je¿eli nie
-	*/
+	m_cellSizeX = cellSizeX;
+	m_cellSizeY = cellSizeY;
 
-	return false;
+	m_textureSizeX = m_texture.getSize().x / m_cellSizeX;
+
+	m_count = (m_texture.getSize().x / m_cellSizeX) * (m_texture.getSize().y / m_cellSizeY);
+
+	if ((m_texture.getSize().x % m_cellSizeX == 0) && m_texture.getSize().y % m_cellSizeY == 0)
+	{
+		return true;
+	}
+	else
+		return false;
 }
 
 
 size_t TextureAtlas::GetCount() const
 {
-	// TODO ilosc tekstur w atlasie
-	/*
-		o ile wyliczy³eœ wczeœniej w TrimByGrid, to tutaj po prostu zwracasz t¹ wartoœæ
-	*/
-	return size_t();
+
+	return m_count;
 }
 
 
 size_t TextureAtlas::GetCellSizeX() const
 {
-	// TODO szerokosc pojedynczej tekstury
-	/*
-		zwracasz szerokosc pojedynczej tekstur, inaczej param cellSizeX z TrimByGrid
-	*/
-	return size_t();
+
+	return m_cellSizeX;
 }
 
 
 size_t TextureAtlas::GetCellSizeY() const
 {
-	// TODO wysokosc pojedynczej tekstury
-	/*
-		analogiczna sytuacja do tej z GetCellSizeX()
-	*/
-	return size_t();
+
+	return m_cellSizeY;
 }
 
 
 void TextureAtlas::SetSpriteTextureByIndex(sf::Sprite & sprite, size_t index)
 {
-	// TODO ustawianie sprite'owi tekstury
-	/*
-		Ustawiasz spriteowi odpowidni fragment tektury sugeruj¹c siê indeksem
-		coœ w stylu sprite.setTextureRect(...)
-		jedyny "problem" to przeliczenie jednowymiarowego indeksu na dwuwymiarowy obszar
-		(coœ w stylu przeliczania indeksu tablicy jednowymiarowej na dwuwymiarow¹)
-		potrzebujesz tutaj szerokoœci, wysokoœci komórki i samego indeksu podanego jako parametr
-	*/
+	size_t m_index = m_cellSizeX * index;
+
+	if (m_index > m_textureSizeX)
+	{
+		size_t buffer = 0;
+		for (int i = 1; i < index; i++)
+		{
+			if (i >= m_textureSizeX)
+				buffer += 1;
+		}
+		size_t m_downTextureSet = m_cellSizeY *= buffer;
+		sprite.setTextureRect(sf::IntRect(m_index, m_downTextureSet, m_cellSizeX, m_cellSizeY));
+	}
+	else if (m_index <= m_textureSizeX)
+		sprite.setTextureRect(sf::IntRect(m_index, 0, m_cellSizeX, m_cellSizeY));
+	else
+		sprite.setTextureRect(sf::IntRect(0, 0, m_cellSizeX, m_cellSizeY));
 }
