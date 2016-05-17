@@ -51,12 +51,18 @@ private:
 
 	void setBodyPositionInfo(PhysicalBody* body, MovableBodyInfo & bodyInfo);
 
-	void checkOnSingleTileCollision(PhysicalBody * body,int & x, int & y);
-	void checkOnTwoTilesHorizontalCollision(PhysicalBody * body, int & x, int & y);
-	void checkOnTwoTilesVerticalCollision(PhysicalBody * body, int & x, int & y);
-
 	void setBodyPositionNextToAnotherBodyInYAxis(PhysicalBody * bodyToSetPostition, PhysicalBody * referenceBody);
 
 	void setBodyPositionNextToAnotherBodyInXAxis(PhysicalBody * bodyToSetPostition, PhysicalBody * referenceBody);
+
+	bool isInMapBoundsX(PhysicalBody & body);
+
+	bool isInMapBoundsY(PhysicalBody & body);
+
+	///The method decides itself which bounds set this body next to
+	void setBodyPositionNextToXBound(PhysicalBody * body);
+
+	///The method decides itself which bounds set this body next to
+	void setBodyPositionNextToYBound(PhysicalBody * body);
 };
 
