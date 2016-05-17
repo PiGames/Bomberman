@@ -4,6 +4,7 @@
 #include <vector>
 #include <SFML\Graphics.hpp>
 #include <math.h>
+#include <iostream>
 
 class PhysicsEngine
 {
@@ -23,15 +24,39 @@ public:
 	void Update(const float& delta);
 
 private:
+	///Logical level representation
 	Level* m_level;
-	PhysicalBody* m_body;
-	
-	enum BodyPositionState {OnSingleTile, OnTwoTilesHorizontal, OnTwoTilesVertical, OnFourTiles};
 
-	int getBodyPositionState(PhysicalBody* body);
+	///Physical level representation
+	std::vector <std::vector<PhysicalBody*>> m_physicalLevel; 
+	
+	enum BodyPositionState { OnSingleTile, OnTwoTilesHorizontal, OnTwoTilesVertical, OnFourTiles };
+
+	struct MovableBodyInfo
+	{
+		BodyPositionState state;
+
+		int	upBound; // casted to level index
+		int downBound;
+		int leftBound;
+		int rightBound;
+		int centerX;
+		int centerY;
+	};
+	///Physical player representation
+	PhysicalBody* m_body;
+
+	MovableBodyInfo m_bodyInfo;
+
+
+	void setBodyPositionInfo(PhysicalBody* body, MovableBodyInfo & bodyInfo);
 
 	void checkOnSingleTileCollision(PhysicalBody * body,int & x, int & y);
 	void checkOnTwoTilesHorizontalCollision(PhysicalBody * body, int & x, int & y);
 	void checkOnTwoTilesVerticalCollision(PhysicalBody * body, int & x, int & y);
+
+	void setBodyPositionNextToAnotherBodyInYAxis(PhysicalBody * bodyToSetPostition, PhysicalBody * referenceBody);
+
+	void setBodyPositionNextToAnotherBodyInXAxis(PhysicalBody * bodyToSetPostition, PhysicalBody * referenceBody);
 };
 

@@ -31,11 +31,8 @@ void PhysicalBody::SetSize(float x, float y)
 
 bool PhysicalBody::IsCollision(const float & x, const float & y, const float & sizeX, const float & sizeY)
 {
-
-	if (m_posX + m_sizeX < x || m_posX > x + sizeX) return false;
-	if (m_posY + m_sizeY < y || m_posY > y + sizeY) return false;
-
-	return true;
+	return !(m_posY + m_sizeY / 2 < y - sizeY / 2) && !(m_posY - m_sizeY / 2 > y + sizeY / 2) &&
+		!(m_posX + m_sizeX / 2 < x - sizeX / 2) && !( m_posX - m_sizeX / 2 > x + sizeX / 2);
 }
 
 
@@ -45,63 +42,58 @@ bool PhysicalBody::IsCollision(PhysicalBody & pyRef)
 }
 
 
-void PhysicalBody::Update(const float & dt)
-{
-	last_pos_x = m_posX;
-	last_pos_y = m_posY;
-
-	m_posX += m_vX * dt;
-	m_posY += m_vY * dt;
-}
-
-
-float const PhysicalBody::GetPositionX()
+float PhysicalBody::GetPositionX() const
 {
 	return m_posX;
 }
 
 
-float const PhysicalBody::GetPositionY()
+float PhysicalBody::GetPositionY() const
 {
 	return m_posY;
 }
 
 
-float const PhysicalBody::GetSizeX()
+float PhysicalBody::GetSizeX() const
 {
 	return m_sizeX;
 }
 
 
-float const PhysicalBody::GetSizeY()
+float PhysicalBody::GetSizeY() const
 {
 	return m_sizeY;
 }
 
 
-float const PhysicalBody::GetVelocityX()
+float PhysicalBody::GetVelocityX() const
 {
 	return m_vX;
 }
 
 
-float const PhysicalBody::GetVelocityY()
+float PhysicalBody::GetVelocityY() const
 {
 	return m_vY;
 }
 
-void PhysicalBody::OnCollision(TT::TileType type)
+void PhysicalBody::SetPositionX(float x)
 {
-	//std::cout << "Collision! " << "type: " << type << std::endl;
-	//do something
+	m_posX = x;
+}
 
-	if (type == TT::INDESTRUCTIBLE_WALL)
-	{
-		SetLastPosition();
-	}
-}
-void PhysicalBody::SetLastPosition()
+void PhysicalBody::SetPositionY(float y)
 {
-	m_posX = last_pos_x;
-	m_posY = last_pos_y;
+	m_posY = y;
 }
+
+void PhysicalBody::SetMovementX(float movement)
+{
+	movementX = movement;
+}
+
+void PhysicalBody::SetMovementY(float movement)
+{
+	movementY = movement;
+}
+

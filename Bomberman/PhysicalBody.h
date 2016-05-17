@@ -28,25 +28,30 @@ public:
 	/// Check collision between objects
 	/// <param name="pyRef">PhysicalBody reference</param>
 	bool IsCollision(PhysicalBody& pyRef);
+	
+	float GetPositionX() const;
+	float GetPositionY() const;
+	
+	float GetSizeX() const;
+	float GetSizeY() const;
+	
+	float GetVelocityX() const;
+	float GetVelocityY() const;
 
-	/// Updates state of the object, moves the object, called after collsion check
-	/// <param name="dt">delta time in seconds</param>
-	void Update(const float& dt);
+	/// Sets position of physical body representation 
+	/// This method does not change visible position of a body!!!
+	/// <param name ="x">X axis coordinate</param>
+	
+	void SetPositionX(float x);
 
-	void OnCollision(TT::TileType type);
-	
-	float const GetPositionX();
-	float const GetPositionY();
-	
-	float const GetSizeX();
-	float const GetSizeY();
-	
-	float const GetVelocityX();
-	float const GetVelocityY();
+	/// Sets position of physical body representation 
+	/// This method does not change visible position of a body!!!
+	/// <param name ="y">Y axis coordinate</param>
+	void SetPositionY(float y);
 
-	
-	//It is temporary!!
-	void SetLastPosition();
+	void SetMovementX(float movement);
+
+	void SetMovementY(float movement);
 
 protected:
 	float m_posX;
@@ -58,9 +63,7 @@ protected:
 	float m_vX;
 	float m_vY;
 
-	//It is temporary!!
-	float last_pos_x;
-	float last_pos_y;
-
+	float movementX; //This is final value pre-checked for collisions occurance
+	float movementY;
 };
 
