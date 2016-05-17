@@ -61,7 +61,7 @@ void PhysicsEngine::Update(const float & delta)
 
 	if (!isInMapBoundsX(bodyAfterXMovement))
 	{
-		setBodyPositionNextToXBound(m_body);
+		setBodyPositionNextToBoundX(m_body);
 		moveInXAxis = false;
 	}
 	if (!isInMapBoundsY(bodyAfterYMovement))
@@ -72,23 +72,23 @@ void PhysicsEngine::Update(const float & delta)
 		case OnSingleTile:
 			if (moveInYAxis && m_bodyInfo.centerY >= 1 && m_level->GetTile(m_bodyInfo.centerX, m_bodyInfo.centerY - 1)!= TT::NONE && bodyAfterYMovement.IsCollision(*m_physicalLevel[m_bodyInfo.centerY - 1][m_bodyInfo.centerX]))
 			{	
-				setBodyPositionNextToAnotherBodyInYAxis(m_body, m_physicalLevel[m_bodyInfo.centerY - 1][m_bodyInfo.centerX]);
+				setBodyPositionNextToAnotherBodyInAxisY(m_body, m_physicalLevel[m_bodyInfo.centerY - 1][m_bodyInfo.centerX]);
 				moveInYAxis = false;
 			}
 			else if (moveInYAxis && m_bodyInfo.centerY + 1 < m_level->GetHeight() && m_level->GetTile(m_bodyInfo.centerX, m_bodyInfo.centerY + 1) != TT::NONE && bodyAfterYMovement.IsCollision(*m_physicalLevel[m_bodyInfo.centerY + 1][m_bodyInfo.centerX]))
 			{
-				setBodyPositionNextToAnotherBodyInYAxis(m_body, m_physicalLevel[m_bodyInfo.centerY + 1][m_bodyInfo.centerX]);
+				setBodyPositionNextToAnotherBodyInAxisY(m_body, m_physicalLevel[m_bodyInfo.centerY + 1][m_bodyInfo.centerX]);
 				moveInYAxis = false;
 			}
 
 			if (moveInXAxis && m_bodyInfo.centerX >= 1 && m_level->GetTile(m_bodyInfo.centerX - 1, m_bodyInfo.centerY) != TT::NONE && bodyAfterXMovement.IsCollision(*m_physicalLevel[m_bodyInfo.centerY][m_bodyInfo.centerX - 1]))
 			{
-				setBodyPositionNextToAnotherBodyInXAxis(m_body, m_physicalLevel[m_bodyInfo.centerY][m_bodyInfo.centerX - 1]);
+				setBodyPositionNextToAnotherBodyInAxisX(m_body, m_physicalLevel[m_bodyInfo.centerY][m_bodyInfo.centerX - 1]);
 				moveInXAxis = false;
 			}
 			else if (moveInXAxis && m_bodyInfo.centerX + 1 < m_level->GetWidth() && m_level->GetTile(m_bodyInfo.centerX + 1, m_bodyInfo.centerY) != TT::NONE && bodyAfterXMovement.IsCollision(*m_physicalLevel[m_bodyInfo.centerY][m_bodyInfo.centerX + 1]))
 			{	
-				setBodyPositionNextToAnotherBodyInXAxis(m_body, m_physicalLevel[m_bodyInfo.centerY][m_bodyInfo.centerX + 1]);
+				setBodyPositionNextToAnotherBodyInAxisX(m_body, m_physicalLevel[m_bodyInfo.centerY][m_bodyInfo.centerX + 1]);
 				moveInXAxis = false;
 			}
 			break;
@@ -103,23 +103,23 @@ void PhysicsEngine::Update(const float & delta)
 
 			if (moveInYAxis && m_bodyInfo.centerY >= 1 && m_level->GetTile(m_bodyInfo.centerX, m_bodyInfo.centerY - 1) != TT::NONE && bodyAfterYMovement.IsCollision(*m_physicalLevel[m_bodyInfo.centerY - 1][m_bodyInfo.centerX]))
 			{
-				setBodyPositionNextToAnotherBodyInYAxis(m_body, m_physicalLevel[m_bodyInfo.centerY -1][m_bodyInfo.centerX]);
+				setBodyPositionNextToAnotherBodyInAxisY(m_body, m_physicalLevel[m_bodyInfo.centerY -1][m_bodyInfo.centerX]);
 				moveInYAxis = false;
 			}
 			else if (moveInYAxis && m_bodyInfo.centerY + 1 < m_level->GetHeight() && m_level->GetTile(m_bodyInfo.centerX, m_bodyInfo.centerY + 1) != TT::NONE && bodyAfterYMovement.IsCollision(*m_physicalLevel[m_bodyInfo.centerY + 1][m_bodyInfo.centerX]))
 			{
-				setBodyPositionNextToAnotherBodyInYAxis(m_body, m_physicalLevel[m_bodyInfo.centerY + 1][m_bodyInfo.centerX]);
+				setBodyPositionNextToAnotherBodyInAxisY(m_body, m_physicalLevel[m_bodyInfo.centerY + 1][m_bodyInfo.centerX]);
 				moveInYAxis = false;
 			}
 
 			if (m_bodyInfo.centerY >= 1 && moveInYAxis &&m_level->GetTile(additionTileXCoord, m_bodyInfo.centerY - 1) != TT::NONE && bodyAfterYMovement.IsCollision(*m_physicalLevel[m_bodyInfo.centerY - 1][additionTileXCoord]))
 			{
-				setBodyPositionNextToAnotherBodyInYAxis(m_body, m_physicalLevel[m_bodyInfo.centerY - 1][additionTileXCoord]);
+				setBodyPositionNextToAnotherBodyInAxisY(m_body, m_physicalLevel[m_bodyInfo.centerY - 1][additionTileXCoord]);
 				moveInYAxis = false;
 			}
 			else if (m_bodyInfo.centerY + 1 < m_level->GetHeight() && moveInYAxis &&m_level->GetTile(additionTileXCoord, m_bodyInfo.centerY + 1) != TT::NONE && bodyAfterYMovement.IsCollision(*m_physicalLevel[m_bodyInfo.centerY + 1][additionTileXCoord]))
 			{
-				setBodyPositionNextToAnotherBodyInYAxis(m_body, m_physicalLevel[m_bodyInfo.centerY + 1][additionTileXCoord]);
+				setBodyPositionNextToAnotherBodyInAxisY(m_body, m_physicalLevel[m_bodyInfo.centerY + 1][additionTileXCoord]);
 				moveInYAxis = false;
 			}
 
@@ -134,23 +134,23 @@ void PhysicsEngine::Update(const float & delta)
 
 			if (moveInXAxis && m_bodyInfo.centerX >= 1 && m_level->GetTile(m_bodyInfo.centerX - 1, m_bodyInfo.centerY) != TT::NONE && bodyAfterXMovement.IsCollision(*m_physicalLevel[m_bodyInfo.centerY][m_bodyInfo.centerX - 1]))
 			{
-				setBodyPositionNextToAnotherBodyInXAxis(m_body, m_physicalLevel[m_bodyInfo.centerY][m_bodyInfo.centerX - 1]);
+				setBodyPositionNextToAnotherBodyInAxisX(m_body, m_physicalLevel[m_bodyInfo.centerY][m_bodyInfo.centerX - 1]);
 				moveInXAxis = false;
 			}
 			else if (moveInXAxis && m_bodyInfo.centerX + 1 < m_level->GetWidth() && m_level->GetTile(m_bodyInfo.centerX + 1, m_bodyInfo.centerY) != TT::NONE && bodyAfterXMovement.IsCollision(*m_physicalLevel[m_bodyInfo.centerY][m_bodyInfo.centerX + 1]))
 			{
-				setBodyPositionNextToAnotherBodyInXAxis(m_body, m_physicalLevel[m_bodyInfo.centerY][m_bodyInfo.centerX + 1]);
+				setBodyPositionNextToAnotherBodyInAxisX(m_body, m_physicalLevel[m_bodyInfo.centerY][m_bodyInfo.centerX + 1]);
 				moveInXAxis = false;
 			}
 
 			if (m_bodyInfo.centerX >= 1 && moveInXAxis && m_level->GetTile(m_bodyInfo.centerX - 1, additionTileYCoord) != TT::NONE && bodyAfterXMovement.IsCollision(*m_physicalLevel[additionTileYCoord][m_bodyInfo.centerX - 1]))
 			{
-				setBodyPositionNextToAnotherBodyInXAxis(m_body, m_physicalLevel[additionTileYCoord][m_bodyInfo.centerX - 1]);
+				setBodyPositionNextToAnotherBodyInAxisX(m_body, m_physicalLevel[additionTileYCoord][m_bodyInfo.centerX - 1]);
 				moveInXAxis = false;
 			}
 			else if (m_bodyInfo.centerX + 1 < m_level->GetWidth() && moveInXAxis &&m_level->GetTile(m_bodyInfo.centerX + 1, additionTileYCoord) != TT::NONE && bodyAfterXMovement.IsCollision(*m_physicalLevel[additionTileYCoord][m_bodyInfo.centerX + 1]))
 			{
-				setBodyPositionNextToAnotherBodyInXAxis(m_body, m_physicalLevel[additionTileYCoord][m_bodyInfo.centerX + 1]);
+				setBodyPositionNextToAnotherBodyInAxisX(m_body, m_physicalLevel[additionTileYCoord][m_bodyInfo.centerX + 1]);
 				moveInXAxis = false;
 			}
 
@@ -185,7 +185,7 @@ void PhysicsEngine::setBodyPositionInfo(PhysicalBody * body, MovableBodyInfo & b
 
 }
 
-void PhysicsEngine::setBodyPositionNextToAnotherBodyInYAxis(PhysicalBody * body, PhysicalBody * tile)
+void PhysicsEngine::setBodyPositionNextToAnotherBodyInAxisY(PhysicalBody * body, PhysicalBody * tile)
 {
 	if (body->GetPositionY() > tile->GetPositionY())
 		body->SetPositionY(tile->GetPositionY() + tile->GetSizeY() / 2 + body->GetSizeY() / 2 + 0.1f);
@@ -193,7 +193,7 @@ void PhysicsEngine::setBodyPositionNextToAnotherBodyInYAxis(PhysicalBody * body,
 		body->SetPositionY(tile->GetPositionY() - tile->GetSizeY() / 2 - body->GetSizeY() / 2 - 0.1f);
 }
 
-void PhysicsEngine::setBodyPositionNextToAnotherBodyInXAxis(PhysicalBody * body, PhysicalBody * tile)
+void PhysicsEngine::setBodyPositionNextToAnotherBodyInAxisX(PhysicalBody * body, PhysicalBody * tile)
 {
 	if (body->GetPositionX() > tile->GetPositionX())
 		body->SetPositionX(tile->GetPositionX() + tile->GetSizeX() / 2 + body->GetSizeX() / 2 + 0.1f);
@@ -213,7 +213,7 @@ bool PhysicsEngine::isInMapBoundsY(PhysicalBody & body)
 		!(body.GetPositionY() + body.GetSizeY() / 2.f >= m_physicalLevel[m_level->GetHeight() - 1][m_level->GetWidth() - 1]->GetPositionY() + TILE_SIZE / 2.f);
 }
 
-void PhysicsEngine::setBodyPositionNextToXBound(PhysicalBody * body)
+void PhysicsEngine::setBodyPositionNextToBoundX(PhysicalBody * body)
 {
 	if (fabs(body->GetPositionX() - m_physicalLevel[0][0]->GetPositionX()) >
 		fabs(body->GetPositionX() - m_physicalLevel[m_level->GetHeight() - 1][m_level->GetWidth() - 1]->GetPositionX()))
@@ -223,7 +223,7 @@ void PhysicsEngine::setBodyPositionNextToXBound(PhysicalBody * body)
 		body->SetPositionX(m_physicalLevel[0][0]->GetPositionX() - m_physicalLevel[0][0]->GetSizeX() / 2.f + body->GetSizeX() / 2.f + 0.1f);
 }
 
-void PhysicsEngine::setBodyPositionNextToYBound(PhysicalBody * body)
+void PhysicsEngine::setBodyPositionNextToBoundY(PhysicalBody * body)
 {
 	if (fabs(body->GetPositionY() - m_physicalLevel[0][0]->GetPositionY()) >
 		fabs(body->GetPositionY() - m_physicalLevel[m_level->GetHeight() - 1][m_level->GetWidth() - 1]->GetPositionY()))

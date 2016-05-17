@@ -51,18 +51,18 @@ private:
 
 	void setBodyPositionInfo(PhysicalBody* body, MovableBodyInfo & bodyInfo);
 
-	void setBodyPositionNextToAnotherBodyInYAxis(PhysicalBody * bodyToSetPostition, PhysicalBody * referenceBody);
+	void setBodyPositionNextToAnotherBodyInAxisY(PhysicalBody * bodyToSetPostition, PhysicalBody * referenceBody);
 
-	void setBodyPositionNextToAnotherBodyInXAxis(PhysicalBody * bodyToSetPostition, PhysicalBody * referenceBody);
+	void setBodyPositionNextToAnotherBodyInAxisX(PhysicalBody * bodyToSetPostition, PhysicalBody * referenceBody);
 
 	bool isInMapBoundsX(PhysicalBody & body);
 
 	bool isInMapBoundsY(PhysicalBody & body);
 
-	///The method decides itself which bounds set this body next to
-	void setBodyPositionNextToXBound(PhysicalBody * body);
+	///The method decides itself which bound set a body next to
+	void setBodyPositionNextToBoundX(PhysicalBody * body);
 
-	///The method decides itself which bounds set this body next to
-	void setBodyPositionNextToYBound(PhysicalBody * body);
+	///The method decides itself which bound set a body next to
+	void setBodyPositionNextToBoundY(PhysicalBody * body);
 };
 
