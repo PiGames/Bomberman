@@ -22,8 +22,8 @@ void LevelView::SetLevel(Level * level, sf::Texture * textures, const size_t & t
 		for (int x = 0; x < level->GetWidth(); ++x)
 		{
 			m_data[y][x].setTexture(*textures);
-			m_data[y][x].setTextureRect(sf::IntRect(tileSize*level->GetTile(x, y), 0, tileSize, tileSize));
-			m_data[y][x].setPosition(x*tileSize, y*tileSize);
+			m_data[y][x].setTextureRect(sf::IntRect(static_cast<int>(tileSize*level->GetTile(x, y)), 0, static_cast<int>(tileSize), static_cast<int>(tileSize)));
+			m_data[y][x].setPosition(static_cast<float>(x*tileSize), static_cast<float>(y*tileSize));
 		}
 	}
 }
