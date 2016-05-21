@@ -5,6 +5,8 @@
 PhysicalBody::PhysicalBody()
 {
 	m_sizeX = m_sizeY = m_posX = m_posY = m_vX = m_vY = 0.0f;
+
+	
 }
 
 
@@ -29,13 +31,10 @@ void PhysicalBody::SetSize(float x, float y)
 
 bool PhysicalBody::IsCollision(const float & x, const float & y, const float & sizeX, const float & sizeY)
 {
-	if (fabs(m_posX - x) < (m_sizeX + sizeX) && fabs(m_posY - y) < (m_sizeY + sizeY))
-	{
-		return true;
-	}
-
-	return false;
+	return !(m_posY + m_sizeY / 2 < y - sizeY / 2) && !(m_posY - m_sizeY / 2 > y + sizeY / 2) &&
+		!(m_posX + m_sizeX / 2 < x - sizeX / 2) && !( m_posX - m_sizeX / 2 > x + sizeX / 2);
 }
+
 
 bool PhysicalBody::IsCollision(PhysicalBody & pyRef)
 {
@@ -43,44 +42,58 @@ bool PhysicalBody::IsCollision(PhysicalBody & pyRef)
 }
 
 
-void PhysicalBody::Update(const float & dt)
-{
-	m_posX += m_vX * dt;
-	m_posY += m_vY * dt;
-}
-
-
-float PhysicalBody::GetPositionX()
+float PhysicalBody::GetPositionX() const
 {
 	return m_posX;
 }
 
 
-float PhysicalBody::GetPositionY()
+float PhysicalBody::GetPositionY() const
 {
 	return m_posY;
 }
 
 
-float PhysicalBody::GetSizeX()
+float PhysicalBody::GetSizeX() const
 {
 	return m_sizeX;
 }
 
 
-float PhysicalBody::GetSizeY()
+float PhysicalBody::GetSizeY() const
 {
 	return m_sizeY;
 }
 
 
-float PhysicalBody::GetVelocityX()
+float PhysicalBody::GetVelocityX() const
 {
 	return m_vX;
 }
 
 
-float PhysicalBody::GetVelocityY()
+float PhysicalBody::GetVelocityY() const
 {
 	return m_vY;
 }
+
+void PhysicalBody::SetPositionX(float x)
+{
+	m_posX = x;
+}
+
+void PhysicalBody::SetPositionY(float y)
+{
+	m_posY = y;
+}
+
+void PhysicalBody::SetMovementX(float movement)
+{
+	movementX = movement;
+}
+
+void PhysicalBody::SetMovementY(float movement)
+{
+	movementY = movement;
+}
+

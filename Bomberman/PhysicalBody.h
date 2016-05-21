@@ -1,12 +1,13 @@
 #pragma once
-
 #include <math.h>
-
+#include "Types.h"
+#include <iostream>
 class PhysicalBody
 {
 public:
 	PhysicalBody();
 	~PhysicalBody();
+
 
 	/// Sets the velocity
 	/// <param name="x">x velocity</param>
@@ -27,20 +28,30 @@ public:
 	/// Check collision between objects
 	/// <param name="pyRef">PhysicalBody reference</param>
 	bool IsCollision(PhysicalBody& pyRef);
+	
+	float GetPositionX() const;
+	float GetPositionY() const;
+	
+	float GetSizeX() const;
+	float GetSizeY() const;
+	
+	float GetVelocityX() const;
+	float GetVelocityY() const;
 
-	/// Updates state of the object, moves the object, called after collsion check
-	/// <param name="dt">delta time in seconds</param>
-	void Update(const float& dt);
+	/// Sets position of physical body representation 
+	/// This method does not change visible position of a body!!!
+	/// <param name ="x">X axis coordinate</param>
+	
+	void SetPositionX(float x);
 
-	
-	float GetPositionX();
-	float GetPositionY();
-	
-	float GetSizeX();
-	float GetSizeY();
-	
-	float GetVelocityX();
-	float GetVelocityY();
+	/// Sets position of physical body representation 
+	/// This method does not change visible position of a body!!!
+	/// <param name ="y">Y axis coordinate</param>
+	void SetPositionY(float y);
+
+	void SetMovementX(float movement);
+
+	void SetMovementY(float movement);
 
 protected:
 	float m_posX;
@@ -51,5 +62,8 @@ protected:
 
 	float m_vX;
 	float m_vY;
+
+	float movementX; //This is final value pre-checked for collisions occurance
+	float movementY;
 };
 

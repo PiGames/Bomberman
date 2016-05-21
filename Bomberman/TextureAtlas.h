@@ -48,8 +48,6 @@ public:
 	void SetSpriteTextureByIndex(sf::Sprite& sprite, size_t index=0);
 
 private:
-	// TODO miejsce na twoje pola / metody prywatne
-
 	sf::Texture m_texture;
 	size_t m_count;
 	size_t m_cellSizeX;

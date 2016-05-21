@@ -41,21 +41,18 @@ bool TextureAtlas::TrimByGrid(const size_t & cellSizeX, const size_t & cellSizeY
 
 size_t TextureAtlas::GetCount() const
 {
-
 	return m_count;
 }
 
 
 size_t TextureAtlas::GetCellSizeX() const
 {
-
 	return m_cellSizeX;
 }
 
 
 size_t TextureAtlas::GetCellSizeY() const
 {
-
 	return m_cellSizeY;
 }
 

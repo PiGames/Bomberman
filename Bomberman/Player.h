@@ -2,7 +2,8 @@
 #include <SFML\Graphics.hpp>
 #include "PhysicalBody.h"
 
-class Player : public sf::Drawable
+
+class Player : public sf::Drawable, public PhysicalBody
 {
 public:
 	Player();
@@ -25,12 +26,9 @@ public:
 	/// <param name="dt">delta time in seconds</param>
 	void Update(const float& dt);
 
-	PhysicalBody& GetPhysicalBody();
-
 	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const override;
 
 private:
 	sf::Sprite m_sprite;
-	PhysicalBody m_physicalBody;
 };
 

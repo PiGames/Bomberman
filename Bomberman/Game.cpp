@@ -49,7 +49,7 @@ void Game::Run()
 	}
 	m_localPlayer.SetTexture(playerTexture);
 	
-	m_physicsEngine.Init(m_level, m_localPlayer.GetPhysicalBody());
+	m_physicsEngine.Init(m_level, m_localPlayer);
 	/* TMP INIT END*/
 
 
