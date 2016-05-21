@@ -11,6 +11,8 @@ Use your *movement keys* to move and *action key* to place a bomb
 #### Player 1
 - [arrows] movement 
 - [spacebar] action key
+
+
 #### Player 2
 -Player 2 is not supported yet-
 
@@ -20,9 +22,7 @@ Use your *movement keys* to move and *action key* to place a bomb
 * [SFML 2.3.2](http://www.sfml-dev.org/download.php) (or another latest stable version)
 
 ## Installation
-------
 TODO
 
 ## License
-
 Project is under [MIT](LICENSE.md) license.

@@ -70,10 +70,10 @@ void TextureAtlas::SetSpriteTextureByIndex(sf::Sprite & sprite, size_t index)
 				buffer += 1;
 		}
 		size_t m_downTextureSet = m_cellSizeY *= buffer;
-		sprite.setTextureRect(sf::IntRect(m_index, m_downTextureSet, m_cellSizeX, m_cellSizeY));
+		sprite.setTextureRect(sf::IntRect(static_cast<int>(m_index), static_cast<int>(m_downTextureSet), static_cast<int>(m_cellSizeX), static_cast<int>(m_cellSizeY)));
 	}
 	else if (m_index <= m_textureSizeX)
-		sprite.setTextureRect(sf::IntRect(m_index, 0, m_cellSizeX, m_cellSizeY));
+		sprite.setTextureRect(sf::IntRect(static_cast<int>(m_index), 0, static_cast<int>(m_cellSizeX), static_cast<int>(m_cellSizeY)));
 	else
-		sprite.setTextureRect(sf::IntRect(0, 0, m_cellSizeX, m_cellSizeY));
+		sprite.setTextureRect(sf::IntRect(0, 0, static_cast<int>(m_cellSizeX), static_cast<int>(m_cellSizeY)));
 }
