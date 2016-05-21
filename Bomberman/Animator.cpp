@@ -1,104 +1,99 @@
 #include "Animator.h"
-
-
-
+â€‹
+â€‹
+â€‹
 Animator::Animator()
 {
 }
-
-
+â€‹
+â€‹
 Animator::~Animator()
 {
 }
-
-
+â€‹
+â€‹
 void Animator::SetSprite(sf::Sprite & sprite)
 {
-	// TODO ustawianie sprite'a
-	/*
-		sprite któremu nale¿y aktualizowaæ wyœwietlan¹ teksturê
-	*/
+	sprite = m_sprite;
 }
-
+â€‹
 bool Animator::AddAnimationState(std::string name, const TextureAtlas & atlas, const size_t & begin, const size_t & end)
-{
-	// TODO tworzenie nowego stanu animacji
-	/*
-		Dodanie nowego stanu animacji, np "bieg", "stanie" itd
-		Jako parametr otrzymuje referencjê na atlas tekstur z zakresem indeksów dla danej animacji 
-		(jeden atlas mo¿e mieæ np animacje dla wszystkich stanów gracza, inny dla bomby, etc)
-		indeksy s¹ ³¹cznie, tzn end to wci¹¿ indeks nale¿¹cy do danej animacji stanu
-
-		polecam u¿yæ mapê i strukturê opisuj¹c¹ stan animacji AnimationStateInfo
-	*/
+{ // TODO powinieneÅ› dodaÄ‡ stan do mapy, a nie tworzyÄ‡ tylko 1
+	if (!name.empty())
+	{
+		m_states.insert[name];
+		TextureAtlas m_atlas = atlas;
+		m_states[name]->atlas = &m_atlas;
+		m_states[name]->beg = begin;
+		m_states[name]->end = end;
+â€‹
+		return true;
+	}
 	return false;
 }
-
-
+â€‹
+â€‹
 bool Animator::ChangeActiveState(const std::string & name)
 {
-	// TODO zmiana aktywnego stanu
-	/*
-		np z biegania na podan¹ przez argument
-		false, je¿eli stan z argumentu nie istnieje
-	*/
-	return false;
+	auto search = m_states.find(name); // TODO antypattern!
+	if (search != m_states.end())
+	{
+		m_currentstate = name;
+		return true;
+	}
+	else
+		return false;
 }
-
-
+â€‹
+â€‹
 std::string Animator::GetActiveState() const
 {
-	// TODO aktywny stan
-	/*
-		po prostu zwracasz aktywnie odtwarzan¹ animacjê
-	*/
-	return std::string();
+	return m_currentstate;
 }
-
-
+â€‹
+â€‹
 void Animator::SetAnimationSpeed(const float & speed)
 {
-	// TODO prêdkoœæ animacji
-	/*
-		zmienia prêdkoœæ odtwarzania animacji, tzn 1.0 to domyœlna wartoœæ 
-		i przy np speed = 1 i delay = 10 kolejne klatki animacji odtwarza co 10 sekund
-		przy speed = 0.5f i delay = 10 kolejne klatki animacji zmieniaj¹ siê co 15 sekund
-		speed = 1.5f i delay = 10 zmiana klatki nastêpuje co 5sekund
-
-		mniejsza wartoœæ to wiêksze spowolnienie animacji, wiêksze to przeyspieszenie
-	*/
+	m_delay = 10.f;
+	m_frames = speed * m_delay;
 }
-
-
+â€‹
+â€‹
 void Animator::SetDelayBetweenFrames(const float & delay)
 {
-	// TODO czas pomiêdzy klatkami
-	/*
-		bazowy czas pomiêdzy klatkami animacji w sekundach
-	*/
+	m_delay = delay;
 }
-
-
+â€‹
+â€‹
 void Animator::SetLoop(bool loop)
 {
-	// TODO zapêtlenie animacji
-	/*
-		czy animacja ma siê zapêtlaæ, tzn je¿eli true
-		to po narysowaniu ostatniej klatki animacji
-		animacja powinna zacz¹æ siê od pocz¹tku,
-
-		je¿eli false to powinna siê zatrzymaæ
-	*/
-
+	m_loop = loop;
 }
-
-
+â€‹
+â€‹
 void Animator::Animate(const float & dt)
-{
-	// TODO Animate
-	/*
-		Aktualizacja obecnie wyœwietlanej klatki animacji
-		UWAGA! nie potrzebujesz Clocka do sprawdzenia, czy powinieneœ zmieniæ
-		obecnie wyœwietlan¹ klatkê, wystarczy ci zliczanie dt
-	*/
+{ // TODO kamilos fixup needed
+	/*if (dt >= m_delay)
+	{
+â€‹
+		size_t begin = m_states[m_currentstate]->beg;
+		size_t end = m_states[m_currentstate]->end;
+		if (m_loop)
+		{
+			while (0)
+			{
+				for (int i = begin; i < end; i++)
+				{
+					m_sprite.setTexture(m_atlas.SetSpriteTextureByIndex);
+				}
+			}
+		}
+		else if(!m_loop)
+		{
+			for (int i = begin; i < end; i++)
+			{
+				m_sprite.setTexture(m_atlas.SetSpriteTextureByIndex);
+			}
+		}
+	}*/
 }
