@@ -69,12 +69,16 @@ private:
 	std::map<std::string, AnimationStateInfo>::iterator it;
 
 	sf::Sprite m_sprite;
-	std::string m_currentstate;
+	std::string m_currentState;
 	TextureAtlas m_atlas;
 
-	float m_animationspeed = 1.f;
-	float m_delay, m_frames;
+	float m_animationSpeed;
+	float m_delay;
+	float m_frames;
 	float m_elapsedTime;
+
+	int m_currentFrame;
+	int m_lastFrame;
 
 	bool m_loop;
 	bool m_animIsPlaying;
