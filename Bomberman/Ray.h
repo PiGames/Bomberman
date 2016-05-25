@@ -21,6 +21,7 @@ private:
 	/// True - horizontal, false - vertical
 	bool m_orientation;
 	sf::Sprite m_sprite;
+	std::vector<int> m_sections;
 
 };
 
