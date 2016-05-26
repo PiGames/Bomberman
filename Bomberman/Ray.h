@@ -16,11 +16,15 @@ public:
 	/// <returns>true when is collision</returns>
 	/// <returns>false when isn't collision</returns>
 	bool Contains(sf::FloatRect & floatRect);
+	///Sets texture of the bomb
+	/// <param name="texture"> texture pointer (NOTE: MUST BE ALIVE)</param>
+	void SetTexture(sf::Texture & texture);
 
 private:
 	/// True - horizontal, false - vertical
 	bool m_orientation;
 	sf::Sprite m_sprite;
+	sf::Texture * m_texture;
 	std::vector<int> m_sections;
 
 };

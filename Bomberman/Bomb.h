@@ -19,6 +19,9 @@ public:
 	/// <returns>true when is collision</returns>
 	/// <returns>false when isn't collision</returns>
 	bool IsObjectInRay(sf::FloatRect & floatRect);
+	///Sets texture of the bomb
+	/// <param name="texture"> texture pointer (NOTE: MUST BE ALIVE)</param>
+	void SetTexture(sf::Texture & texture);
 
 protected:
 	/// Puts bomb on position
@@ -27,7 +30,7 @@ protected:
 
 private:
 	sf::Sprite m_sprite;
-	sf::Texture m_texture;
+	sf::Texture * m_texture;
 	struct rayLength
 	{
 		int up;
