@@ -24,7 +24,7 @@ public:
 	/// <param name="cellSizeY>cell height (px)</param>
 	/// <returns>true OK</returns>
 	/// <returns>true cannot trim texture</returns>
-	bool TrimByGrid(const size_t& cellSizeX, const size_t& cellSizeY);
+	bool TrimByGrid(size_t cellSizeX, size_t cellSizeY);
 	
 	
 	/// Get total amount of textures
@@ -50,9 +50,11 @@ public:
 private:
 	sf::Texture m_texture;
 	size_t m_count;
-	size_t m_cellSizeX;
-	size_t m_cellSizeY;
-	size_t m_textureSizeX;
-	size_t m_textureSizeY;
+
+	size_t m_cellWidth;
+	size_t m_cellHeight;
+
+	size_t m_rows;
+	size_t m_columns;
 };
 

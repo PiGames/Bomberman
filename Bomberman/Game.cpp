@@ -6,6 +6,7 @@ Game::Game(size_t width, size_t height)
 	m_windowWidth = width;
 	m_windowHeight = height;
 	m_window.create(sf::VideoMode(static_cast<int>(m_windowWidth), static_cast<int>(m_windowHeight)), "Bomberman | Created by PiGames", sf::Style::Close);
+	m_window.setFramerateLimit(60);
 }
 
 
@@ -50,15 +51,53 @@ void Game::Run()
 	m_localPlayer.SetTexture(playerTexture);
 	
 	m_physicsEngine.Init(m_level, m_localPlayer);
-	/* TMP INIT END*/
+	
+	
+	// Animation test!
+	
+	TextureAtlas atlas;
+	if (!atlas.LoadFromFile("data/sample_animation.png"))
+	{
+		std::cerr << "[!] Canot load animation!\n";
+		std::exit(4);
+	}
 
+	
+	if (!atlas.TrimByGrid(64, 64))
+	{
+		std::cerr << "[!] Cannot trim animation frames!\n";
+		std::exit(5);
+	}
+
+	
+	//atlas.SetSpriteTextureByIndex(m_foobar, 3);
+	Animator animator;
+	animator.SetSprite(m_foobar);
+	animator.SetDelayBetweenFrames(1);
+	animator.SetLoop(true);
+
+	if (!animator.AddAnimationState("animation test", atlas, 0, atlas.GetCount() - 1))
+	{
+		std::cerr << "[!] Cannot add animations state!\n";
+		std::exit(6);
+	}
+
+	if (!animator.ChangeActiveState("animation test"))
+	{
+		std::cerr << "[!] Animation state doesn't exists!\n";
+		std::exit(7);
+	}
+	
+	/* TMP INIT END*/
 
 	// main loop
 	while (!m_exit)
 	{
 		processEvents();
 	
-		update(clock.getElapsedTime().asSeconds());
+		float dt = clock.getElapsedTime().asSeconds();
+		update(dt);
+		animator.Animate(dt); // HACK test only!
 		clock.restart();
 
 		draw();
@@ -73,6 +112,7 @@ void Game::draw()
 	m_window.draw(m_levelView);
 	// HACK bomb
 	m_window.draw(m_localPlayer);
+	m_window.draw(m_foobar); // HACK tmp
 
 
 	m_window.display();

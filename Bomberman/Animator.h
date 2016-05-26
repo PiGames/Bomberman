@@ -3,6 +3,7 @@
 #include <SFML\Graphics\Sprite.hpp>
 #include <string>
 #include <map>
+#include <iostream>
 
 #include "TextureAtlas.h"
 
@@ -24,7 +25,7 @@ public:
 	/// <param name="end">ending index of state's animation in atlas</param>
 	/// <returns>true OK</returns>
 	/// <returns>false cannot add animation</returns>
-	bool AddAnimationState(std::string name, const TextureAtlas& atlas, const size_t& begin, const size_t& end);
+	bool AddAnimationState(std::string name, TextureAtlas& atlas, size_t begin, size_t end);
 	
 	
 	/// Change active state of animation
@@ -40,12 +41,12 @@ public:
 	
 	/// Set animation speed, defuault: 1.0f
 	/// <param name="speed">anim speed, from .0f</param>
-	void SetAnimationSpeed(const float& speed);
+	void SetAnimationSpeed(float speed);
 
 
 	/// Set base time needed to change frame
 	/// <param name="delay">time in seconds</param>
-	void SetDelayBetweenFrames(const float& delay);
+	void SetDelayBetweenFrames(float delay);
 
 
 	/// Sets animation looping
@@ -61,26 +62,27 @@ private:
 	struct AnimationStateInfo
 	{
 		TextureAtlas* atlas;
-		size_t beg;
-		size_t end;
+		size_t beg; // first frame (inclusive)
+		size_t end; // last frame (inclusive)
 	};
 
 	std::map<std::string, AnimationStateInfo> m_states;
-	std::map<std::string, AnimationStateInfo>::iterator it;
+	std::map<std::string, AnimationStateInfo>::iterator m_statesIterator;
 
-	sf::Sprite m_sprite;
-	std::string m_currentState;
-	TextureAtlas m_atlas;
+	std::string m_activeStateName;
+	AnimationStateInfo* m_activeStateInfo;
 
 	float m_animationSpeed;
 	float m_delay;
-	float m_frames;
 	float m_elapsedTime;
+	float m_timeToChangeFrame;
 
-	int m_currentFrame;
-	int m_lastFrame;
+	size_t m_currentFrame;
+	size_t m_lastFrame;
 
 	bool m_loop;
 	bool m_animIsPlaying;
+
+	sf::Sprite* m_sprite;
 };
 

@@ -4,6 +4,9 @@
 
 TextureAtlas::TextureAtlas()
 {
+	m_count = 0;
+	m_cellWidth = m_cellHeight = 0;
+	m_rows = m_columns = 0;
 }
 
 
@@ -15,27 +18,36 @@ TextureAtlas::~TextureAtlas()
 bool TextureAtlas::LoadFromFile(const std::string & path)
 {
 	if (!m_texture.loadFromFile(path))
+	{
+		m_count = 0;
+		m_cellWidth = m_cellHeight = 0;
+		m_rows = m_columns = 0;
+
 		return false;
-	else
-		return true;
+	}
+	
+	m_count = 1;
+	m_cellWidth = m_texture.getSize().x;
+	m_cellHeight = m_texture.getSize().y;
+	m_rows = m_columns = 1;
+
+	return true;
 }
 
 
-bool TextureAtlas::TrimByGrid(const size_t & cellSizeX, const size_t & cellSizeY)
+bool TextureAtlas::TrimByGrid(size_t cellSizeX, size_t cellSizeY)
 {
-	m_cellSizeX = cellSizeX;
-	m_cellSizeY = cellSizeY;
-
-	m_textureSizeX = m_texture.getSize().x / m_cellSizeX;
-
-	m_count = (m_texture.getSize().x / m_cellSizeX) * (m_texture.getSize().y / m_cellSizeY);
-
-	if ((m_texture.getSize().x % m_cellSizeX == 0) && m_texture.getSize().y % m_cellSizeY == 0)
-	{
-		return true;
-	}
-	else
+	if (m_cellWidth % cellSizeX != 0 || m_cellHeight % cellSizeY != 0)
 		return false;
+
+	m_rows = m_cellWidth / cellSizeX;
+	m_columns = m_cellHeight / cellSizeY;
+
+	m_count = m_rows * m_columns;
+	m_cellWidth = cellSizeX;
+	m_cellHeight = cellSizeY;
+
+	return true;
 }
 
 
@@ -47,33 +59,24 @@ size_t TextureAtlas::GetCount() const
 
 size_t TextureAtlas::GetCellSizeX() const
 {
-	return m_cellSizeX;
+	return m_cellWidth;
 }
 
 
 size_t TextureAtlas::GetCellSizeY() const
 {
-	return m_cellSizeY;
+	return m_cellHeight;
 }
 
 
 void TextureAtlas::SetSpriteTextureByIndex(sf::Sprite & sprite, size_t index)
 {
-	size_t m_index = m_cellSizeX * index;
+	if (m_count == 0 || index >= m_count)
+		return;
 
-	if (m_index > m_textureSizeX)
-	{
-		size_t buffer = 0;
-		for (int i = 1; i < index; i++)
-		{
-			if (i >= m_textureSizeX)
-				buffer += 1;
-		}
-		size_t m_downTextureSet = m_cellSizeY *= buffer;
-		sprite.setTextureRect(sf::IntRect(static_cast<int>(m_index), static_cast<int>(m_downTextureSet), static_cast<int>(m_cellSizeX), static_cast<int>(m_cellSizeY)));
-	}
-	else if (m_index <= m_textureSizeX)
-		sprite.setTextureRect(sf::IntRect(static_cast<int>(m_index), 0, static_cast<int>(m_cellSizeX), static_cast<int>(m_cellSizeY)));
-	else
-		sprite.setTextureRect(sf::IntRect(0, 0, static_cast<int>(m_cellSizeX), static_cast<int>(m_cellSizeY)));
+	int x = static_cast<int>(index % m_rows * m_cellWidth);
+	int y = static_cast<int>(index % m_columns * m_cellHeight);
+
+	sprite.setTexture(m_texture);
+	sprite.setTextureRect(sf::IntRect(x, y, static_cast<int>(m_cellWidth), static_cast<int>(m_cellHeight)));
 }
