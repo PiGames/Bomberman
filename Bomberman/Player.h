@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML\Graphics.hpp>
 #include "PhysicalBody.h"
+#include "Bomb.h"
 
 
 class Player : public sf::Drawable, public PhysicalBody
@@ -13,7 +14,12 @@ public:
 	/// Sets (simple) texture
 	/// <param name="texture">simple (single) texture</param>
 	void SetTexture(sf::Texture& texture /* HACK: 1st iteration only, change later to something else*/);
-	
+	/// Sets bomb texture
+	/// <param name="texture">texture of bomb </param>
+	void SetBombTexture(sf::Texture & texture);
+	/// Sets bomb ray texture
+	/// <param name="texture">texture of ray</param>
+	void SetBombRayTexture(sf::Texture & texture);
 	/// Sets the player direction, possible values: -1, 0, 1
 	/// <param name="x">direction x</param>
 	/// <param name="y">direction y</param>
@@ -30,5 +36,9 @@ public:
 
 private:
 	sf::Sprite m_sprite;
+	///Dynamic allocation :) 
+	std::vector<Bomb*> m_bombs;
+	sf::Texture * m_bombTexture;
+	sf::Texture * m_bombRayTexture;
 };
 
