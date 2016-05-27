@@ -12,8 +12,9 @@ LevelView::~LevelView()
 }
 
 
-void LevelView::SetLevel(Level * level, sf::Texture * textures, const size_t & tileSize)
+void LevelView::SetLevel(Level * level, TextureAtlas* atlas)
 {
+	int tileSize = static_cast<int>(atlas->GetCellSizeX());
 	m_data.resize(level->GetHeight());
 
 	for (int y = 0; y < level->GetHeight(); ++y)
@@ -21,8 +22,7 @@ void LevelView::SetLevel(Level * level, sf::Texture * textures, const size_t & t
 		m_data[y].resize(level->GetWidth());
 		for (int x = 0; x < level->GetWidth(); ++x)
 		{
-			m_data[y][x].setTexture(*textures);
-			m_data[y][x].setTextureRect(sf::IntRect(static_cast<int>(tileSize*level->GetTile(x, y)), 0, static_cast<int>(tileSize), static_cast<int>(tileSize)));
+			atlas->SetSpriteTextureByIndex(m_data[y][x], static_cast<int>(level->GetTile(x, y)));
 			m_data[y][x].setPosition(static_cast<float>(x*tileSize), static_cast<float>(y*tileSize));
 		}
 	}

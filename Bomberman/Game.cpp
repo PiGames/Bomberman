@@ -18,78 +18,53 @@ Game::~Game()
 void Game::Run()
 {
 	/* TMP INIT BEGIN*/
-	m_exit = false;
-	sf::Clock clock;
-
-	const std::string levelPath = "data/sample_level.txt";
-	if (!m_level.LoadFromFile(levelPath))
+	const int RESOURCE_COUNT = 3;
+	std::string resourcePaths[RESOURCE_COUNT] =
 	{
-		std::cerr << "[!] Cannot load file: \"" << levelPath << "\". Exiting...\n";
-		m_exit = true; // xd
+		"data/sample_level.txt",
+		"data/sample_terraintextures.png",
+		"data/sample_playertextures.png"
+	};
+	if (!m_level.LoadFromFile(resourcePaths[0]))
+	{
+		std::cerr << "[!] Cannot load file: \"" << resourcePaths[0] << "\". Exiting...\n";
 		std::exit(1);
 	}
 	
-	sf::Texture levelTextures; // HACK delete later, only for 1st iteration
-	const std::string terrainPath = "data/sample_terraintextures.png";
-	if (!levelTextures.loadFromFile(terrainPath))
+	// loading resources
+	if (!m_atlasTerrain.LoadFromFile(resourcePaths[1]))
 	{
-		std::cerr << "[!] Cannot load file: \"" << terrainPath << "\"Exiting...\n";
-		m_exit = true;
-		std::exit(2); // diff err codes: too fast console
-	}
-	m_levelView.SetLevel(&m_level, &levelTextures, 64 /* HACK: 1st iteration only, add atlas manager later */);
-	
-	
-	sf::Texture playerTexture;
-	const std::string playerTexturePath = "data/sample_playertexture.png";
-	if (!playerTexture.loadFromFile(playerTexturePath))
-	{
-		std::cerr << "[!] Cannot load file: \"" << playerTexturePath << "\"Exiting...\n";
-		m_exit = true;
-		std::exit(3);
-	}
-	m_localPlayer.SetTexture(playerTexture);
-	
-	m_physicsEngine.Init(m_level, m_localPlayer);
-	
-	
-	// Animation test!
-	
-	TextureAtlas atlas;
-	if (!atlas.LoadFromFile("data/sample_animation.png"))
-	{
-		std::cerr << "[!] Canot load animation!\n";
-		std::exit(4);
+		std::cerr << "[!] Cannot load resource: '" << resourcePaths[1] << std::endl;
+		std::exit(1);
 	}
 
+	if (!m_atlasPlayer.LoadFromFile(resourcePaths[2]))
+	{
+		std::cerr << "[!] Cannot load resource: '" << resourcePaths[2] << std::endl;
+		std::exit(1);
+	}
+
+	// setting up resources
+	m_atlasTerrain.TrimByGrid(64, 64);
+	m_atlasPlayer.TrimByGrid(32, 32);
 	
-	if (!atlas.TrimByGrid(64, 64))
-	{
-		std::cerr << "[!] Cannot trim animation frames!\n";
-		std::exit(5);
-	}
+	m_levelView.SetLevel(&m_level, &m_atlasTerrain);
 
+	// setting up player
+	Animator playerAnimator;
+	playerAnimator.AddAnimationState("default", m_atlasPlayer, 0, m_atlasPlayer.GetCount() - 1);
+	playerAnimator.SetLoop(true);
+
+	m_localPlayer.SetAnimator(playerAnimator);
+	playerAnimator.ChangeActiveState("default");
 	
-	//atlas.SetSpriteTextureByIndex(m_foobar, 3);
-	Animator animator;
-	animator.SetSprite(m_foobar);
-	animator.SetDelayBetweenFrames(1);
-	animator.SetLoop(true);
-
-	if (!animator.AddAnimationState("animation test", atlas, 0, atlas.GetCount() - 1))
-	{
-		std::cerr << "[!] Cannot add animations state!\n";
-		std::exit(6);
-	}
-
-	if (!animator.ChangeActiveState("animation test"))
-	{
-		std::cerr << "[!] Animation state doesn't exists!\n";
-		std::exit(7);
-	}
 	
 	/* TMP INIT END*/
+	m_physicsEngine.Init(m_level, m_localPlayer);
 
+	m_exit = false;
+	sf::Clock clock;
+	
 	// main loop
 	while (!m_exit)
 	{
@@ -97,7 +72,6 @@ void Game::Run()
 	
 		float dt = clock.getElapsedTime().asSeconds();
 		update(dt);
-		animator.Animate(dt); // HACK test only!
 		clock.restart();
 
 		draw();
@@ -112,7 +86,6 @@ void Game::draw()
 	m_window.draw(m_levelView);
 	// HACK bomb
 	m_window.draw(m_localPlayer);
-	m_window.draw(m_foobar); // HACK tmp
 
 
 	m_window.display();

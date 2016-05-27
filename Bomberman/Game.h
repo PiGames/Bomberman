@@ -29,8 +29,8 @@ private:
 	Player m_localPlayer;
 	PhysicsEngine m_physicsEngine;
 
-	sf::Sprite m_foobar; // HECK remove it later!
-
+	TextureAtlas m_atlasTerrain;
+	TextureAtlas m_atlasPlayer;
 
 	/// Draws all stuff on scene
 	void draw();
