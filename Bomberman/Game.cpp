@@ -55,7 +55,7 @@ void Game::Run()
 	playerAnimator.AddAnimationState("default", m_atlasPlayer, 0, m_atlasPlayer.GetCount() - 1);
 	playerAnimator.SetLoop(true);
 
-	m_localPlayer.SetAnimator(playerAnimator);
+	m_localPlayer.SetAnimator(playerAnimator, m_atlasPlayer.GetCellSizeX(), m_atlasPlayer.GetCellSizeY());
 	playerAnimator.ChangeActiveState("default");
 	
 	

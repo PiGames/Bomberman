@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML\Graphics.hpp>
 #include "PhysicalBody.h"
-#include "Animator.h";
+#include "Animator.h"
 
 class Player : public sf::Drawable, public PhysicalBody
 {
@@ -12,7 +12,7 @@ public:
 
 	/// Sets animator
 	/// <param name="texture">animator</param>
-	void SetAnimator(Animator& animator);
+	void SetAnimator(Animator& animator, size_t width, size_t height);
 	
 	/// Sets the player direction, possible values: -1, 0, 1
 	/// <param name="x">direction x</param>

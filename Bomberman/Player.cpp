@@ -13,16 +13,22 @@ Player::~Player()
 }
 
 
-void Player::SetAnimator(Animator& animator)
+void Player::SetAnimator(Animator& animator, size_t width, size_t height)
 {
-	m_sprite.setOrigin(32.f / 2.f, 32.f / 2.f);// TODO fix collision
+	float w = static_cast<float>(width);
+	float h = static_cast<float>(height);
+
+	float tileSize = 64; // HACK tmp only
+
+	m_sprite.setOrigin(w / 2.f, h / 2.f);// TODO fix collision
+	SetSize(w, h);
 	
 	m_animator = &animator;
 	m_animator->SetSprite(m_sprite);
 
-	SetPositionX(3 * 64 + 32); 
-	SetPositionY(5 * 64 + 32);
-	m_sprite.setPosition(sf::Vector2f(3 * 64 + 32, 5 * 64 + 32));
+	SetPositionX(3 * tileSize + w); 
+	SetPositionY(5 * tileSize + h);
+	m_sprite.setPosition(sf::Vector2f(3 * tileSize + w, 5 * tileSize + h));
 
 }
 
