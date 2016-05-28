@@ -17,7 +17,6 @@ Player::~Player()
 void Player::SetTexture(sf::Texture & texture)
 {
 	m_sprite.setTexture(texture);
-	SetSize(texture.getSize().x, texture.getSize().y);
 	//TODO it shoulde depend on actual TILE_SIZE
 	m_sprite.setOrigin(m_sprite.getGlobalBounds().width / 2.f, m_sprite.getGlobalBounds().height / 2.f);
 	SetPositionX(3 * 64 + 32);

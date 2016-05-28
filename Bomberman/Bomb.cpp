@@ -8,6 +8,7 @@ void Bomb::draw(sf::RenderTarget & target, sf::RenderStates states) const
 }
 
 Bomb::Bomb()
+	:m_state(State::waitingForExplosion)
 {
 	m_detonationClock.restart();
 }
@@ -52,18 +53,39 @@ void Bomb::SetRayTexture(sf::Texture & texture)
 void Bomb::SetPosition(int x, int y)
 {	
 	//TODO it should depend on actual TILE_SIZE
-	x = m_positionInTilesCoordsX = x / 64; 
-	y = m_positionInTilesCoordsY = y / 64; 
+	x = m_positionInTilesCoordsX = x / TILE_SIZE; 
+	y = m_positionInTilesCoordsY = y / TILE_SIZE;
 
-	SetPositionX(x*64 + 32);
-	SetPositionY(y*64 + 32);
+	SetPositionX(x*TILE_SIZE + TILE_SIZE/2);
+	SetPositionY(y*TILE_SIZE + TILE_SIZE/2);
 
 }
 
 void Bomb::Update()
-{
+{	
+	//TODO it can be done better
 	m_sprite.setPosition(GetPositionX(), GetPositionY());
 
-	if (m_detonationClock.getElapsedTime() >= m_detonationTime+m_rayOnScreenTime)
+	if (m_detonationClock.getElapsedTime() >= m_detonationTime && m_state < State::exploding)
+	{
+		m_state = State::exploding;
+		explode();
+	}
+	else if (m_detonationClock.getElapsedTime() >= m_detonationTime + m_rayOnScreenTime && m_state<State::exploded)
 		m_state = State::exploded;
+	
+
+	
+	
+}
+
+void Bomb::explode()
+{
+	for (int i = 0; i < m_rays.size(); i++)
+	{
+		m_rays[i] = new Ray(static_cast<Ray::Side>(i));
+
+		
+
+	}
 }

@@ -32,12 +32,12 @@ public:
 	/// <param name="dt">delta time in seconds</param>
 	void Update(const float& dt);
 
-	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const override;
-
 private:
 	sf::Sprite m_sprite;
 	Bomb * m_bomb;
 	sf::Texture * m_bombTexture;
 	sf::Texture * m_bombRayTexture;
+
+	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const override;
 };
 

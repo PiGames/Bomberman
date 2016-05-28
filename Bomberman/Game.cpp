@@ -57,6 +57,7 @@ void Game::Run()
 		m_exit = true;
 		std::exit(4);
 	}
+	m_localPlayer.SetSize(32, 32);
 	m_localPlayer.SetBombTexture(bombTexture);
 	
 	m_physicsEngine.Init(m_level, m_localPlayer);

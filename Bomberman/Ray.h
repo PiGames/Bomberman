@@ -4,13 +4,18 @@
 
 class Ray :public sf::Drawable
 {
-private:
-	void draw(sf::RenderWindow&, sf::RenderStates) const;
-
+	
 public:
-	Ray();
-	~Ray();
+	enum Side
+	{
+		Up,
+		Down,
+		Left,
+		Right
+	};
 
+	Ray(Side side);
+	~Ray();
 	/// Check is anything coliding with ray
 	/// <param name="floatRect"> collider of an object</param>
 	/// <returns>true when is collision</returns>
@@ -20,12 +25,16 @@ public:
 	/// <param name="texture"> texture pointer (NOTE: MUST BE ALIVE)</param>
 	void SetTexture(sf::Texture & texture);
 
+	int GetSide();
+
 private:
 	/// True - horizontal, false - vertical
 	bool m_orientation;
 	sf::Sprite m_sprite;
 	sf::Texture * m_texture;
 	std::vector<int> m_sections;
-
+	Side m_side;
+	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const override;
+	
 };
 

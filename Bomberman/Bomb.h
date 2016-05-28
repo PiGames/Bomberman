@@ -5,12 +5,9 @@
 #include "Ray.h"
 
 
-/*
-TODO: Calculating ray length 
-*/
-
 class Bomb :public sf::Drawable, public PhysicalBody
 {
+	const int TILE_SIZE = 64;
 public:
 	enum State
 	{
@@ -65,11 +62,13 @@ private:
 		int left;
 		int right;
 	};
-	std::vector<Ray> m_rays;
+	std::vector<Ray*> m_rays;
 	sf::Time m_detonationTime;
 	sf::Time m_rayOnScreenTime;
 	sf::Clock m_detonationClock;
 
 	State m_state;
+
+	void explode();
 };
 
