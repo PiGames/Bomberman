@@ -3,6 +3,7 @@
 
 
 Player::Player()
+	:m_bomb(nullptr)
 {
 	
 }
@@ -17,7 +18,7 @@ void Player::SetTexture(sf::Texture & texture)
 {
 	m_sprite.setTexture(texture);
 	SetSize(texture.getSize().x, texture.getSize().y);
-
+	//TODO it shoulde depend on actual TILE_SIZE
 	m_sprite.setOrigin(m_sprite.getGlobalBounds().width / 2.f, m_sprite.getGlobalBounds().height / 2.f);
 	SetPositionX(3 * 64 + 32);
 	SetPositionY(5 * 64 + 32);
@@ -43,16 +44,18 @@ void Player::OnMoveKeyPressed(int x, int y)
 }
 
 
-void Player::OnActionKeyPressed()
+void Player::TryPlantingTheBomb()
 {
-	//Note: bomb position should be tile position, not player position
-	m_bombs.push_back(new Bomb);
-	m_bombs[m_bombs.size()]->SetBombTexture(*m_bombTexture);
-	m_bombs[m_bombs.size()]->SetRayTexture(*m_bombRayTexture);
-	m_bombs[m_bombs.size()]->SetDetonationTime(sf::seconds(1));
-	m_bombs[m_bombs.size()]->SetRayOnScreenTime(sf::seconds(1));
-
-	m_bombs[m_bombs.size()]->Set(sf::Vector2f(m_posX, m_posY));
+	if(m_bomb==nullptr)
+	{
+		m_bomb = new Bomb();
+		m_bomb->SetBombTexture(*m_bombTexture);
+		m_bomb->SetRayTexture(*m_bombRayTexture);
+		m_bomb->SetDetonationTime(sf::seconds(1));
+		m_bomb->SetRayOnScreenTime(sf::seconds(1));
+		m_bomb->SetPosition(GetPositionX(), GetPositionY());
+		std::cout << "Bomb has been planted!" << std::endl;
+	}
 }
 
 
@@ -61,29 +64,26 @@ void Player::Update(const float & dt)
 	SetPositionX(GetPositionX() + movementX);
 	SetPositionY(GetPositionY() + movementY);
 	m_sprite.setPosition(GetPositionX(),GetPositionY());
-	
-	// POSSIBLE BIG ERROR HERE (with vector)!
-	for (int i = 0; i < m_bombs.size(); i++)
+
+	if (m_bomb != nullptr)
 	{
-		if (m_bombs[i]->WhatState() == Bomb::State::exploded)
+		m_bomb->Update();
+
+		if (m_bomb->WhatState() == Bomb::exploded)
 		{
-			delete m_bombs[i];
-			m_bombs.erase(m_bombs.begin(), m_bombs.begin() + i);
-		}
-		else
-		{
-			m_bombs[i]->Update();
+			delete m_bomb;
+			m_bomb = nullptr;
 		}
 	}
+
+	
 }
 
 
 void Player::draw(sf::RenderTarget & target, sf::RenderStates states) const
 {
-	target.draw(m_sprite);
+	if (m_bomb != nullptr)
+		target.draw(*m_bomb);
 
-	for (int i = 0; i < m_bombs.size(); i++)
-	{
-		target.draw(*m_bombs[i]);
-	}
+	target.draw(m_sprite);
 }

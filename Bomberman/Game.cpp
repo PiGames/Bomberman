@@ -48,6 +48,16 @@ void Game::Run()
 		std::exit(3);
 	}
 	m_localPlayer.SetTexture(playerTexture);
+
+	sf::Texture bombTexture;
+	const std::string bombTexturePath = "data/bomb.png";
+	if (!bombTexture.loadFromFile(bombTexturePath))
+	{
+		std::cerr << "[!] Cannot load file: \"" <<bombTexturePath << "\"Exiting...\n";
+		m_exit = true;
+		std::exit(4);
+	}
+	m_localPlayer.SetBombTexture(bombTexture);
 	
 	m_physicsEngine.Init(m_level, m_localPlayer);
 	/* TMP INIT END*/
@@ -119,6 +129,9 @@ void Game::processEvents()
 			m_exit = true;
 			break;
 		}
+		//sf::Keyboard::Key actionKey = sf::Keyboard::Space; //Sets action key which is planting the bomb
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
+			m_localPlayer.TryPlantingTheBomb();
 
 		// handle more events
 	}

@@ -48,11 +48,13 @@ public:
 	void SetRayTexture(sf::Texture & texture);
 	///Spawns bomb on position
 	/// <param name="position"> position of bomb</param>
-	void Set(sf::Vector2f & position);
+	void SetPosition(int x, int y);
 	///Updates bomb status
 	void Update();
 
 private:
+	int m_positionInTilesCoordsX;
+	int m_positionInTilesCoordsY;
 	sf::Sprite m_sprite;
 	sf::Texture * m_bombTexture;
 	sf::Texture * m_rayTexture;

@@ -18,11 +18,6 @@ Ray::~Ray()
 
 bool Ray::Contains(sf::FloatRect & floatRect)
 {
-	if (m_sprite.getGlobalBounds().intersects(floatRect))
-	{
-		return true;
-	}
-
 	return false;
 }
 

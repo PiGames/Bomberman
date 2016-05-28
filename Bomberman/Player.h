@@ -26,7 +26,7 @@ public:
 	void OnMoveKeyPressed(int x, int y);
 	
 	/// Sends the information about action key down (plant the bomb)
-	void OnActionKeyPressed();
+	void TryPlantingTheBomb();
 
 	/// Update player position, update states etc...
 	/// <param name="dt">delta time in seconds</param>
@@ -36,8 +36,7 @@ public:
 
 private:
 	sf::Sprite m_sprite;
-	///Dynamic allocation :) 
-	std::vector<Bomb*> m_bombs;
+	Bomb * m_bomb;
 	sf::Texture * m_bombTexture;
 	sf::Texture * m_bombRayTexture;
 };
