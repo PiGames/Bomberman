@@ -54,7 +54,6 @@ void Player::TryPlantingTheBomb()
 		m_bomb->SetRayOnScreenTime(sf::seconds(1));
 		m_bomb->SetPosition(GetPositionX(), GetPositionY());
 		m_bomb->SetLevelPointer(*level);
-		std::cout << "Bomb has been planted!" << std::endl;
 	}
 }
 

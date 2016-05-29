@@ -123,14 +123,21 @@ unsigned short Bomb::getRaySizeAfterCollisions(Ray::Side side)
 	case Ray::Left:
 		for (int i = 1; i <= MAX_RAY_SIZE; ++i)
 		{
+			std::cout << size << "| ";
 			if (m_positionInTilesCoordsX - i >= 0 && level->GetTile(m_positionInTilesCoordsX - i, m_positionInTilesCoordsY) == TT::TileType::NONE)
+			{
 				size = i;
+				std::cout << size << std::endl;
+			}
 			else break;
 		}
-		if (size != MAX_RAY_SIZE && m_positionInTilesCoordsX - size - 1 > 0 && level->GetTile(m_positionInTilesCoordsX - size - 1, m_positionInTilesCoordsY) == TT::TileType::WEAK_WALL)
+		
+		if (size != MAX_RAY_SIZE && m_positionInTilesCoordsX - size - 1 >= 0 && level->GetTile(m_positionInTilesCoordsX - size - 1, m_positionInTilesCoordsY) == TT::TileType::WEAK_WALL)
 		{	
 			m_tilesToDeleteAfterExplosion.push_back(std::pair<int, int>(m_positionInTilesCoordsX - ++size, m_positionInTilesCoordsY));
 		}
+		std::cout<<"After additional tile checked: " << size << std::endl;
+		std::cout << "-----------------" << std::endl;
 		break;
 	case Ray::Right:
 		for (int i = 1; i <= MAX_RAY_SIZE; ++i)
