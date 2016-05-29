@@ -49,7 +49,7 @@ void Player::TryPlantingTheBomb()
 		m_bomb = new Bomb();
 		m_bomb->SetBombTexture(*m_bombTexture);
 		m_bomb->SetRayTexture(*m_bombRayTexture);
-		m_bomb->SetDetonationTime(sf::seconds(1));
+		m_bomb->SetDetonationTime(sf::seconds(2.5f));
 		m_bomb->SetRayOnScreenTime(sf::seconds(1));
 		m_bomb->SetPosition(GetPositionX(), GetPositionY());
 		m_bomb->SetLevelPointer(*level);

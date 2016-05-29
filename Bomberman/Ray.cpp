@@ -32,29 +32,23 @@ int Ray::GetSide()
 void Ray::SetSize(unsigned short size)
 {
 	m_size = size;
-
-	//if (m_side < 2)m_sprite.rotate(90);
 	switch (m_side)
 	{
 	case Ray::Up:
 		m_sprite.setPosition(m_sprite.getPosition().x,m_sprite.getPosition().y - TILE_SIZE);
 		m_sprite.setTextureRect(sf::IntRect(TILE_SIZE, m_size*TILE_SIZE,-TILE_SIZE, -m_size*TILE_SIZE));
-		//std::cout << m_sprite.getGlobalBounds().top << " + " << m_sprite.getGlobalBounds().height<<std::endl;
 		break;
 	case Ray::Down:
 		m_sprite.setPosition(m_sprite.getPosition().x, m_sprite.getPosition().y + TILE_SIZE);
 		m_sprite.setTextureRect(sf::IntRect(0, 0, TILE_SIZE, m_size*TILE_SIZE));
-		//std::cout << m_sprite.getGlobalBounds().top << " + " << m_sprite.getGlobalBounds().height << std::endl;
 		break;
 	case Ray::Left:
 		m_sprite.setPosition(m_sprite.getPosition().x - TILE_SIZE, m_sprite.getPosition().y );
 		m_sprite.setTextureRect(sf::IntRect(m_size* TILE_SIZE, TILE_SIZE, -m_size* TILE_SIZE, TILE_SIZE));
-		//std::cout << m_sprite.getGlobalBounds().left << " + " << m_sprite.getGlobalBounds().width << std::endl;
 		break;
 	case Ray::Right:
 		m_sprite.setPosition(m_sprite.getPosition().x + TILE_SIZE, m_sprite.getPosition().y);
 		m_sprite.setTextureRect(sf::IntRect(0, 0, m_size*TILE_SIZE, TILE_SIZE));
-		//std::cout << m_sprite.getGlobalBounds().left << " + " << m_sprite.getGlobalBounds().width << std::endl;
 		break;
 	default:
 		break;

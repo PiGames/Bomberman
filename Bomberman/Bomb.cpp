@@ -69,12 +69,13 @@ void Bomb::Update()
 	if (m_detonationClock.getElapsedTime() >= m_detonationTime && m_state < State::exploding)
 	{
 		m_state = State::exploding;
+		m_sprite.setTexture(*m_rayTexture);
 		explode();
 	}
 	else if (m_detonationClock.getElapsedTime() >= m_detonationTime + m_rayOnScreenTime && m_state < State::exploded)
 	{
 		m_state = State::exploded;
-		m_sprite.setTexture(*m_rayTexture);
+		
 		for each (std::pair<int,int> var in m_tilesToDeleteAfterExplosion)
 			level->DestroyTile(var.first, var.second);
 	}
