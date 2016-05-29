@@ -74,7 +74,7 @@ void Bomb::Update()
 	else if (m_detonationClock.getElapsedTime() >= m_detonationTime + m_rayOnScreenTime && m_state < State::exploded)
 	{
 		m_state = State::exploded;
-
+		m_sprite.setTexture(*m_rayTexture);
 		for each (std::pair<int,int> var in m_tilesToDeleteAfterExplosion)
 			level->DestroyTile(var.first, var.second);
 	}
@@ -156,9 +156,9 @@ unsigned short Bomb::getRaySizeAfterCollisions(Ray::Side side)
 
 void Bomb::draw(sf::RenderTarget & target, sf::RenderStates states) const
 {
-	if(m_state == State::waitingForExplosion)
+	
 	target.draw(m_sprite);
-	else
+	if (m_state == State::exploding)
 	{
 		for (int i = 0; i < m_rays.size(); ++i)
 		{

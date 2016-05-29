@@ -64,7 +64,7 @@ void Game::Run()
 	m_localPlayer.SetLevelPointer(m_level);
 
 	sf::Texture bombRayTexture;
-	const std::string bombRayTexturePath = "data/ray.jpg";
+	const std::string bombRayTexturePath = "data/ray.png";
 	if (!bombRayTexture.loadFromFile(bombRayTexturePath))
 	{
 		std::cerr << "[!] Cannot load file: \"" << bombRayTexturePath << "\"Exiting...\n";

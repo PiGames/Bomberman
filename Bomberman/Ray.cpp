@@ -33,7 +33,7 @@ void Ray::SetSize(unsigned short size)
 {
 	m_size = size;
 
-	if (m_side < 2)m_sprite.rotate(90);
+	//if (m_side < 2)m_sprite.rotate(90);
 	switch (m_side)
 	{
 	case Ray::Up:
@@ -59,7 +59,7 @@ void Ray::SetSize(unsigned short size)
 	default:
 		break;
 	}
-	m_sprite.setColor(sf::Color(50,0,0,210));
+
 
 	
 }
