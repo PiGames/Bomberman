@@ -32,7 +32,8 @@ int Ray::GetSide()
 void Ray::SetSize(unsigned short size)
 {
 	m_size = size;
-	//std::cout << size << std::endl;
+
+	if (m_side < 2)m_sprite.rotate(90);
 	switch (m_side)
 	{
 	case Ray::Up:
@@ -60,7 +61,7 @@ void Ray::SetSize(unsigned short size)
 	}
 	m_sprite.setColor(sf::Color(50,0,0,210));
 
-	//if (m_side < 2)m_sprite.rotate(90);
+	
 }
 
 void Ray::SetPosition(float x, float y)

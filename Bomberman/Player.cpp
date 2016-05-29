@@ -17,11 +17,10 @@ Player::~Player()
 void Player::SetTexture(sf::Texture & texture)
 {
 	m_sprite.setTexture(texture);
-	//TODO it shoulde depend on actual TILE_SIZE
 	m_sprite.setOrigin(m_sprite.getGlobalBounds().width / 2.f, m_sprite.getGlobalBounds().height / 2.f);
-	SetPositionX(3 * 64 + 32);
-	SetPositionY(5 * 64 + 32);
-	m_sprite.setPosition(sf::Vector2f(3 * 64 + 32, 5 * 64 + 32));
+	SetPositionX(3 * TILE_SIZE+ TILE_SIZE/2);
+	SetPositionY(5 * TILE_SIZE + TILE_SIZE/2);
+	m_sprite.setPosition(sf::Vector2f(3 * TILE_SIZE + TILE_SIZE/2, 5 * TILE_SIZE + TILE_SIZE/2));
 }
 
 void Player::SetBombTexture(sf::Texture & texture)
@@ -38,7 +37,7 @@ void Player::SetBombRayTexture(sf::Texture & texture)
 void Player::OnMoveKeyPressed(int x, int y)
 {
 	// HACK check values x,y = -1|0|1, change velocity
-	const float speed = 100;
+	const float speed = 120;
 	SetVelocity(speed*x, speed*y);
 }
 
@@ -63,8 +62,14 @@ void Player::SetLevelPointer(Level & level)
 }
 
 
+
 void Player::Update(const float & dt)
 {
+	if (movementX != 0 && movementY != 0)
+	{
+		movementX /= 1.41f;
+		movementY /= 1.41f;
+	}
 	SetPositionX(GetPositionX() + movementX);
 	SetPositionY(GetPositionY() + movementY);
 	m_sprite.setPosition(GetPositionX(),GetPositionY());

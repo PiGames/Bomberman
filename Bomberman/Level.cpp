@@ -70,14 +70,11 @@ size_t Level::GetHeight() const
 
 bool Level::DestroyTile(size_t x, size_t y)
 {
-	//::cout << "Size before: " << m_destroyableTiles.size() << "|| Size after: ";
-
 	if(m_data[y][x] == TT::TileType::INDESTRUCTIBLE_WALL || m_data[y][x] == TT::TileType::NONE)
 		return false;
 
 	m_data[y][x] = TT::TileType::NONE;
 	m_destroyableTiles.erase(getIteratorByValue(std::pair<int, int>(x,y)));
-	//std::cout << m_destroyableTiles.size() << std::endl;
 	m_view->ChangeTileTextureToNone(x, y);
 	return true;
 	

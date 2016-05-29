@@ -7,6 +7,8 @@
 class Player : public sf::Drawable, public PhysicalBody
 {
 public:
+	const int TILE_SIZE = 64;
+
 	Player();
 	~Player();
 
@@ -29,6 +31,7 @@ public:
 	void TryPlantingTheBomb();
 
 	void SetLevelPointer(Level& level);
+
 
 	/// Update player position, update states etc...
 	/// <param name="dt">delta time in seconds</param>
