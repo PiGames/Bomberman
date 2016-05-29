@@ -3,21 +3,21 @@
 #include <vector>
 #include "PhysicalBody.h"
 #include "Ray.h"
+#include "Level.h"
 
 
 class Bomb :public sf::Drawable, public PhysicalBody
 {
-	const int TILE_SIZE = 64;
 public:
+	static const int TILE_SIZE = 64;
+	const int MAX_RAY_SIZE = 4;
+
 	enum State
 	{
 		waitingForExplosion,
 		exploding,
 		exploded
 	};
-
-private:
-	void draw(sf::RenderTarget&, sf::RenderStates) const;
 
 public:
 	Bomb();
@@ -36,7 +36,7 @@ public:
 	bool IsObjectInRay(sf::FloatRect & floatRect);
 	/// <returns>true when bomb exploded and rays are on</returns>
 	/// <returns>false if not</returns>
-	Bomb::State WhatState();
+	Bomb::State GetState();
 	///Sets texture of the bomb
 	/// <param name="texture"> texture pointer (NOTE: MUST BE ALIVE)</param>
 	void SetBombTexture(sf::Texture & texture);
@@ -47,9 +47,13 @@ public:
 	/// <param name="position"> position of bomb</param>
 	void SetPosition(int x, int y);
 	///Updates bomb status
+
+	void SetLevelPointer(Level & level);
+
 	void Update();
 
 private:
+	Level* level;
 	int m_positionInTilesCoordsX;
 	int m_positionInTilesCoordsY;
 	sf::Sprite m_sprite;
@@ -66,9 +70,12 @@ private:
 	sf::Time m_detonationTime;
 	sf::Time m_rayOnScreenTime;
 	sf::Clock m_detonationClock;
-
+	std::vector<std::pair<int, int>>m_tilesToDeleteAfterExplosion;
 	State m_state;
 
 	void explode();
+
+	unsigned short getRaySizeAfterCollisions(Ray::Side side);
+	void draw(sf::RenderTarget&, sf::RenderStates) const;
 };
 

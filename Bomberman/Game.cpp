@@ -37,6 +37,7 @@ void Game::Run()
 		std::exit(2); // diff err codes: too fast console
 	}
 	m_levelView.SetLevel(&m_level, &levelTextures, 64 /* HACK: 1st iteration only, add atlas manager later */);
+	m_level.SetLevelView(m_levelView);
 	
 	
 	sf::Texture playerTexture;
@@ -48,6 +49,7 @@ void Game::Run()
 		std::exit(3);
 	}
 	m_localPlayer.SetTexture(playerTexture);
+	m_localPlayer.SetSize(32, 32);
 
 	sf::Texture bombTexture;
 	const std::string bombTexturePath = "data/bomb.png";
@@ -57,8 +59,20 @@ void Game::Run()
 		m_exit = true;
 		std::exit(4);
 	}
-	m_localPlayer.SetSize(32, 32);
+	
 	m_localPlayer.SetBombTexture(bombTexture);
+	m_localPlayer.SetLevelPointer(m_level);
+
+	sf::Texture bombRayTexture;
+	const std::string bombRayTexturePath = "data/ray.jpg";
+	if (!bombRayTexture.loadFromFile(bombRayTexturePath))
+	{
+		std::cerr << "[!] Cannot load file: \"" << bombRayTexturePath << "\"Exiting...\n";
+		m_exit = true;
+		std::exit(4);
+	}
+	bombRayTexture.setRepeated(true);
+	m_localPlayer.SetBombRayTexture(bombRayTexture);
 	
 	m_physicsEngine.Init(m_level, m_localPlayer);
 	/* TMP INIT END*/

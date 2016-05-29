@@ -53,8 +53,14 @@ void Player::TryPlantingTheBomb()
 		m_bomb->SetDetonationTime(sf::seconds(1));
 		m_bomb->SetRayOnScreenTime(sf::seconds(1));
 		m_bomb->SetPosition(GetPositionX(), GetPositionY());
+		m_bomb->SetLevelPointer(*level);
 		std::cout << "Bomb has been planted!" << std::endl;
 	}
+}
+
+void Player::SetLevelPointer(Level & level)
+{
+	this->level = &level;
 }
 
 
@@ -68,7 +74,7 @@ void Player::Update(const float & dt)
 	{
 		m_bomb->Update();
 
-		if (m_bomb->WhatState() == Bomb::exploded)
+		if (m_bomb->GetState() == Bomb::exploded)
 		{
 			delete m_bomb;
 			m_bomb = nullptr;

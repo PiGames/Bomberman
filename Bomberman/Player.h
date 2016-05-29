@@ -28,11 +28,14 @@ public:
 	/// Sends the information about action key down (plant the bomb)
 	void TryPlantingTheBomb();
 
+	void SetLevelPointer(Level& level);
+
 	/// Update player position, update states etc...
 	/// <param name="dt">delta time in seconds</param>
 	void Update(const float& dt);
 
 private:
+	Level * level;
 	sf::Sprite m_sprite;
 	Bomb * m_bomb;
 	sf::Texture * m_bombTexture;

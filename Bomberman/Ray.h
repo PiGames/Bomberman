@@ -1,10 +1,12 @@
 #pragma once
 #include <SFML\Graphics.hpp>
+#include <iostream>
 
 
-class Ray :public sf::Drawable
+
+class Ray
 {
-	
+	const int TILE_SIZE = 64;
 public:
 	enum Side
 	{
@@ -27,6 +29,12 @@ public:
 
 	int GetSide();
 
+	void SetSize(unsigned short size);
+
+	void SetPosition(float x, float y);
+
+	sf::Drawable& GetSprite();
+
 private:
 	/// True - horizontal, false - vertical
 	bool m_orientation;
@@ -34,7 +42,7 @@ private:
 	sf::Texture * m_texture;
 	std::vector<int> m_sections;
 	Side m_side;
-	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const override;
+	unsigned short m_size;
 	
 };
 

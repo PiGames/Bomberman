@@ -4,8 +4,13 @@
 #include <fstream>
 #include <vector>
 #include "Types.h"
+#include <map>
+#include <iostream>
+#include "LevelView.h"
 
 #define MAGIC_HEADER "BOMBERMAN_LEVEL"
+
+class LevelView;
 
 class Level
 {
@@ -29,16 +34,31 @@ public:
 	/// <returns>Width</returns>
 	size_t GetWidth() const;
 
-	/// Get level hwight in tiles
+	/// Get level height in tiles
 	/// <returns>Height</returns>
 	size_t GetHeight() const;
+
+	///Changes particular tile's type
+	/// <param="x">x'th index</param>
+	/// <param="y">y'th index</param>
+	/// <returns>True if tile can be destroyed</returns>
+	/// <returns>False if cannot be destroyed</returns>
+	bool DestroyTile(size_t x, size_t y);
+
+	void SetLevelView(LevelView& view);
 
 private:
 	size_t m_width;
 	size_t m_height;
-
+	LevelView* m_view;
 	const float m_version = 1.0f;
 
 	std::vector< std::vector<TT::TileType> > m_data;
+
+	std::map<int, std::pair<int, int> > m_destroyableTiles; //contains pairs of x and y coords(in this order)sorted by keys
+	int m_destroyableTilesKey;
+
+	std::map<int, std::pair<int, int> >::iterator getIteratorByValue(std::pair<int,int>);
+	
 };
 
