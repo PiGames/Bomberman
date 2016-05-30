@@ -21,7 +21,6 @@ void Ray::SetTexture(sf::Texture & texture)
 {
 	m_texture = &texture;
 	m_sprite.setTexture(*m_texture);
-	
 }
 
 int Ray::GetSide()
@@ -32,13 +31,13 @@ int Ray::GetSide()
 void Ray::SetSize(unsigned short size)
 {
 	m_size = size;
-	m_sprite.setTextureRect(sf::IntRect(0, 0, m_size*TILE_SIZE,TILE_SIZE));
+	m_sprite.setTextureRect(sf::IntRect(0, 0, m_size*TILE_SIZE,TILE_SIZE));//ustaw rozmiar tekstury w zale¿noœci od d³ugoœci promienia
 	m_sprite.setOrigin(0, m_sprite.getGlobalBounds().height / 2.f);
 	switch (m_side)
 	{
 	case Ray::Up:
-		m_sprite.setPosition(m_sprite.getPosition().x,m_sprite.getPosition().y - TILE_SIZE/2);
-		m_sprite.setRotation(270);
+		m_sprite.setPosition(m_sprite.getPosition().x,m_sprite.getPosition().y - TILE_SIZE/2);//przesuñ o pó³ kafla
+		m_sprite.setRotation(270);// ustaw rotacje w zale¿noœci od strony w któr¹ idzie wybuch
 		break;
 	case Ray::Down:
 		m_sprite.setPosition(m_sprite.getPosition().x, m_sprite.getPosition().y + TILE_SIZE/2);

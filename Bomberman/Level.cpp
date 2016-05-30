@@ -70,11 +70,11 @@ size_t Level::GetHeight() const
 
 bool Level::DestroyTile(size_t x, size_t y)
 {
-	if(m_data[y][x] == TT::TileType::INDESTRUCTIBLE_WALL || m_data[y][x] == TT::TileType::NONE)
+	if(m_data[y][x] == TT::TileType::INDESTRUCTIBLE_WALL || m_data[y][x] == TT::TileType::NONE)//jeœli kafel mo¿na zniszczyæ
 		return false;
 
-	m_data[y][x] = TT::TileType::NONE;
-	m_destroyableTiles.erase(getIteratorByValue(std::pair<int, int>(x,y)));
+	m_data[y][x] = TT::TileType::NONE;// zmienia wartoœæ warstwy logicznej kafla 
+	m_destroyableTiles.erase(getIteratorByValue(std::pair<int, int>(x,y)));//usuwa kafel o wspó³rzêdnych z argumnetów
 	m_view->ChangeTileTextureToNone(x, y);
 	return true;
 	
