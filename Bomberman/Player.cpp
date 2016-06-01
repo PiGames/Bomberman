@@ -72,7 +72,7 @@ std::vector<sf::FloatRect> Player::GetBombRaysColliders()
 	}
 }
 
-void Player::CheckIsPlayerInBombRay(std::vector<sf::FloatRect>& bombRays)
+void Player::CheckIsPlayerInBombRay(std::vector<sf::FloatRect>* bombRays)
 {
 	//a moze zamiast colliderow bomby sama bombe i uzyc metory isobjectinray?
 	if (m_bomb != nullptr)
@@ -83,12 +83,16 @@ void Player::CheckIsPlayerInBombRay(std::vector<sf::FloatRect>& bombRays)
 			//return;
 		}
 		//moze else? Albo zrobic return tam na gorze? zeby gracz dostawal reakcje na bombe tylko raz?
-		for (int i = 0; i < bombRays.size(); i++)
+		if (bombRays != nullptr)
 		{
-			if (bombRays[i].intersects(m_sprite.getGlobalBounds()))
+			for (int i = 0; i < bombRays->size(); i++)
 			{
-				reactWhenIsInBombRay();
-				//return;
+				//jak to w ogole dziala?????
+				if (bombRays[i][i].intersects(m_sprite.getGlobalBounds()))
+				{
+					reactWhenIsInBombRay();
+					//return;
+				}
 			}
 		}
 	}

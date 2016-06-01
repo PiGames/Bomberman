@@ -108,6 +108,7 @@ void Game::update(float deltaTime)
 {
 	m_physicsEngine.Update(deltaTime);
 	m_localPlayer.Update(deltaTime);
+	m_localPlayer.CheckIsPlayerInBombRay(nullptr);
 }
 
 

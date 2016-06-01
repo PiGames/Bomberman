@@ -34,7 +34,7 @@ public:
 
 	std::vector<sf::FloatRect> GetBombRaysColliders();
 	//to chyba powinno byc prywatne
-	void CheckIsPlayerInBombRay(std::vector<sf::FloatRect> & bombRays);
+	void CheckIsPlayerInBombRay(std::vector<sf::FloatRect> * bombRays);
 
 	/// Update player position, update states etc...
 	/// <param name="dt">delta time in seconds</param>
