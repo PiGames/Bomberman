@@ -32,6 +32,9 @@ public:
 
 	void SetLevelPointer(Level& level);
 
+	std::vector<sf::FloatRect> GetBombRaysColliders();
+	//to chyba powinno byc prywatne
+	void CheckIsPlayerInBombRay(std::vector<sf::FloatRect> & bombRays);
 
 	/// Update player position, update states etc...
 	/// <param name="dt">delta time in seconds</param>
@@ -45,5 +48,6 @@ private:
 	sf::Texture * m_bombRayTexture;
 
 	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const override;
+	void reactWhenIsInBombRay();
 };
 

@@ -61,6 +61,39 @@ void Player::SetLevelPointer(Level & level)
 	this->level = &level;
 }
 
+std::vector<sf::FloatRect> Player::GetBombRaysColliders()
+{
+	if (m_bomb != nullptr)
+	{
+		if (m_bomb->GetState() == Bomb::exploding)
+		{
+			return m_bomb->GetBombRaysColliders();
+		}
+	}
+}
+
+void Player::CheckIsPlayerInBombRay(std::vector<sf::FloatRect>& bombRays)
+{
+	//a moze zamiast colliderow bomby sama bombe i uzyc metory isobjectinray?
+	if (m_bomb != nullptr)
+	{
+		if (m_bomb->IsObjectInRay(m_sprite.getGlobalBounds()))
+		{
+			reactWhenIsInBombRay();
+			//return;
+		}
+		//moze else? Albo zrobic return tam na gorze? zeby gracz dostawal reakcje na bombe tylko raz?
+		for (int i = 0; i < bombRays.size(); i++)
+		{
+			if (bombRays[i].intersects(m_sprite.getGlobalBounds()))
+			{
+				reactWhenIsInBombRay();
+				//return;
+			}
+		}
+	}
+}
+
 
 
 void Player::Update(const float & dt)
@@ -84,8 +117,6 @@ void Player::Update(const float & dt)
 			m_bomb = nullptr;
 		}
 	}
-
-	
 }
 
 
@@ -95,4 +126,10 @@ void Player::draw(sf::RenderTarget & target, sf::RenderStates states) const
 		target.draw(*m_bomb);
 
 	target.draw(m_sprite);
+}
+
+void Player::reactWhenIsInBombRay()
+{
+	//Animation etc
+	std::cout << "Player is colliding with bomb ray\n";
 }

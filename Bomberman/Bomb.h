@@ -52,6 +52,8 @@ public:
 
 	void Update();
 
+	std::vector<sf::FloatRect> GetBombRaysColliders();
+
 private:
 	Level* level;
 	int m_positionInTilesCoordsX;

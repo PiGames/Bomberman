@@ -27,6 +27,26 @@ void Bomb::SetRayOnScreenTime(sf::Time & time)
 
 bool Bomb::IsObjectInRay(sf::FloatRect & floatRect)
 {
+	if (m_rays[0] != nullptr)
+	{
+		if (m_state == exploding)
+		{
+			if (m_sprite.getGlobalBounds().intersects(floatRect))
+			{
+				return true;
+			}
+		}
+
+		for (int i = 0; i < m_rays.size(); i++)
+		{
+			if (m_rays[i]->Colliding(floatRect))
+			{
+				return true;
+			}
+		}
+	}
+
+	
 	return false;
 }
 
@@ -83,6 +103,23 @@ void Bomb::Update()
 		for each (std::pair<int,int> var in m_tilesToDeleteAfterExplosion)//usuñ kafle które by³y w zasiêgu bomby podczas eksplozji 
 			level->DestroyTile(var.first, var.second);
 	}
+}
+
+std::vector<sf::FloatRect> Bomb::GetBombRaysColliders()
+{
+	std::vector<sf::FloatRect> vec;
+
+	if (m_rays[0] != nullptr)
+	{
+		vec.push_back(m_sprite.getGlobalBounds());
+
+		for (int i = 0; i < m_rays.size(); i++)
+		{
+			vec.push_back(m_rays[i]->GetCollider());
+		}
+	}
+
+	return vec;
 }
 
 void Bomb::explode()

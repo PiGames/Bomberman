@@ -12,8 +12,13 @@ Ray::~Ray()
 {
 }
 
-bool Ray::Contains(sf::FloatRect & floatRect)
+bool Ray::Colliding(sf::FloatRect & floatRect)
 {
+	if (m_sprite.getGlobalBounds().intersects(floatRect))
+	{
+		return true;
+	}
+
 	return false;
 }
 
@@ -67,5 +72,10 @@ void Ray::SetPosition(float x, float y)
 sf::Drawable & Ray::GetSprite()
 {
 	return m_sprite;
+}
+
+sf::FloatRect Ray::GetCollider()
+{
+	return m_sprite.getGlobalBounds();
 }
 

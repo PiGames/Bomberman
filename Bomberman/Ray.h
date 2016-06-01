@@ -22,7 +22,7 @@ public:
 	/// <param name="floatRect"> collider of an object</param>
 	/// <returns>true when is collision</returns>
 	/// <returns>false when isn't collision</returns>
-	bool Contains(sf::FloatRect & floatRect);
+	bool Colliding(sf::FloatRect & floatRect);
 	///Sets texture of the bomb
 	/// <param name="texture"> texture pointer (NOTE: MUST BE ALIVE)</param>
 	void SetTexture(sf::Texture & texture);
@@ -34,6 +34,7 @@ public:
 	void SetPosition(float x, float y);
 
 	sf::Drawable& GetSprite();
+	sf::FloatRect GetCollider();
 
 private:
 	/// True - horizontal, false - vertical
