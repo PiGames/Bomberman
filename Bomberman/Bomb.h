@@ -23,17 +23,17 @@ public:
 	Bomb();
 	~Bomb();
 
-	///Sets time to detonation 
+	///Sets time to detonation
 	/// <param name="time"> time in seconds</param>
-	void SetDetonationTime(sf::Time & time);
+	void SetDetonationTime(sf::Time time);
 	///Sets explosion time (time when explosion ray is on screen)
 	/// <param name="time"> time in seconds</param>
-	void SetRayOnScreenTime(sf::Time & time);
+	void SetRayOnScreenTime(sf::Time time);
 	///Check is anything colliding with rays
 	/// <param name="floatRect"> collider of an object</param>
 	/// <returns>true when is collision</returns>
 	/// <returns>false when isn't collision</returns>
-	bool IsObjectInRay(sf::FloatRect & floatRect);
+	bool IsObjectInRay(sf::FloatRect floatRect);
 	/// <returns>true when bomb exploded and rays are on</returns>
 	/// <returns>false if not</returns>
 	Bomb::State GetState();

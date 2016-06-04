@@ -15,17 +15,17 @@ Bomb::~Bomb()
 		delete m_rays[i];
 }
 
-void Bomb::SetDetonationTime(sf::Time & time)
+void Bomb::SetDetonationTime(sf::Time time)
 {
 	m_detonationTime = time;
 }
 
-void Bomb::SetRayOnScreenTime(sf::Time & time)
+void Bomb::SetRayOnScreenTime(sf::Time time)
 {
 	m_rayOnScreenTime = time;
 }
 
-bool Bomb::IsObjectInRay(sf::FloatRect & floatRect)
+bool Bomb::IsObjectInRay(sf::FloatRect floatRect)
 {
 	if (m_rays[0] != nullptr)
 	{
@@ -46,7 +46,7 @@ bool Bomb::IsObjectInRay(sf::FloatRect & floatRect)
 		}
 	}
 
-	
+
 	return false;
 }
 
@@ -68,7 +68,7 @@ void Bomb::SetRayTexture(sf::Texture & texture)
 }
 
 void Bomb::SetPosition(int x, int y)
-{	
+{
 	x = m_positionInTilesCoordsX = x / TILE_SIZE; //konwersja pozycji na wspó³rzêdne kafli
 	y = m_positionInTilesCoordsY = y / TILE_SIZE;
 
@@ -83,10 +83,10 @@ void Bomb::SetLevelPointer(Level & level)
 }
 
 void Bomb::Update()
-{	
+{
 	//aktualizacja pozycji, przyda siê przy ew. ruchu bomby
 	m_sprite.setPosition(GetPositionX(), GetPositionY());
-	m_positionInTilesCoordsX = GetPositionX() / TILE_SIZE; //konwersja pozycji na wspó³rzêdne kafli 
+	m_positionInTilesCoordsX = GetPositionX() / TILE_SIZE; //konwersja pozycji na wspó³rzêdne kafli
 	m_positionInTilesCoordsY = GetPositionY() / TILE_SIZE;
 
 	//obs³uga stanów bomby
@@ -99,10 +99,12 @@ void Bomb::Update()
 	else if (m_detonationClock.getElapsedTime() >= m_detonationTime + m_rayOnScreenTime && m_state < State::exploded)
 	{
 		m_state = State::exploded;
-		
-		for each (std::pair<int,int> var in m_tilesToDeleteAfterExplosion)//usuñ kafle które by³y w zasiêgu bomby podczas eksplozji 
-			level->DestroyTile(var.first, var.second);
+
+		//usuñ kafle które by³y w zasiêgu bomby podczas eksplozji
+        for(int i=0;i<m_tilesToDeleteAfterExplosion.size();i++)
+            level->DestroyTile(m_tilesToDeleteAfterExplosion[i].first, m_tilesToDeleteAfterExplosion[i].second);
 	}
+
 }
 
 std::vector<sf::FloatRect> Bomb::GetBombRaysColliders()
@@ -124,7 +126,7 @@ std::vector<sf::FloatRect> Bomb::GetBombRaysColliders()
 
 void Bomb::explode()
 {
-	
+
 	for (int i = 0; i < m_rays.size(); i++)
 	{
 		m_rays[i] = new Ray(static_cast<Ray::Side>(i));
@@ -143,10 +145,10 @@ unsigned short Bomb::getRaySizeAfterCollisions(Ray::Side side)
 	//1. SprawdŸ czy dalszy kafel od œrodka bomby jest pod³og¹(i czy mieœci siê w mapie)
 	//1.1 Jeœli tak to zwiêksz rozmiar promienia i wróc do punktu nr 1.
 	//1.2 Jeœli nie to przerwij pêtle i idŸ do kolejnego punktu (nr. 2)
-	//2. SprawdŸ czy przypadkiem promieñ nie koliduje z kaflem który da siê rozwaliæ, 
+	//2. SprawdŸ czy przypadkiem promieñ nie koliduje z kaflem który da siê rozwaliæ,
 	//jeœli tak to zwiêksz rozmiar promienia(¿eby promieñ by³ na kaflu który rozwali)
 	// oraz dodaj ten kafel do kontenere w którym przebywaj¹ce kafle zostan¹ rozwalone po wybuchu
-	
+
 	unsigned short size = 0;
 
 	switch (side)
@@ -160,7 +162,7 @@ unsigned short Bomb::getRaySizeAfterCollisions(Ray::Side side)
 		}
 		if (size != MAX_RAY_SIZE && m_positionInTilesCoordsY - size - 1 > 0 && level->GetTile(m_positionInTilesCoordsX, m_positionInTilesCoordsY - size - 1) == TT::TileType::WEAK_WALL)
 			m_tilesToDeleteAfterExplosion.push_back(std::pair<int, int>(m_positionInTilesCoordsX, m_positionInTilesCoordsY - ++size));
-	
+
 		break;
 	case Ray::Down:
 		for (int i = 1; i <= MAX_RAY_SIZE; ++i)
@@ -181,9 +183,9 @@ unsigned short Bomb::getRaySizeAfterCollisions(Ray::Side side)
 			}
 			else break;
 		}
-		
+
 		if (size != MAX_RAY_SIZE && m_positionInTilesCoordsX - size - 1 >= 0 && level->GetTile(m_positionInTilesCoordsX - size - 1, m_positionInTilesCoordsY) == TT::TileType::WEAK_WALL)
-		{	
+		{
 			m_tilesToDeleteAfterExplosion.push_back(std::pair<int, int>(m_positionInTilesCoordsX - ++size, m_positionInTilesCoordsY));
 		}
 		break;
@@ -202,13 +204,13 @@ unsigned short Bomb::getRaySizeAfterCollisions(Ray::Side side)
 		break;
 	}
 
-	
+
 	return size;
 }
 
 void Bomb::draw(sf::RenderTarget & target, sf::RenderStates states) const
 {
-	
+
 	target.draw(m_sprite);
 	if (m_state == State::exploding)
 	{

@@ -5,7 +5,7 @@
 Player::Player()
 	:m_bomb(nullptr)
 {
-	
+
 }
 
 
