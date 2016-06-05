@@ -23,5 +23,7 @@ public:
 private:
 	std::vector < std::vector<sf::Sprite> > m_data;
 	int TILE_SIZE;
+	TextureAtlas * m_atlas;
+	int size;
 };
 

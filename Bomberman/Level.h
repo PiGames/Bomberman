@@ -45,7 +45,7 @@ public:
 	/// <returns>False if cannot be destroyed</returns>
 	bool DestroyTile(size_t x, size_t y);
 
-	void SetLevelView(LevelView& view);
+	void SetLevelView(LevelView* view);
 
 private:
 	size_t m_width;

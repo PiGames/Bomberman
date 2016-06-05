@@ -90,7 +90,7 @@ void Game::Run()
 
 	m_exit = false;
 	sf::Clock clock;
-	
+	m_level.SetLevelView(&m_levelView);
 	// main loop
 	while (!m_exit)
 	{

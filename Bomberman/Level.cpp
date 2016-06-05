@@ -74,15 +74,15 @@ bool Level::DestroyTile(size_t x, size_t y)
 		return false;
 
 	m_data[y][x] = TT::TileType::NONE;// zmienia wartoœæ warstwy logicznej kafla 
-	m_destroyableTiles.erase(getIteratorByValue(std::pair<int, int>(x,y)));//usuwa kafel o wspó³rzêdnych z argumnetów
 	m_view->ChangeTileTextureToNone(x, y);
+	m_destroyableTiles.erase(getIteratorByValue(std::pair<int, int>(x,y)));//usuwa kafel o wspó³rzêdnych z argumnetów
 	return true;
 	
 }
 
-void Level::SetLevelView(LevelView & view)
+void Level::SetLevelView(LevelView * view)
 {
-	m_view = &view;
+	m_view = view;
 }
 
 std::map<int, std::pair<int, int> >::iterator Level::getIteratorByValue(std::pair<int, int> coords)
