@@ -39,16 +39,16 @@ public:
 	Bomb::State GetState();
 	///Sets texture of the bomb
 	/// <param name="texture"> texture pointer (NOTE: MUST BE ALIVE)</param>
-	void SetBombTexture(sf::Texture & texture);
+	void SetBombTexture(sf::Texture * texture);
 	///Sets texture of ray
 	/// <param name="texture"> texture pointer </param>
-	void SetRayTexture(sf::Texture & texture);
+	void SetRayTexture(sf::Texture * texture);
 	///Spawns bomb on position
 	/// <param name="position"> position of bomb</param>
 	void SetPosition(int x, int y);
 	///Updates bomb status
 
-	void SetLevelPointer(Level & level);
+	void SetLevelPointer(Level * level);
 
 	void Update();
 

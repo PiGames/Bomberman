@@ -69,8 +69,8 @@ void Game::Run()
 		std::exit(4);
 	}
 
-	m_localPlayer.SetBombTexture(bombTexture);
-	m_localPlayer.SetLevelPointer(m_level);
+	m_localPlayer.SetBombTexture(&bombTexture);
+	m_localPlayer.SetLevelPointer(&m_level);
 
 
 	// ray texture 
@@ -83,7 +83,7 @@ void Game::Run()
 		std::exit(4);
 	}
 	bombRayTexture.setRepeated(true);
-	m_localPlayer.SetBombRayTexture(bombRayTexture);
+	m_localPlayer.SetBombRayTexture(&bombRayTexture);
 
 	/* TMP INIT END*/
 	m_physicsEngine.Init(m_level, m_localPlayer);

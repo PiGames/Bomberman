@@ -55,41 +55,39 @@ Bomb::State Bomb::GetState()
 	return m_state;
 }
 
-void Bomb::SetBombTexture(sf::Texture & texture)
+void Bomb::SetBombTexture(sf::Texture * texture)
 {
-	m_bombTexture = &texture;
-	m_sprite.setTexture(texture);
+	m_bombTexture = texture;
+	m_sprite.setTexture(*texture);
 	m_sprite.setOrigin(m_sprite.getGlobalBounds().width / 2.f, m_sprite.getGlobalBounds().height / 2.f);
 }
 
-void Bomb::SetRayTexture(sf::Texture & texture)
+void Bomb::SetRayTexture(sf::Texture * texture)
 {
-	m_rayTexture = &texture;
+	m_rayTexture = texture;
 }
 
 void Bomb::SetPosition(int x, int y)
 {
-	x = m_positionInTilesCoordsX = x / TILE_SIZE; //konwersja pozycji na wspó³rzêdne kafli
+	x = m_positionInTilesCoordsX = x / TILE_SIZE;
 	y = m_positionInTilesCoordsY = y / TILE_SIZE;
 
-	SetPositionX(x*TILE_SIZE + TILE_SIZE/2);//ustaw na œrodku kafla na którym znajduje siê bomba
+	SetPositionX(x*TILE_SIZE + TILE_SIZE/2);
 	SetPositionY(y*TILE_SIZE + TILE_SIZE/2);
 
 }
 
-void Bomb::SetLevelPointer(Level & level)
+void Bomb::SetLevelPointer(Level * level)
 {
-	this->level = &level;
+	this->level = level;
 }
 
 void Bomb::Update()
 {
-	//aktualizacja pozycji, przyda siê przy ew. ruchu bomby
 	m_sprite.setPosition(GetPositionX(), GetPositionY());
-	m_positionInTilesCoordsX = GetPositionX() / TILE_SIZE; //konwersja pozycji na wspó³rzêdne kafli
+	m_positionInTilesCoordsX = GetPositionX() / TILE_SIZE; 
 	m_positionInTilesCoordsY = GetPositionY() / TILE_SIZE;
 
-	//obs³uga stanów bomby
 	if (m_detonationClock.getElapsedTime() >= m_detonationTime && m_state < State::exploding)
 	{
 		m_state = State::exploding;
@@ -100,7 +98,6 @@ void Bomb::Update()
 	{
 		m_state = State::exploded;
 
-		//usuñ kafle które by³y w zasiêgu bomby podczas eksplozji
         for(int i=0;i<m_tilesToDeleteAfterExplosion.size();i++)
             level->DestroyTile(m_tilesToDeleteAfterExplosion[i].first, m_tilesToDeleteAfterExplosion[i].second);
 	}
@@ -132,7 +129,7 @@ void Bomb::explode()
 	{
 		m_rays[i] = new Ray(static_cast<Ray::Side>(i));
 
-		m_rays[i]->SetTexture(*m_rayTexture);//zmieñ teksturê bomby na teksture promienia gdy nast¹pi wybuch
+		m_rays[i]->SetTexture(m_rayTexture);
 		m_rays[i]->SetPosition(GetPositionX(), GetPositionY());
 		m_rays[i]->SetSize(getRaySizeAfterCollisions(static_cast<Ray::Side>(i)));
 	}
@@ -140,16 +137,6 @@ void Bomb::explode()
 
 unsigned short Bomb::getRaySizeAfterCollisions(Ray::Side side)
 {
-	//kod wygl¹da na pojebany, ale w rzeczywisoœci jest bardzo prosty
-	//Dla ka¿dego kejsa wykonuje sie bardzo podobny kod:
-	//0. Ustaw domyœlny rozmiar na zero
-	//1. SprawdŸ czy dalszy kafel od œrodka bomby jest pod³og¹(i czy mieœci siê w mapie)
-	//1.1 Jeœli tak to zwiêksz rozmiar promienia i wróc do punktu nr 1.
-	//1.2 Jeœli nie to przerwij pêtle i idŸ do kolejnego punktu (nr. 2)
-	//2. SprawdŸ czy przypadkiem promieñ nie koliduje z kaflem który da siê rozwaliæ,
-	//jeœli tak to zwiêksz rozmiar promienia(¿eby promieñ by³ na kaflu który rozwali)
-	// oraz dodaj ten kafel do kontenere w którym przebywaj¹ce kafle zostan¹ rozwalone po wybuchu
-
 	unsigned short size = 0;
 
 	switch (side)

@@ -25,7 +25,7 @@ public:
 	bool Colliding(sf::FloatRect & floatRect);
 	///Sets texture of the bomb
 	/// <param name="texture"> texture pointer (NOTE: MUST BE ALIVE)</param>
-	void SetTexture(sf::Texture & texture);
+	void SetTexture(sf::Texture * texture);
 
 	int GetSide();
 

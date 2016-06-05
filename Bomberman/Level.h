@@ -55,10 +55,10 @@ private:
 
 	std::vector< std::vector<TT::TileType> > m_data;
 
-	std::map<int, std::pair<int, int> > m_destroyableTiles; //contains pairs of x and y coords(in this order)sorted by keys
+	std::map<int, std::pair<int, int> > m_destroyableTiles;
 	int m_destroyableTilesKey;
 
-	std::map<int, std::pair<int, int> >::iterator getIteratorByValue(std::pair<int,int>);//zwraca wskaŸnik na kafel o podanych wspó³rzêdnych
+	std::map<int, std::pair<int, int> >::iterator getIteratorByValue(std::pair<int,int>);
 	
 };
 

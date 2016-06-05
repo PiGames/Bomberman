@@ -21,7 +21,7 @@ public:
 
 	/// Sets bomb ray texture
 	/// <param name="texture">texture of ray</param>
-	void SetBombRayTexture(sf::Texture & texture); // TODO: use animator
+	void SetBombRayTexture(sf::Texture * texture); // TODO: use animator
 	
 	
 	/// Sets the player direction, possible values: -1, 0, 1
@@ -31,9 +31,9 @@ public:
 	
 	/// Sends the information about action key down (plant the bomb)
 	void TryPlantingTheBomb();
-	void SetBombTexture(sf::Texture & texture);
+	void SetBombTexture(sf::Texture * texture);
 	
-	void SetLevelPointer(Level& level);
+	void SetLevelPointer(Level * level);
 
 	std::vector<sf::FloatRect> GetBombRaysColliders();
 	//to chyba powinno byc prywatne

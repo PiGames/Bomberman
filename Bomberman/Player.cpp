@@ -33,9 +33,9 @@ void Player::SetAnimator(Animator& animator, size_t width, size_t height)
 }
 
 
-void Player::SetBombRayTexture(sf::Texture & texture)
+void Player::SetBombRayTexture(sf::Texture * texture)
 {
-	m_bombRayTexture = &texture;
+	m_bombRayTexture = texture;
 }
 
 
@@ -49,27 +49,27 @@ void Player::OnMoveKeyPressed(int x, int y)
 
 void Player::TryPlantingTheBomb()
 {
-	if(m_bomb==nullptr)// Jeœli nie ma aktualnie ¿adnej bomby od gracza
+	if(m_bomb==nullptr)
 	{
 		m_bomb = new Bomb();
-		m_bomb->SetBombTexture(*m_bombTexture);
-		m_bomb->SetRayTexture(*m_bombRayTexture);
+		m_bomb->SetBombTexture(m_bombTexture);
+		m_bomb->SetRayTexture(m_bombRayTexture);
 		m_bomb->SetDetonationTime(sf::seconds(2.5f));
 		m_bomb->SetRayOnScreenTime(sf::seconds(1));
-		m_bomb->SetPosition(GetPositionX(), GetPositionY());//podeœlij aktualn¹ pozycje gracza
-		m_bomb->SetLevelPointer(*level);
+		m_bomb->SetPosition(GetPositionX(), GetPositionY());
+		m_bomb->SetLevelPointer(level);
 	}
 }
 
-void Player::SetBombTexture(sf::Texture & texture)
+void Player::SetBombTexture(sf::Texture * texture)
 {
-	m_bombTexture = &texture;
+	m_bombTexture = texture;
 }
 
 
-void Player::SetLevelPointer(Level & level)
+void Player::SetLevelPointer(Level * level)
 {
-	this->level = &level;
+	this->level = level;
 }
 
 
@@ -132,7 +132,7 @@ void Player::Update(const float & dt)
 		m_bomb->Update();
 
 		if (m_bomb->GetState() == Bomb::exploded)
-		{//Jeœli bomba wybuch³a to usuñ jej obiekt i przestaw wskaŸnik na null
+		{
 			delete m_bomb;
 			m_bomb = nullptr;
 		}
