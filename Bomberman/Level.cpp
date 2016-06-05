@@ -3,6 +3,7 @@
 
 
 Level::Level()
+	:m_destroyableTilesKey(0)
 {
 }
 
@@ -42,9 +43,10 @@ bool Level::LoadFromFile(const std::string & path)
 		{
 			file >> raw;
 			m_data[i][j] = static_cast<TT::TileType>(raw);
+			if (m_data[i][j] == TT::TileType::WEAK_WALL)
+				m_destroyableTiles[m_destroyableTilesKey++] = std::pair<int,int>(j,i);
 		}
 	}
-
 	return true;
 }
 
@@ -65,3 +67,31 @@ size_t Level::GetHeight() const
 {
 	return m_height;
 }
+
+bool Level::DestroyTile(size_t x, size_t y)
+{
+	if(m_data[y][x] == TT::TileType::INDESTRUCTIBLE_WALL || m_data[y][x] == TT::TileType::NONE)//jeœli kafel mo¿na zniszczyæ
+		return false;
+
+	m_data[y][x] = TT::TileType::NONE;// zmienia wartoœæ warstwy logicznej kafla 
+	m_destroyableTiles.erase(getIteratorByValue(std::pair<int, int>(x,y)));//usuwa kafel o wspó³rzêdnych z argumnetów
+	m_view->ChangeTileTextureToNone(x, y);
+	return true;
+	
+}
+
+void Level::SetLevelView(LevelView & view)
+{
+	m_view = &view;
+}
+
+std::map<int, std::pair<int, int> >::iterator Level::getIteratorByValue(std::pair<int, int> coords)
+{
+	std::map<int, std::pair<int, int> >::iterator it;
+
+	for (it = m_destroyableTiles.begin(); it != m_destroyableTiles.end(); ++it)
+		if (it->second == coords)
+			return it;
+}
+
+

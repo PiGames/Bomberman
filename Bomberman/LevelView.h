@@ -1,8 +1,10 @@
 #pragma once
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <vector>
 #include "Level.h"
 #include "TextureAtlas.h"
+
+class Level;
 
 class LevelView : public sf::Drawable
 {
@@ -17,8 +19,9 @@ public:
 	void SetLevel(Level* level, TextureAtlas* atlas);
 	
 	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const override;
-
+	void ChangeTileTextureToNone(size_t x, size_t y);
 private:
 	std::vector < std::vector<sf::Sprite> > m_data;
+	int TILE_SIZE;
 };
 

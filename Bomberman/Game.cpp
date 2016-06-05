@@ -96,6 +96,7 @@ void Game::update(float deltaTime)
 {
 	m_physicsEngine.Update(deltaTime);
 	m_localPlayer.Update(deltaTime);
+	m_localPlayer.CheckIsPlayerInBombRay(nullptr);
 }
 
 
@@ -132,6 +133,9 @@ void Game::processEvents()
 			m_exit = true;
 			break;
 		}
+		//sf::Keyboard::Key actionKey = sf::Keyboard::Space; //Sets action key which is planting the bomb
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
+			m_localPlayer.TryPlantingTheBomb();
 
 		// handle more events
 	}

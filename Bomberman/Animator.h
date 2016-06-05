@@ -1,6 +1,6 @@
 #pragma once
-#include <SFML\System\Time.hpp>
-#include <SFML\Graphics\Sprite.hpp>
+#include <SFML/System/Time.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <string>
 #include <map>
 #include <iostream>

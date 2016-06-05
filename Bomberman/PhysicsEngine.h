@@ -2,7 +2,7 @@
 #include "Level.h"
 #include "PhysicalBody.h"
 #include <vector>
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <math.h>
 #include <iostream>
 
