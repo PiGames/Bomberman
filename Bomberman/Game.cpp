@@ -59,6 +59,32 @@ void Game::Run()
 	playerAnimator.ChangeActiveState("default");
 	
 	
+	// bomb texture
+	sf::Texture bombTexture;
+	const std::string bombTexturePath = "data/bomb.png";
+	if (!bombTexture.loadFromFile(bombTexturePath))
+	{
+		std::cerr << "[!] Cannot load file: \"" << bombTexturePath << "\"Exiting...\n";
+		m_exit = true;
+		std::exit(4);
+	}
+
+	m_localPlayer.SetBombTexture(bombTexture);
+	m_localPlayer.SetLevelPointer(m_level);
+
+
+	// ray texture 
+	sf::Texture bombRayTexture;
+	const std::string bombRayTexturePath = "data/ray.png";
+	if (!bombRayTexture.loadFromFile(bombRayTexturePath))
+	{
+		std::cerr << "[!] Cannot load file: \"" << bombRayTexturePath << "\"Exiting...\n";
+		m_exit = true;
+		std::exit(4);
+	}
+	bombRayTexture.setRepeated(true);
+	m_localPlayer.SetBombRayTexture(bombRayTexture);
+
 	/* TMP INIT END*/
 	m_physicsEngine.Init(m_level, m_localPlayer);
 

@@ -61,6 +61,11 @@ void Player::TryPlantingTheBomb()
 	}
 }
 
+void Player::SetBombTexture(sf::Texture & texture)
+{
+	m_bombTexture = &texture;
+}
+
 
 void Player::SetLevelPointer(Level & level)
 {

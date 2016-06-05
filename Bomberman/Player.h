@@ -31,7 +31,7 @@ public:
 	
 	/// Sends the information about action key down (plant the bomb)
 	void TryPlantingTheBomb();
-
+	void SetBombTexture(sf::Texture & texture);
 	
 	void SetLevelPointer(Level& level);
 

@@ -107,6 +107,7 @@ void Bomb::Update()
 
 }
 
+
 std::vector<sf::FloatRect> Bomb::GetBombRaysColliders()
 {
 	std::vector<sf::FloatRect> vec;
