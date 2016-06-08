@@ -68,7 +68,7 @@ size_t TextureAtlas::GetCellSizeY() const
 	return m_cellHeight;
 }
 
-#include <iostream>
+
 void TextureAtlas::SetSpriteTextureByIndex(sf::Sprite & sprite, size_t index)
 {
 	if (m_count == 0 || index >= m_count)

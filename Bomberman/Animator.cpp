@@ -32,7 +32,7 @@ void Animator::SetSprite(sf::Sprite & sprite)
 }
 
 
-bool Animator::AddAnimationState(std::string name, TextureAtlas & atlas, size_t begin, size_t end)
+bool Animator::AddAnimationState(std::string name, TextureAtlas & atlas, size_t begin, size_t end, bool autoPlay)
 {
 	m_statesIterator = m_states.find(name);
 	if (m_statesIterator == m_states.end())
@@ -45,6 +45,10 @@ bool Animator::AddAnimationState(std::string name, TextureAtlas & atlas, size_t 
 				&atlas, begin, end 
 			})
 		);
+
+		if (autoPlay)
+			ChangeActiveState(name);
+
 		return true;
 	}
 	return false;
@@ -133,4 +137,29 @@ void Animator::Animate(const float & dt)
 		m_activeStateInfo->atlas->SetSpriteTextureByIndex(*m_sprite, m_currentFrame);
 		m_elapsedTime = 0.f;
 	}
+}
+
+
+bool Animator::IsPlaying()
+{
+	return m_animIsPlaying;
+}
+
+
+void Animator::Play()
+{
+	m_animIsPlaying = true;
+}
+
+
+void Animator::Pause()
+{
+	m_animIsPlaying = false;
+}
+
+
+void Animator::Stop()
+{
+	ChangeActiveState(m_activeStateName);
+	Pause();
 }

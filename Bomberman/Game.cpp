@@ -88,6 +88,7 @@ void Game::Run()
 	m_localPlayer.SetBombRayTexture(&bombRayTexture);
 	/* TMP INIT END*/
 
+
 	m_physicsEngine.Init(m_level, m_localPlayer);
 
 	m_exit = false;
