@@ -21,7 +21,7 @@ void Player::SetAnimator(Animator& animator, size_t width, size_t height)
 
 	float tileSize = 64; // HACK tmp only
 
-	m_sprite.setOrigin(w / 2.f, h / 2.f);// TODO fix collision
+	m_sprite.setOrigin(w / 2.f, h / 2.f);
 	SetSize(w, h);
 	
 	m_animator = &animator;
@@ -41,7 +41,6 @@ void Player::SetBombRayTexture(sf::Texture * texture)
 
 void Player::OnMoveKeyPressed(int x, int y)
 {
-	// HACK check values x,y = -1|0|1, change velocity
 	const float speed = 120;
 	SetVelocity(speed*x, speed*y);
 }
@@ -152,5 +151,5 @@ void Player::draw(sf::RenderTarget & target, sf::RenderStates states) const
 void Player::reactWhenIsInBombRay()
 {
 	//Animation etc
-	std::cout << "Player is colliding with bomb ray\n";
+	std::cout << "\r[DEBUG] Player is colliding with bomb ray";
 }

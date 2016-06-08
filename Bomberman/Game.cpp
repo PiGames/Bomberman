@@ -49,7 +49,9 @@ void Game::Run()
 	m_atlasPlayer.TrimByGrid(32, 32);
 	
 	m_levelView.SetLevel(&m_level, &m_atlasTerrain);
+	m_level.SetLevelView(&m_levelView);
 
+	
 	// setting up player
 	Animator playerAnimator;
 	playerAnimator.AddAnimationState("default", m_atlasPlayer, 0, m_atlasPlayer.GetCount() - 1);
@@ -84,13 +86,14 @@ void Game::Run()
 	}
 	bombRayTexture.setRepeated(true);
 	m_localPlayer.SetBombRayTexture(&bombRayTexture);
-
 	/* TMP INIT END*/
+
 	m_physicsEngine.Init(m_level, m_localPlayer);
 
 	m_exit = false;
 	sf::Clock clock;
-	m_level.SetLevelView(&m_levelView);
+	
+	
 	// main loop
 	while (!m_exit)
 	{
@@ -110,7 +113,6 @@ void Game::draw()
 	m_window.clear();
 
 	m_window.draw(m_levelView);
-	// HACK bomb
 	m_window.draw(m_localPlayer);
 
 

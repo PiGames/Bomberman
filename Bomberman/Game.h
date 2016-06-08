@@ -31,6 +31,7 @@ private:
 
 	TextureAtlas m_atlasTerrain;
 	TextureAtlas m_atlasPlayer;
+	
 
 	/// Draws all stuff on scene
 	void draw();
