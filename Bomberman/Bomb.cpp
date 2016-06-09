@@ -11,7 +11,7 @@ Bomb::Bomb()
 
 Bomb::~Bomb()
 {
-	for (int i = 0; i < m_rays.size(); i++)
+	for (unsigned int i = 0; i < m_rays.size(); i++)
 		delete m_rays[i];
 
 	delete m_animator;
@@ -52,7 +52,7 @@ bool Bomb::IsObjectInRay(sf::FloatRect floatRect)
 			}
 		}
 
-		for (int i = 0; i < m_rays.size(); i++)
+		for (unsigned int i = 0; i < m_rays.size(); i++)
 		{
 			if (m_rays[i]->Colliding(floatRect))
 			{
@@ -75,8 +75,8 @@ void Bomb::SetPosition(int x, int y)
 	x = m_positionInTilesCoordsX = x / TILE_SIZE;
 	y = m_positionInTilesCoordsY = y / TILE_SIZE;
 
-	SetPositionX(x*TILE_SIZE + TILE_SIZE/2);
-	SetPositionY(y*TILE_SIZE + TILE_SIZE/2);
+	SetPositionX(static_cast<float>(x)*TILE_SIZE + TILE_SIZE/2);
+	SetPositionY(static_cast<float>(y)*TILE_SIZE + TILE_SIZE/2);
 
 }
 
@@ -94,8 +94,8 @@ void Bomb::Update(const float & dt)
 {
 	m_animator->Animate(dt);
 	m_sprite.setPosition(GetPositionX(), GetPositionY());
-	m_positionInTilesCoordsX = GetPositionX() / TILE_SIZE; 
-	m_positionInTilesCoordsY = GetPositionY() / TILE_SIZE;
+	m_positionInTilesCoordsX = static_cast<int>(GetPositionX()) / TILE_SIZE;
+	m_positionInTilesCoordsY = static_cast<int>(GetPositionY()) / TILE_SIZE;
 
 	if (m_detonationClock.getElapsedTime() >= m_detonationTime && m_state < State::exploding)
 	{
@@ -107,13 +107,13 @@ void Bomb::Update(const float & dt)
 	{
 		m_state = State::exploded;
 
-        for(int i=0;i<m_tilesToDeleteAfterExplosion.size();i++)
+        for(unsigned int i=0;i < m_tilesToDeleteAfterExplosion.size();i++)
             level->DestroyTile(m_tilesToDeleteAfterExplosion[i].first, m_tilesToDeleteAfterExplosion[i].second);
 	}
 
 
 	if (m_state == State::exploding)
-		for (int i = 0; i < m_rays.size(); i++)
+		for (unsigned int i = 0; i < m_rays.size(); i++)
 			m_rays[i]->Update(dt);
 
 }
@@ -127,7 +127,7 @@ std::vector<sf::FloatRect> Bomb::GetBombRaysColliders()
 	{
 		vec.push_back(m_sprite.getGlobalBounds());
 
-		for (int i = 0; i < m_rays.size(); i++)
+		for (unsigned int i = 0; i < m_rays.size(); i++)
 		{
 			vec.push_back(m_rays[i]->GetCollider());
 		}
@@ -139,7 +139,7 @@ std::vector<sf::FloatRect> Bomb::GetBombRaysColliders()
 void Bomb::explode()
 {
 
-	for (int i = 0; i < m_rays.size(); i++)
+	for (unsigned int i = 0; i < m_rays.size(); i++)
 	{
 		m_rays[i] = new Ray(static_cast<Ray::Side>(i));
 		m_rayAnimator = new Animator();
@@ -217,7 +217,7 @@ void Bomb::draw(sf::RenderTarget & target, sf::RenderStates states) const
 	target.draw(m_sprite);
 	if (m_state == State::exploding)
 	{
-		for (int i = 0; i < m_rays.size(); ++i)
+		for (unsigned int i = 0; i < m_rays.size(); ++i)
 		{
 			target.draw(m_rays[i]->GetSprite());
 		}

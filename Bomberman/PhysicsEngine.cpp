@@ -31,9 +31,9 @@ void PhysicsEngine::Init(Level & level, PhysicalBody & player)
 		{
 			m_physicalLevel[y][x] = new PhysicalBody();
 
-			m_physicalLevel[y][x]->SetPositionX(x*TILE_SIZE + TILE_SIZE/2);
-			m_physicalLevel[y][x]->SetPositionY(y*TILE_SIZE + TILE_SIZE/2);
-			m_physicalLevel[y][x]->SetSize(TILE_SIZE, TILE_SIZE);
+			m_physicalLevel[y][x]->SetPositionX(static_cast<float>(x)*TILE_SIZE + TILE_SIZE/2);
+			m_physicalLevel[y][x]->SetPositionY(static_cast<float>(y)*TILE_SIZE + TILE_SIZE/2);
+			m_physicalLevel[y][x]->SetSize(static_cast<float>(TILE_SIZE), static_cast<float>(TILE_SIZE));
 		}
 }
 
@@ -166,13 +166,13 @@ void PhysicsEngine::Update(const float & delta)
 
 void PhysicsEngine::setBodyPositionInfo(PhysicalBody * body, MovableBodyInfo & bodyInfo)
 {
-	m_bodyInfo.centerX = m_body->GetPositionX() / TILE_SIZE;
-	m_bodyInfo.centerY = m_body->GetPositionY() / TILE_SIZE;
+	m_bodyInfo.centerX = static_cast<int>(m_body->GetPositionX()) / TILE_SIZE;
+	m_bodyInfo.centerY = static_cast<int>(m_body->GetPositionY()) / TILE_SIZE;
 
-	bodyInfo.upBound = (body->GetPositionY() - body->GetSizeY() / 2) / TILE_SIZE;
-	bodyInfo.downBound = (body->GetPositionY() + body->GetSizeY() / 2) / TILE_SIZE;
-	bodyInfo.leftBound = (body->GetPositionX() - body->GetSizeX() / 2) / TILE_SIZE;
-	bodyInfo.rightBound = (body->GetPositionX() + body->GetSizeX() / 2) / TILE_SIZE;
+	bodyInfo.upBound = static_cast<int>(body->GetPositionY() - body->GetSizeY() / 2) / TILE_SIZE;
+	bodyInfo.downBound = static_cast<int>(body->GetPositionY() + body->GetSizeY() / 2) / TILE_SIZE;
+	bodyInfo.leftBound = static_cast<int>(body->GetPositionX() - body->GetSizeX() / 2) / TILE_SIZE;
+	bodyInfo.rightBound = static_cast<int>(body->GetPositionX() + body->GetSizeX() / 2) / TILE_SIZE;
 
 	if (bodyInfo.upBound == bodyInfo.downBound && bodyInfo.rightBound == bodyInfo.leftBound)
 		bodyInfo.state = OnSingleTile;

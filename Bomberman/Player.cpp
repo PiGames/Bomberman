@@ -51,7 +51,7 @@ void Player::OnActionKeyPressed()
 		m_bomb->SetUpRay(m_bombRayTextureAtlas);
 		m_bomb->SetDetonationTime(sf::seconds(3.f));
 		m_bomb->SetRayOnScreenTime(sf::seconds(1));
-		m_bomb->SetPosition(GetPositionX(), GetPositionY());
+		m_bomb->SetPosition(static_cast<int>(GetPositionX()), static_cast<int>(GetPositionY()));
 		m_bomb->SetLevelPointer(level);
 	}
 }
@@ -76,13 +76,9 @@ void Player::SetLevelPointer(Level * level)
 
 std::vector<sf::FloatRect> Player::GetBombRaysColliders()
 {
-	if (m_bomb != nullptr)
-	{
-		if (m_bomb->GetState() == Bomb::exploding)
-		{
-			return m_bomb->GetBombRaysColliders();
-		}
-	}
+	if (m_bomb != nullptr && m_bomb->GetState() == Bomb::exploding)
+		return m_bomb->GetBombRaysColliders();
+	else return std::vector<sf::FloatRect>();//this will be changed when whole collisions system will be rewritten - don't worry Szymon :)
 }
 
 
@@ -97,7 +93,7 @@ void Player::CheckIsPlayerInBombRay(std::vector<sf::FloatRect>* bombRays)
 		}
 		if (bombRays != nullptr)
 		{
-			for (int i = 0; i < bombRays->size(); i++)
+			for (unsigned int i = 0; i < bombRays->size(); i++)
 			{
 				if (bombRays[i][i].intersects(m_sprite.getGlobalBounds()))
 				{

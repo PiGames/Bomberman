@@ -33,13 +33,13 @@ bool Level::LoadFromFile(const std::string & path)
 	file >> m_height;
 
 	m_data.resize(m_height);
-	for (int i = 0; i < m_height; ++i)
+	for (unsigned int i = 0; i < m_height; ++i)
 		m_data[i].resize(m_width);
 
 	int raw;
-	for (int i = 0; i < m_height; ++i)
+	for (unsigned int i = 0; i < m_height; ++i)
 	{
-		for (int j = 0; j < m_width; ++j)
+		for (unsigned int j = 0; j < m_width; ++j)
 		{
 			file >> raw;
 			m_data[i][j] = static_cast<TT::TileType>(raw);
@@ -92,6 +92,8 @@ std::map<int, std::pair<int, int> >::iterator Level::getIteratorByValue(std::pai
 	for (it = m_destroyableTiles.begin(); it != m_destroyableTiles.end(); ++it)
 		if (it->second == coords)
 			return it;
+	
+	return it;
 }
 
 

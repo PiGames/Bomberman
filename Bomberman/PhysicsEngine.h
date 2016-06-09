@@ -36,12 +36,12 @@ private:
 	{
 		BodyPositionState state;
 
-		int	upBound; // casted to level index
-		int downBound;
-		int leftBound;
-		int rightBound;
-		int centerX;
-		int centerY;
+		unsigned int upBound; // casted to level index
+		unsigned int downBound;
+		unsigned int leftBound;
+		unsigned int rightBound;
+		unsigned int centerX;
+		unsigned int centerY;
 	};
 	///Physical player representation
 	PhysicalBody* m_body;
