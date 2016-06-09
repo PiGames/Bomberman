@@ -73,7 +73,7 @@ void Ray::SetPosition(float x, float y)
 
 void Ray::Update(const float & dt)
 {
-	m_animator->Animate(dt);
+	//m_animator->Animate(dt);
 }
 
 sf::Drawable & Ray::GetSprite()

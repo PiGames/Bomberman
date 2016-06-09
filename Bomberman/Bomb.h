@@ -54,8 +54,8 @@ public:
 private:
 	Animator* m_animator;
 	Level* level;
-	unsigned int m_positionInTilesCoordsX;
-	unsigned int m_positionInTilesCoordsY;
+	int m_positionInTilesCoordsX;
+	int m_positionInTilesCoordsY;
 	sf::Sprite m_sprite;
 	struct rayLength
 	{
