@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "PhysicalBody.h"
+#include "Animator.h"
 #include "Ray.h"
 #include "Level.h"
 
@@ -22,7 +23,8 @@ public:
 public:
 	Bomb();
 	~Bomb();
-
+	///Sets Animator
+	void SetAnimator(Animator& animator, size_t width, size_t height);
 	///Sets time to detonation
 	/// <param name="time"> time in seconds</param>
 	void SetDetonationTime(sf::Time time);
@@ -37,30 +39,24 @@ public:
 	/// <returns>true when bomb exploded and rays are on</returns>
 	/// <returns>false if not</returns>
 	Bomb::State GetState();
-	///Sets texture of the bomb
-	/// <param name="texture"> texture pointer (NOTE: MUST BE ALIVE)</param>
-	void SetBombTexture(sf::Texture * texture);
-	///Sets texture of ray
-	/// <param name="texture"> texture pointer </param>
-	void SetRayTexture(sf::Texture * texture);
 	///Spawns bomb on position
 	/// <param name="position"> position of bomb</param>
 	void SetPosition(int x, int y);
 	///Updates bomb status
+	void SetUpRay(TextureAtlas* atlas);
 
 	void SetLevelPointer(Level * level);
 
-	void Update();
+	void Update(const float & dt);
 
 	std::vector<sf::FloatRect> GetBombRaysColliders();
 
 private:
+	Animator* m_animator;
 	Level* level;
 	int m_positionInTilesCoordsX;
 	int m_positionInTilesCoordsY;
 	sf::Sprite m_sprite;
-	sf::Texture * m_bombTexture;
-	sf::Texture * m_rayTexture;
 	struct rayLength
 	{
 		int up;
@@ -69,6 +65,8 @@ private:
 		int right;
 	};
 	std::vector<Ray*> m_rays;
+	Animator* m_rayAnimator;
+	TextureAtlas* m_rayTextureAtlas;
 	sf::Time m_detonationTime;
 	sf::Time m_rayOnScreenTime;
 	sf::Clock m_detonationClock;

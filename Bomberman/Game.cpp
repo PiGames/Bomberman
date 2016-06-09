@@ -18,12 +18,14 @@ Game::~Game()
 void Game::Run()
 {
 	/* TMP INIT BEGIN*/
-	const int RESOURCE_COUNT = 3;
+	const int RESOURCE_COUNT = 5;
 	std::string resourcePaths[RESOURCE_COUNT] =
 	{
 		"data/sample_level.txt",
 		"data/sample_terraintextures.png",
-		"data/sample_playertextures.png"
+		"data/sample_playertextures.png",
+		"data/sample_bombtextures.png",
+		"data/sample_raytextures.png"
 	};
 	if (!m_level.LoadFromFile(resourcePaths[0]))
 	{
@@ -44,9 +46,23 @@ void Game::Run()
 		std::exit(1);
 	}
 
+	if (!m_atlasBomb.LoadFromFile(resourcePaths[3]))
+	{
+		std::cerr << "[!] Cannot load resource: '" << resourcePaths[3] << std::endl;
+		std::exit(1);
+	}
+	if (!m_atlasBombRay.LoadFromFile(resourcePaths[4]))
+	{
+		std::cerr << "[!] Cannot load resource: '" << resourcePaths[4] << std::endl;
+		std::exit(1);
+	}
+
+
 	// setting up resources
 	m_atlasTerrain.TrimByGrid(64, 64);
 	m_atlasPlayer.TrimByGrid(32, 32);
+	m_atlasBomb.TrimByGrid(64, 64);
+	m_atlasBombRay.TrimByGrid(64, 64);
 	
 	m_levelView.SetLevel(&m_level, &m_atlasTerrain);
 	m_level.SetLevelView(&m_levelView);
@@ -61,31 +77,22 @@ void Game::Run()
 	playerAnimator.ChangeActiveState("default");
 	
 	
-	// bomb texture
-	sf::Texture bombTexture;
-	const std::string bombTexturePath = "data/bomb.png";
-	if (!bombTexture.loadFromFile(bombTexturePath))
-	{
-		std::cerr << "[!] Cannot load file: \"" << bombTexturePath << "\"Exiting...\n";
-		m_exit = true;
-		std::exit(4);
-	}
-
-	m_localPlayer.SetBombTexture(&bombTexture);
-	m_localPlayer.SetLevelPointer(&m_level);
+	// setting up bomb
+	m_localPlayer.SetUpBomb(&m_atlasBomb, &m_atlasBombRay);
+	m_localPlayer.SetLevelPointer(&m_level);//HACK only temporary, we'll figure something out to properly separate layer's (server and client) 
 
 
 	// ray texture 
-	sf::Texture bombRayTexture;
-	const std::string bombRayTexturePath = "data/ray.png";
-	if (!bombRayTexture.loadFromFile(bombRayTexturePath))
-	{
-		std::cerr << "[!] Cannot load file: \"" << bombRayTexturePath << "\"Exiting...\n";
-		m_exit = true;
-		std::exit(4);
-	}
-	bombRayTexture.setRepeated(true);
-	m_localPlayer.SetBombRayTexture(&bombRayTexture);
+	//sf::Texture bombRayTexture;
+	//const std::string bombRayTexturePath = "data/ray.png";
+	//if (!bombRayTexture.loadFromFile(bombRayTexturePath))
+	//{
+	//	std::cerr << "[!] Cannot load file: \"" << bombRayTexturePath << "\"Exiting...\n";
+	//	m_exit = true;
+	//	std::exit(4);
+	//}
+	//bombRayTexture.setRepeated(true);
+	//m_localPlayer.SetBombRayTexture(&bombRayTexture);
 	/* TMP INIT END*/
 
 
@@ -125,7 +132,9 @@ void Game::update(float deltaTime)
 {
 	m_physicsEngine.Update(deltaTime);
 	m_localPlayer.Update(deltaTime);
-	m_localPlayer.CheckIsPlayerInBombRay(nullptr);
+	m_localPlayer.CheckIsPlayerInBombRay(nullptr);//It should be given a ptr to std::vector filled with bombRays
+	//until only singlplayer is available, there is no need of changing collisions system 
+	//it will be completely rewritten anyway
 }
 
 
@@ -164,7 +173,7 @@ void Game::processEvents()
 		}
 		//sf::Keyboard::Key actionKey = sf::Keyboard::Space; //Sets action key which is planting the bomb
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
-			m_localPlayer.TryPlantingTheBomb();
+			m_localPlayer.OnActionKeyPressed();
 
 		// handle more events
 	}

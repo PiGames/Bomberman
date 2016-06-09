@@ -33,12 +33,6 @@ void Player::SetAnimator(Animator& animator, size_t width, size_t height)
 }
 
 
-void Player::SetBombRayTexture(sf::Texture * texture)
-{
-	m_bombRayTexture = texture;
-}
-
-
 void Player::OnMoveKeyPressed(int x, int y)
 {
 	const float speed = 120;
@@ -46,28 +40,36 @@ void Player::OnMoveKeyPressed(int x, int y)
 }
 
 
-void Player::TryPlantingTheBomb()
+void Player::OnActionKeyPressed()
 {
 	if(m_bomb==nullptr)
 	{
 		m_bomb = new Bomb();
-		m_bomb->SetBombTexture(m_bombTexture);
-		m_bomb->SetRayTexture(m_bombRayTexture);
-		m_bomb->SetDetonationTime(sf::seconds(2.5f));
+		m_bombAnimator = new Animator();
+		m_bombAnimator->AddAnimationState("waitingForExplosion", *m_bombTextureAtlas, 0, m_bombTextureAtlas->GetCount() - 1);
+		m_bomb->SetAnimator(*m_bombAnimator, m_bombTextureAtlas->GetCellSizeX(), m_bombTextureAtlas->GetCellSizeY());
+		m_bomb->SetUpRay(m_bombRayTextureAtlas);
+		m_bomb->SetDetonationTime(sf::seconds(3.f));
 		m_bomb->SetRayOnScreenTime(sf::seconds(1));
 		m_bomb->SetPosition(GetPositionX(), GetPositionY());
 		m_bomb->SetLevelPointer(level);
 	}
 }
 
-void Player::SetBombTexture(sf::Texture * texture)
+void Player::SetUpBomb(TextureAtlas* atlasBomb, TextureAtlas* atlasRay)
 {
-	m_bombTexture = texture;
+	m_bombTextureAtlas = atlasBomb;
+	m_bombRayTextureAtlas = atlasRay;
 }
 
 
 void Player::SetLevelPointer(Level * level)
 {
+	if (level == nullptr)
+	{
+		std::cerr << "Level pointer is a null!" << std::endl;
+		exit(5);
+	}
 	this->level = level;
 }
 
@@ -86,7 +88,6 @@ std::vector<sf::FloatRect> Player::GetBombRaysColliders()
 
 void Player::CheckIsPlayerInBombRay(std::vector<sf::FloatRect>* bombRays)
 {
-	//a moze zamiast colliderow bomby sama bombe i uzyc metory isobjectinray?
 	if (m_bomb != nullptr)
 	{
 		if (m_bomb->IsObjectInRay(m_sprite.getGlobalBounds()))
@@ -94,12 +95,10 @@ void Player::CheckIsPlayerInBombRay(std::vector<sf::FloatRect>* bombRays)
 			reactWhenIsInBombRay();
 			//return;
 		}
-		//moze else? Albo zrobic return tam na gorze? zeby gracz dostawal reakcje na bombe tylko raz?
 		if (bombRays != nullptr)
 		{
 			for (int i = 0; i < bombRays->size(); i++)
 			{
-				//jak to w ogole dziala?????
 				if (bombRays[i][i].intersects(m_sprite.getGlobalBounds()))
 				{
 					reactWhenIsInBombRay();
@@ -128,7 +127,7 @@ void Player::Update(const float & dt)
 
 	if (m_bomb != nullptr)
 	{
-		m_bomb->Update();
+		m_bomb->Update(dt);
 
 		if (m_bomb->GetState() == Bomb::exploded)
 		{

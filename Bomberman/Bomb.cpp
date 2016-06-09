@@ -13,6 +13,21 @@ Bomb::~Bomb()
 {
 	for (int i = 0; i < m_rays.size(); i++)
 		delete m_rays[i];
+
+	delete m_animator;
+}
+
+void Bomb::SetAnimator(Animator & animator, size_t width, size_t height)
+{
+	float w = static_cast<float>(width);
+	float h = static_cast<float>(height);
+
+	float tileSize = 64; // HACK tmp only
+	m_animator = &animator;
+	m_animator->SetSprite(m_sprite);
+	m_animator->SetDelayBetweenFrames(1.f);
+	m_animator->ChangeActiveState("waitingForExplosion");
+	m_sprite.setOrigin(w / 2.f, h / 2.f);
 }
 
 void Bomb::SetDetonationTime(sf::Time time)
@@ -55,18 +70,6 @@ Bomb::State Bomb::GetState()
 	return m_state;
 }
 
-void Bomb::SetBombTexture(sf::Texture * texture)
-{
-	m_bombTexture = texture;
-	m_sprite.setTexture(*texture);
-	m_sprite.setOrigin(m_sprite.getGlobalBounds().width / 2.f, m_sprite.getGlobalBounds().height / 2.f);
-}
-
-void Bomb::SetRayTexture(sf::Texture * texture)
-{
-	m_rayTexture = texture;
-}
-
 void Bomb::SetPosition(int x, int y)
 {
 	x = m_positionInTilesCoordsX = x / TILE_SIZE;
@@ -77,13 +80,19 @@ void Bomb::SetPosition(int x, int y)
 
 }
 
+void Bomb::SetUpRay(TextureAtlas * atlas)
+{
+	m_rayTextureAtlas = atlas;
+}
+
 void Bomb::SetLevelPointer(Level * level)
 {
 	this->level = level;
 }
 
-void Bomb::Update()
+void Bomb::Update(const float & dt)
 {
+	m_animator->Animate(dt);
 	m_sprite.setPosition(GetPositionX(), GetPositionY());
 	m_positionInTilesCoordsX = GetPositionX() / TILE_SIZE; 
 	m_positionInTilesCoordsY = GetPositionY() / TILE_SIZE;
@@ -91,7 +100,7 @@ void Bomb::Update()
 	if (m_detonationClock.getElapsedTime() >= m_detonationTime && m_state < State::exploding)
 	{
 		m_state = State::exploding;
-		m_sprite.setTexture(*m_rayTexture);
+		//m_sprite.setTexture(*m_rayTexture);
 		explode();
 	}
 	else if (m_detonationClock.getElapsedTime() >= m_detonationTime + m_rayOnScreenTime && m_state < State::exploded)
@@ -101,6 +110,11 @@ void Bomb::Update()
         for(int i=0;i<m_tilesToDeleteAfterExplosion.size();i++)
             level->DestroyTile(m_tilesToDeleteAfterExplosion[i].first, m_tilesToDeleteAfterExplosion[i].second);
 	}
+
+
+	if (m_state == State::exploding)
+		for (int i = 0; i < m_rays.size(); i++)
+			m_rays[i]->Update(dt);
 
 }
 
@@ -128,8 +142,9 @@ void Bomb::explode()
 	for (int i = 0; i < m_rays.size(); i++)
 	{
 		m_rays[i] = new Ray(static_cast<Ray::Side>(i));
-
-		m_rays[i]->SetTexture(m_rayTexture);
+		m_rayAnimator = new Animator();
+		m_rayAnimator->AddAnimationState("explosion",*m_rayTextureAtlas, 0, m_rayTextureAtlas->GetCount() - 1);
+		m_rays[i]->SetAnimator(*m_rayAnimator);
 		m_rays[i]->SetPosition(GetPositionX(), GetPositionY());
 		m_rays[i]->SetSize(getRaySizeAfterCollisions(static_cast<Ray::Side>(i)));
 	}

@@ -31,6 +31,8 @@ private:
 
 	TextureAtlas m_atlasTerrain;
 	TextureAtlas m_atlasPlayer;
+	TextureAtlas m_atlasBomb;
+	TextureAtlas m_atlasBombRay;
 	
 
 	/// Draws all stuff on scene

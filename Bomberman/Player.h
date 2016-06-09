@@ -18,20 +18,14 @@ public:
 	/// <param name="texture">animator</param>
 	void SetAnimator(Animator& animator, size_t width, size_t height);
 	
-
-	/// Sets bomb ray texture
-	/// <param name="texture">texture of ray</param>
-	void SetBombRayTexture(sf::Texture * texture); // TODO: use animator
-	
-	
 	/// Sets the player direction, possible values: -1, 0, 1
 	/// <param name="x">direction x</param>
 	/// <param name="y">direction y</param>
 	void OnMoveKeyPressed(int x, int y);
 	
 	/// Sends the information about action key down (plant the bomb)
-	void TryPlantingTheBomb();
-	void SetBombTexture(sf::Texture * texture);
+	void OnActionKeyPressed();
+	void SetUpBomb(TextureAtlas* atlasBomb, TextureAtlas* atlasRay);
 	
 	void SetLevelPointer(Level * level);
 
@@ -49,8 +43,10 @@ private:
 	Animator* m_animator;
 
 	Bomb * m_bomb;
-	sf::Texture * m_bombTexture;
-	sf::Texture * m_bombRayTexture;
+	Animator* m_bombAnimator;
+	TextureAtlas* m_bombTextureAtlas;
+
+	TextureAtlas * m_bombRayTextureAtlas;
 
 	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const override;
 	void reactWhenIsInBombRay();

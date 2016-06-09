@@ -12,6 +12,14 @@ Ray::~Ray()
 {
 }
 
+void Ray::SetAnimator(Animator & animator)
+{
+	m_animator = &animator;
+	m_animator->SetSprite(m_sprite);
+	m_animator->SetDelayBetweenFrames(0.1f);
+	m_animator->ChangeActiveState("explosion");
+}
+
 bool Ray::Colliding(sf::FloatRect & floatRect)
 {
 	if (m_sprite.getGlobalBounds().intersects(floatRect))
@@ -20,12 +28,6 @@ bool Ray::Colliding(sf::FloatRect & floatRect)
 	}
 
 	return false;
-}
-
-void Ray::SetTexture(sf::Texture * texture)
-{
-	m_texture = texture;
-	m_sprite.setTexture(*m_texture);
 }
 
 int Ray::GetSide()
@@ -67,6 +69,11 @@ void Ray::SetSize(unsigned short size)
 void Ray::SetPosition(float x, float y)
 {
 	m_sprite.setPosition(x,y);
+}
+
+void Ray::Update(const float & dt)
+{
+	m_animator->Animate(dt);
 }
 
 sf::Drawable & Ray::GetSprite()
