@@ -4,7 +4,7 @@
 
 PhysicsEngine::PhysicsEngine()
 {
-	
+
 }
 
 
@@ -50,6 +50,7 @@ void PhysicsEngine::Update(const float & delta)
 	std::map<int, Player*>::iterator m_body;
 	for (m_body = m_players->begin(); m_body != m_players->end(); ++m_body)
 	{
+
 		setBodyPositionInfo(m_body->first);
 
 		m_body->second->SetMovementX(0);
@@ -59,7 +60,7 @@ void PhysicsEngine::Update(const float & delta)
 		float movementX = m_body->second->GetVelocityX()*delta;
 
 		if (movementX == 0 && movementY == 0)
-			return;
+			continue;
 
 		PhysicalBody bodyAfterYMovement = *m_body->second;
 		PhysicalBody bodyAfterXMovement = *m_body->second;
@@ -76,7 +77,6 @@ void PhysicsEngine::Update(const float & delta)
 		}
 		if (!isInMapBoundsY(bodyAfterYMovement))
 			moveInYAxis = false;
-
 		switch (m_playersInfo[m_body->first].state)
 		{
 		case OnSingleTile:
@@ -230,7 +230,7 @@ void PhysicsEngine::setBodyPositionNextToBoundX(PhysicalBody * body)
 {
 	if (fabs(body->GetPositionX() - m_physicalLevel[0][0]->GetPositionX()) >
 		fabs(body->GetPositionX() - m_physicalLevel[m_level->GetHeight() - 1][m_level->GetWidth() - 1]->GetPositionX()))
-		body->SetPositionX(m_physicalLevel[m_level->GetHeight() - 1][m_level->GetWidth() - 1]->GetPositionX() 
+		body->SetPositionX(m_physicalLevel[m_level->GetHeight() - 1][m_level->GetWidth() - 1]->GetPositionX()
 			+ m_physicalLevel[m_level->GetHeight() - 1][m_level->GetWidth() - 1]->GetSizeX() /2.f - body->GetSizeX() / 2.f - 0.1f);
 	else
 		body->SetPositionX(m_physicalLevel[0][0]->GetPositionX() - m_physicalLevel[0][0]->GetSizeX() / 2.f + body->GetSizeX() / 2.f + 0.1f);
