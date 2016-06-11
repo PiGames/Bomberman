@@ -290,3 +290,6 @@ paket-files/
 *.depend
 *.layout
 cb.bmp
+
+#Compiled project
+Bomberman/Bomberman
