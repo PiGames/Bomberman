@@ -18,14 +18,15 @@ Game::~Game()
 void Game::Run()
 {
 	/* TMP INIT BEGIN*/
-	const int RESOURCE_COUNT = 5;
+	const int RESOURCE_COUNT = 6;
 	std::string resourcePaths[RESOURCE_COUNT] =
 	{
 		"data/sample_level.txt",
 		"data/sample_terraintextures.png",
 		"data/sample_playertextures.png",
 		"data/sample_bombtextures.png",
-		"data/sample_raytextures.png"
+		"data/sample_raytextures.png",
+		"data/sample_playertextures2.png"
 	};
 	if (!m_level.LoadFromFile(resourcePaths[0]))
 	{
@@ -56,11 +57,16 @@ void Game::Run()
 		std::cerr << "[!] Cannot load resource: '" << resourcePaths[4] << std::endl;
 		std::exit(1);
 	}
-
+	if (!m_atlasPlayer2.LoadFromFile(resourcePaths[5]))
+	{
+		std::cerr << "[!] Cannot load resource: '" << resourcePaths[5] << std::endl;
+		std::exit(1);
+	}
 
 	// setting up resources
 	m_atlasTerrain.TrimByGrid(64, 64);
 	m_atlasPlayer.TrimByGrid(32, 32);
+	m_atlasPlayer2.TrimByGrid(32, 32);
 	m_atlasBomb.TrimByGrid(64, 64);
 	m_atlasBombRay.TrimByGrid(64, 64);
 	
@@ -75,28 +81,28 @@ void Game::Run()
 
 	m_localPlayer.SetAnimator(playerAnimator, m_atlasPlayer.GetCellSizeX(), m_atlasPlayer.GetCellSizeY());
 	playerAnimator.ChangeActiveState("default");
+
+	// setting up player2
+	Animator playerAnimator2;
+	playerAnimator2.AddAnimationState("default", m_atlasPlayer2, 0, m_atlasPlayer2.GetCount() - 1);
+	playerAnimator2.SetLoop(true);
+
+	m_localPlayer2.SetAnimator(playerAnimator2, m_atlasPlayer2.GetCellSizeX(), m_atlasPlayer2.GetCellSizeY());
+	playerAnimator2.ChangeActiveState("default");
 	
 	
 	// setting up bomb
 	m_localPlayer.SetUpBomb(&m_atlasBomb, &m_atlasBombRay);
 	m_localPlayer.SetLevelPointer(&m_level);//HACK only temporary, we'll figure something out to properly separate layer's (server and client) 
 
+											// setting up bomb
+	m_localPlayer2.SetUpBomb(&m_atlasBomb, &m_atlasBombRay);
+	m_localPlayer2.SetLevelPointer(&m_level);
 
-	// ray texture 
-	//sf::Texture bombRayTexture;
-	//const std::string bombRayTexturePath = "data/ray.png";
-	//if (!bombRayTexture.loadFromFile(bombRayTexturePath))
-	//{
-	//	std::cerr << "[!] Cannot load file: \"" << bombRayTexturePath << "\"Exiting...\n";
-	//	m_exit = true;
-	//	std::exit(4);
-	//}
-	//bombRayTexture.setRepeated(true);
-	//m_localPlayer.SetBombRayTexture(&bombRayTexture);
-	/* TMP INIT END*/
-
-
-	m_physicsEngine.Init(m_level, m_localPlayer);
+	std::map<int, Player*> players;
+	players.emplace(6, &m_localPlayer);
+	players.emplace(5, &m_localPlayer2);
+	m_physicsEngine.Init(m_level, &players);
 
 	m_exit = false;
 	sf::Clock clock;
@@ -122,6 +128,7 @@ void Game::draw()
 
 	m_window.draw(m_levelView);
 	m_window.draw(m_localPlayer);
+	m_window.draw(m_localPlayer2);
 
 
 	m_window.display();
@@ -131,8 +138,11 @@ void Game::draw()
 void Game::update(float deltaTime)
 {
 	m_physicsEngine.Update(deltaTime);
+	m_localPlayer2.Update(deltaTime);
 	m_localPlayer.Update(deltaTime);
-	m_localPlayer.CheckIsPlayerInBombRay(nullptr);//It should be given a ptr to std::vector filled with bombRays
+	//m_localPlayer.CheckIsPlayerInBombRay(nullptr);
+	//m_localPlayer2.CheckIsPlayerInBombRay(nullptr);
+	//It should be given a ptr to std::vector filled with bombRays
 	//until only singlplayer is available, there is no need of changing collisions system 
 	//it will be completely rewritten anyway
 }
@@ -145,24 +155,44 @@ void Game::processEvents()
 
 	sf::Event event;
 	
-	int x = 0;
-	int y = 0;
+	int x1 = 0;
+	int y1 = 0;
 
 	// HACK 1st iteration only, add class Input later
 	// handle horizontal axis
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		x = -1;
+		x1 = -1;
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		x = 1;
+		x1 = 1;
 	
 	// handle vertical axis
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		y = -1;
+		y1 = -1;
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		y = 1;
+		y1 = 1;
 
-	m_localPlayer.OnMoveKeyPressed(x, y);
+	
 
+
+	int x2 = 0;
+	int y2 = 0;
+
+	// HACK 1st iteration only, add class Input later
+	// handle horizontal axis
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		x2 = -1;
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		x2 = 1;
+
+	// handle vertical axis
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+		y2 = -1;
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		y2 = 1;
+
+
+	m_localPlayer2.OnMoveKeyPressed(x2, y2);
+	m_localPlayer.OnMoveKeyPressed(x1, y1);
 	
 	while (m_window.pollEvent(event))
 	{
@@ -171,9 +201,10 @@ void Game::processEvents()
 			m_exit = true;
 			break;
 		}
-		//sf::Keyboard::Key actionKey = sf::Keyboard::Space; //Sets action key which is planting the bomb
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
 			m_localPlayer.OnActionKeyPressed();
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::LControl)
+			m_localPlayer2.OnActionKeyPressed();
 
 		// handle more events
 	}

@@ -27,10 +27,12 @@ private:
 	Level m_level;
 	LevelView m_levelView;
 	Player m_localPlayer;
+	Player m_localPlayer2;
 	PhysicsEngine m_physicsEngine;
 
 	TextureAtlas m_atlasTerrain;
 	TextureAtlas m_atlasPlayer;
+	TextureAtlas m_atlasPlayer2;
 	TextureAtlas m_atlasBomb;
 	TextureAtlas m_atlasBombRay;
 	

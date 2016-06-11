@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include <math.h>
 #include <iostream>
+#include "Player.h"
 
 class PhysicsEngine
 {
@@ -17,7 +18,7 @@ public:
 	/// Sets current level data and reference to player
 	/// <param name="level">level data</param>
 	/// <param name="player">player's body</param>
-	void Init(Level& level, PhysicalBody& player /* HACK 1st iteration only, add map later */);
+	void Init(Level& level, std::map<int, Player*>* players);
 
 	/// Check collisions, update speeds, ...
 	/// <param name="delta">delta time in ms</param>
@@ -44,12 +45,12 @@ private:
 		unsigned int centerY;
 	};
 	///Physical player representation
-	PhysicalBody* m_body;
+	std::map<int,Player*>* m_players;
 
-	MovableBodyInfo m_bodyInfo;
+	std::map<int ,MovableBodyInfo> m_playersInfo;
 
 
-	void setBodyPositionInfo(PhysicalBody* body, MovableBodyInfo & bodyInfo);
+	void setBodyPositionInfo(int key);
 
 	void setBodyPositionNextToAnotherBodyInAxisY(PhysicalBody * bodyToSetPostition, PhysicalBody * referenceBody);
 
