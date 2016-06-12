@@ -1,6 +1,11 @@
 #include "Ray.h"
 
 
+void Ray::draw(sf::RenderTarget & target, sf::RenderStates states) const
+{
+	target.draw(m_sprite);
+}
+
 Ray::Ray(Side side)
 	:m_side(side)
 {
@@ -20,22 +25,12 @@ void Ray::SetAnimator(Animator & animator)
 	m_animator->ChangeActiveState("explosion");
 }
 
-bool Ray::Colliding(sf::FloatRect & floatRect)
-{
-	if (m_sprite.getGlobalBounds().intersects(floatRect))
-	{
-		return true;
-	}
-
-	return false;
-}
-
 int Ray::GetSide()
 {
 	return m_side;
 }
 
-void Ray::SetSize(unsigned short size)
+void Ray::SetRaySpriteSize(unsigned short size)
 {
 	m_size = size;
 	m_sprite.setTextureRect(sf::IntRect(0, 0, m_size*TILE_SIZE,TILE_SIZE));
@@ -60,10 +55,10 @@ void Ray::SetSize(unsigned short size)
 		break;
 	default:
 		break;
-	}
+	}	
 
-
-	
+	SetSize(m_sprite.getGlobalBounds().width, m_sprite.getGlobalBounds().height);
+	SetPosition(m_sprite.getPosition().x, m_sprite.getPosition().y);
 }
 
 void Ray::SetPosition(float x, float y)
@@ -73,16 +68,6 @@ void Ray::SetPosition(float x, float y)
 
 void Ray::Update(const float & dt)
 {
-	//m_animator->Animate(dt);
-}
-
-sf::Drawable & Ray::GetSprite()
-{
-	return m_sprite;
-}
-
-sf::FloatRect Ray::GetCollider()
-{
-	return m_sprite.getGlobalBounds();
+	m_animator->Animate(dt);
 }
 

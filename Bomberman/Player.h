@@ -29,9 +29,9 @@ public:
 	
 	void SetLevelPointer(Level * level);
 
-	std::vector<sf::FloatRect> GetBombRaysColliders();
+	std::vector<PhysicalBody> GetBombRaysColliders();
 	//to chyba powinno byc prywatne
-	void CheckIsPlayerInBombRay(std::vector<sf::FloatRect> * bombRays);
+	void CheckIsPlayerInBombRay(std::vector<PhysicalBody> * bombRays);
 
 	/// Update player position, update states etc...
 	/// <param name="dt">delta time in seconds</param>

@@ -32,10 +32,10 @@ public:
 	/// <param name="time"> time in seconds</param>
 	void SetRayOnScreenTime(sf::Time time);
 	///Check is anything colliding with rays
-	/// <param name="floatRect"> collider of an object</param>
+	/// <param name="physicalBody"> collider of an object</param>
 	/// <returns>true when is collision</returns>
 	/// <returns>false when isn't collision</returns>
-	bool IsObjectInRay(sf::FloatRect floatRect);
+	bool IsObjectInRay(PhysicalBody & physicalBody);
 	/// <returns>true when bomb exploded and rays are on</returns>
 	/// <returns>false if not</returns>
 	Bomb::State GetState();
@@ -49,7 +49,7 @@ public:
 
 	void Update(const float & dt);
 
-	std::vector<sf::FloatRect> GetBombRaysColliders();
+	std::vector<PhysicalBody> GetBombRaysColliders();
 
 private:
 	Animator* m_animator;

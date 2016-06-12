@@ -74,19 +74,19 @@ void Player::SetLevelPointer(Level * level)
 }
 
 
-std::vector<sf::FloatRect> Player::GetBombRaysColliders()
+std::vector<PhysicalBody> Player::GetBombRaysColliders()
 {
 	if (m_bomb != nullptr && m_bomb->GetState() == Bomb::exploding)
 		return m_bomb->GetBombRaysColliders();
-	else return std::vector<sf::FloatRect>();//this will be changed when whole collisions system will be rewritten - don't worry Szymon :)
+	else return std::vector<PhysicalBody>();//this will be changed when whole collisions system will be rewritten - don't worry Szymon :)
 }
 
 
-void Player::CheckIsPlayerInBombRay(std::vector<sf::FloatRect>* bombRays)
+void Player::CheckIsPlayerInBombRay(std::vector<PhysicalBody>* bombRays)
 {
 	if (m_bomb != nullptr)
 	{
-		if (m_bomb->IsObjectInRay(m_sprite.getGlobalBounds()))
+		if (m_bomb->IsObjectInRay(*this))
 		{
 			reactWhenIsInBombRay();
 			//return;
@@ -95,7 +95,7 @@ void Player::CheckIsPlayerInBombRay(std::vector<sf::FloatRect>* bombRays)
 		{
 			for (unsigned int i = 0; i < bombRays->size(); i++)
 			{
-				if (bombRays[i][i].intersects(m_sprite.getGlobalBounds()))
+				if (bombRays[i][i].IsCollision(*this))
 				{
 					reactWhenIsInBombRay();
 					//return;

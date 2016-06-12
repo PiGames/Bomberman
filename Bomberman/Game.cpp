@@ -146,7 +146,15 @@ void Game::update(float deltaTime)
 	for (unsigned i = 0; i < m_players.size(); ++i)
 	{
 		m_players[i].Update(deltaTime);
-		m_players[i].CheckIsPlayerInBombRay(nullptr);
+		if (!i - 1 < 0)
+		{
+			m_players[i].CheckIsPlayerInBombRay(&m_players[i-1].GetBombRaysColliders());
+		}
+		else
+		{
+			m_players[i].CheckIsPlayerInBombRay(&m_players[i].GetBombRaysColliders());
+		}
+
 	}
 	//It should be given a ptr to std::vector filled with bombRays
 	//until only singlplayer is available, there is no need of changing collisions system

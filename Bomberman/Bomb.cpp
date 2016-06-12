@@ -40,13 +40,13 @@ void Bomb::SetRayOnScreenTime(sf::Time time)
 	m_rayOnScreenTime = time;
 }
 
-bool Bomb::IsObjectInRay(sf::FloatRect floatRect)
+bool Bomb::IsObjectInRay(PhysicalBody & physicalBody)
 {
 	if (m_rays[0] != nullptr)
 	{
 		if (m_state == exploding)
 		{
-			if (m_sprite.getGlobalBounds().intersects(floatRect))
+			if (IsCollision(*this))
 			{
 				return true;
 			}
@@ -54,7 +54,7 @@ bool Bomb::IsObjectInRay(sf::FloatRect floatRect)
 
 		for (unsigned int i = 0; i < m_rays.size(); i++)
 		{
-			if (m_rays[i]->Colliding(floatRect))
+			if (m_rays[i]->IsCollision(physicalBody))
 			{
 				return true;
 			}
@@ -119,17 +119,17 @@ void Bomb::Update(const float & dt)
 }
 
 
-std::vector<sf::FloatRect> Bomb::GetBombRaysColliders()
+std::vector<PhysicalBody> Bomb::GetBombRaysColliders()
 {
-	std::vector<sf::FloatRect> vec;
+	std::vector<PhysicalBody> vec;
 
 	if (m_rays[0] != nullptr)
 	{
-		vec.push_back(m_sprite.getGlobalBounds());
+		vec.push_back(*this);
 
 		for (unsigned int i = 0; i < m_rays.size(); i++)
 		{
-			vec.push_back(m_rays[i]->GetCollider());
+			vec.push_back(*m_rays[i]);
 		}
 	}
 
@@ -146,7 +146,7 @@ void Bomb::explode()
 		m_rayAnimator->AddAnimationState("explosion",*m_rayTextureAtlas, 0, m_rayTextureAtlas->GetCount() - 1);
 		m_rays[i]->SetAnimator(*m_rayAnimator);
 		m_rays[i]->SetPosition(GetPositionX(), GetPositionY());
-		m_rays[i]->SetSize(getRaySizeAfterCollisions(static_cast<Ray::Side>(i)));
+		m_rays[i]->SetRaySpriteSize(getRaySizeAfterCollisions(static_cast<Ray::Side>(i)));
 	}
 }
 
@@ -219,7 +219,7 @@ void Bomb::draw(sf::RenderTarget & target, sf::RenderStates states) const
 	{
 		for (unsigned int i = 0; i < m_rays.size(); ++i)
 		{
-			target.draw(m_rays[i]->GetSprite());
+			target.draw(*m_rays[i]);
 		}
 	}
 }
