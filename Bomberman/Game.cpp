@@ -148,11 +148,25 @@ void Game::update(float deltaTime)
 		m_players[i].Update(deltaTime);
 		if (!i - 1 < 0)
 		{
-			m_players[i].CheckIsPlayerInBombRay(&m_players[i-1].GetBombRaysColliders());
+			for (short j = 0; j < m_players[i - 1].GetBombRaysColliders().size(); ++j)
+			{
+				if (m_players[i].IsCollision(m_players[i - 1].GetBombRaysColliders()[j]))
+				{
+					std::cout << "[DEBUG] Player " << i << " is colliding with bomb ray\n";
+					m_players[i].ReactWhenIsInBombRay();
+				}
+			}
 		}
 		else
 		{
-			m_players[i].CheckIsPlayerInBombRay(&m_players[i].GetBombRaysColliders());
+			for (short j = 0; j < m_players[i].GetBombRaysColliders().size(); ++j)
+			{
+				if (m_players[i].IsCollision(m_players[i].GetBombRaysColliders()[j]))
+				{
+					std::cout << "[DEBUG] Player " << i << " is colliding with bomb ray\n";
+					m_players[i].ReactWhenIsInBombRay();
+				}
+			}
 		}
 
 	}

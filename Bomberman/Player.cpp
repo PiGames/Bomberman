@@ -82,31 +82,6 @@ std::vector<PhysicalBody> Player::GetBombRaysColliders()
 }
 
 
-void Player::CheckIsPlayerInBombRay(std::vector<PhysicalBody>* bombRays)
-{
-	if (m_bomb != nullptr)
-	{
-		if (m_bomb->IsObjectInRay(*this))
-		{
-			reactWhenIsInBombRay();
-			//return;
-		}
-		if (bombRays != nullptr)
-		{
-			for (unsigned int i = 0; i < bombRays->size(); i++)
-			{
-				if (bombRays[i][i].IsCollision(*this))
-				{
-					reactWhenIsInBombRay();
-					//return;
-				}
-			}
-		}
-	}
-}
-
-
-
 void Player::Update(const float & dt)
 {
 	m_animator->Animate(dt);
@@ -143,8 +118,8 @@ void Player::draw(sf::RenderTarget & target, sf::RenderStates states) const
 }
 
 
-void Player::reactWhenIsInBombRay()
+void Player::ReactWhenIsInBombRay()
 {
 	//Animation etc
-	std::cout << "\r[DEBUG] Player is colliding with bomb ray";
+	//std::cout << "\r[DEBUG] Player is colliding with bomb ray";
 }

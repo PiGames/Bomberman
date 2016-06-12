@@ -30,12 +30,12 @@ public:
 	void SetLevelPointer(Level * level);
 
 	std::vector<PhysicalBody> GetBombRaysColliders();
-	//to chyba powinno byc prywatne
-	void CheckIsPlayerInBombRay(std::vector<PhysicalBody> * bombRays);
 
 	/// Update player position, update states etc...
 	/// <param name="dt">delta time in seconds</param>
 	void Update(const float& dt);
+
+	void ReactWhenIsInBombRay();
 
 private:
 	Level * level;
@@ -49,6 +49,5 @@ private:
 	TextureAtlas * m_bombRayTextureAtlas;
 
 	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const override;
-	void reactWhenIsInBombRay();
 };
 
