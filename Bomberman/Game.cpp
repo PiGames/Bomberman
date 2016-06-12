@@ -7,6 +7,11 @@ Game::Game(size_t width, size_t height)
 	m_windowHeight = height;
 	m_window.create(sf::VideoMode(static_cast<int>(m_windowWidth), static_cast<int>(m_windowHeight)), "Bomberman | Created by PiGames", sf::Style::Close);
 	m_window.setFramerateLimit(60);
+
+	//hmmm /Conrad
+	Player p;
+	m_players.push_back(p);
+	m_players.push_back(p);
 }
 
 
@@ -79,7 +84,7 @@ void Game::Run()
 	playerAnimator.AddAnimationState("default", m_atlasPlayer, 0, m_atlasPlayer.GetCount() - 1);
 	playerAnimator.SetLoop(true);
 
-	m_localPlayer.SetAnimator(playerAnimator, m_atlasPlayer.GetCellSizeX(), m_atlasPlayer.GetCellSizeY());
+	m_players[0].SetAnimator(playerAnimator, m_atlasPlayer.GetCellSizeX(), m_atlasPlayer.GetCellSizeY());
 	playerAnimator.ChangeActiveState("default");
 
 	// setting up player2
@@ -87,21 +92,19 @@ void Game::Run()
 	playerAnimator2.AddAnimationState("default", m_atlasPlayer2, 0, m_atlasPlayer2.GetCount() - 1);
 	playerAnimator2.SetLoop(true);
 
-	m_localPlayer2.SetAnimator(playerAnimator2, m_atlasPlayer2.GetCellSizeX(), m_atlasPlayer2.GetCellSizeY());
+	m_players[1].SetAnimator(playerAnimator2, m_atlasPlayer2.GetCellSizeX(), m_atlasPlayer2.GetCellSizeY());
 	playerAnimator2.ChangeActiveState("default");
 
-
-	// setting up bomb
-	m_localPlayer.SetUpBomb(&m_atlasBomb, &m_atlasBombRay);
-	m_localPlayer.SetLevelPointer(&m_level);//HACK only temporary, we'll figure something out to properly separate layer's (server and client)
-
-											// setting up bomb
-	m_localPlayer2.SetUpBomb(&m_atlasBomb, &m_atlasBombRay);
-	m_localPlayer2.SetLevelPointer(&m_level);
-
-    std::map<int, PhysicalBody*> players;
-	players.emplace(6, &m_localPlayer);
-	players.emplace(5, &m_localPlayer2);
+	
+	// setting up bomb (and something for physic engine) 
+	std::map<int, PhysicalBody*> players;
+	for (unsigned i = 0; i < m_players.size(); ++i)
+	{
+		m_players[i].SetUpBomb(&m_atlasBomb, &m_atlasBombRay);
+		m_players[i].SetLevelPointer(&m_level);//HACK only temporary, we'll figure something out to properly separate layer's (server and client)
+		players.emplace(i, &m_players[i]);
+	}
+	
 	m_physicsEngine.Init(m_level, &players);
 
 	m_exit = false;
@@ -127,9 +130,11 @@ void Game::draw()
 	m_window.clear();
 
 	m_window.draw(m_levelView);
-	m_window.draw(m_localPlayer);
-	m_window.draw(m_localPlayer2);
 
+	for (unsigned i = 0; i < m_players.size(); ++i)
+	{
+		m_window.draw(m_players[i]);
+	}
 
 	m_window.display();
 }
@@ -138,10 +143,11 @@ void Game::draw()
 void Game::update(float deltaTime)
 {
 	m_physicsEngine.Update(deltaTime);
-	m_localPlayer2.Update(deltaTime);
-	m_localPlayer.Update(deltaTime);
-	m_localPlayer.CheckIsPlayerInBombRay(nullptr);
-	m_localPlayer2.CheckIsPlayerInBombRay(nullptr);
+	for (unsigned i = 0; i < m_players.size(); ++i)
+	{
+		m_players[i].Update(deltaTime);
+		m_players[i].CheckIsPlayerInBombRay(nullptr);
+	}
 	//It should be given a ptr to std::vector filled with bombRays
 	//until only singlplayer is available, there is no need of changing collisions system
 	//it will be completely rewritten anyway
@@ -194,8 +200,9 @@ void Game::processEvents()
 		y2 = 1;
     }
 
-	m_localPlayer2.OnMoveKeyPressed(x2, y2);
-	m_localPlayer.OnMoveKeyPressed(x1, y1);
+	// I have no idea how to make it in loop /Conrad
+	m_players[0].OnMoveKeyPressed(x2, y2);
+	m_players[1].OnMoveKeyPressed(x1, y1);
 
 	while (m_window.pollEvent(event))
 	{
@@ -205,9 +212,9 @@ void Game::processEvents()
 			break;
 		}
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
-			m_localPlayer.OnActionKeyPressed();
+			m_players[0].OnActionKeyPressed();
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::LControl)
-			m_localPlayer2.OnActionKeyPressed();
+			m_players[1].OnActionKeyPressed();
 
 		// handle more events
 	}

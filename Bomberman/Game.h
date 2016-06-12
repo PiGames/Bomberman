@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <vector>
 
 #include "Level.h"
 #include "LevelView.h"
@@ -26,9 +27,7 @@ private:
 
 	Level m_level;
 	LevelView m_levelView;
-	Player m_localPlayer;
-	Player m_localPlayer2;
-
+	std::vector<Player> m_players;
 
 	PhysicsEngine m_physicsEngine;
 
