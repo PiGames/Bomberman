@@ -35,7 +35,11 @@ public:
 	/// <param name="dt">delta time in seconds</param>
 	void Update(const float& dt);
 
-	void ReactWhenIsInBombRay();
+	void OnBombCollision();
+
+	bool isBombExplosion();
+
+	PhysicalBody GetRay(unsigned int side);
 
 private:
 	Level * level;

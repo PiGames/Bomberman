@@ -100,7 +100,6 @@ void Bomb::Update(const float & dt)
 	if (m_detonationClock.getElapsedTime() >= m_detonationTime && m_state < State::exploding)
 	{
 		m_state = State::exploding;
-		//m_sprite.setTexture(*m_rayTexture);
 		explode();
 	}
 	else if (m_detonationClock.getElapsedTime() >= m_detonationTime + m_rayOnScreenTime && m_state < State::exploded)
@@ -118,23 +117,11 @@ void Bomb::Update(const float & dt)
 
 }
 
-
-std::vector<PhysicalBody> Bomb::GetBombRaysColliders()
+PhysicalBody Bomb::GetRayPhysicalBody(unsigned int side)
 {
-	std::vector<PhysicalBody> vec;
-
-	if (m_rays[0] != nullptr)
-	{
-		vec.push_back(*this);
-
-		for (unsigned int i = 0; i < m_rays.size(); i++)
-		{
-			vec.push_back(*m_rays[i]);
-		}
-	}
-
-	return vec;
+	return static_cast<PhysicalBody>(*(m_rays[side]));
 }
+
 
 void Bomb::explode()
 {

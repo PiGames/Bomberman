@@ -40,34 +40,41 @@ void Ray::SetRaySpriteSize(unsigned short size)
 	case Ray::Up:
 		m_sprite.setPosition(m_sprite.getPosition().x,m_sprite.getPosition().y - TILE_SIZE/2);
 		m_sprite.setRotation(270);
+		SetSize(TILE_SIZE, TILE_SIZE*size);
+		PhysicalBody::SetPositionY(GetPositionY()+ (TILE_SIZE*size)/2);
 		break;
 	case Ray::Down:
 		m_sprite.setPosition(m_sprite.getPosition().x, m_sprite.getPosition().y + TILE_SIZE/2);
 		m_sprite.setRotation(90);
+		SetSize(TILE_SIZE, TILE_SIZE*size);
+		PhysicalBody::SetPositionY(GetPositionY() - (TILE_SIZE*size) / 2);
 		break;
 	case Ray::Left:
 		m_sprite.setPosition(m_sprite.getPosition().x - TILE_SIZE/2, m_sprite.getPosition().y );
 		m_sprite.setRotation(180);
+		SetSize(TILE_SIZE*size, TILE_SIZE);
+		PhysicalBody::SetPositionX(GetPositionX() - (TILE_SIZE*size) / 2);
 		break;
 	case Ray::Right:
 		m_sprite.setPosition(m_sprite.getPosition().x + TILE_SIZE/2, m_sprite.getPosition().y);
-		
+		SetSize(TILE_SIZE*size, TILE_SIZE);
+		PhysicalBody::SetPositionX(GetPositionX() + (TILE_SIZE*size) / 2);
 		break;
 	default:
 		break;
 	}	
-
-	SetSize(m_sprite.getGlobalBounds().width, m_sprite.getGlobalBounds().height);
-	SetPosition(m_sprite.getPosition().x, m_sprite.getPosition().y);
+	
 }
 
 void Ray::SetPosition(float x, float y)
 {
 	m_sprite.setPosition(x,y);
+	PhysicalBody::SetPositionX(x);
+	PhysicalBody::SetPositionY(y);
 }
 
 void Ray::Update(const float & dt)
 {
-	m_animator->Animate(dt);
+	//m_animator->Animate(dt);
 }
 

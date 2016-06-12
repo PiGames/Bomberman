@@ -49,7 +49,7 @@ public:
 
 	void Update(const float & dt);
 
-	std::vector<PhysicalBody> GetBombRaysColliders();
+	PhysicalBody GetRayPhysicalBody(unsigned int side);
 
 private:
 	Animator* m_animator;

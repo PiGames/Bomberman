@@ -74,14 +74,6 @@ void Player::SetLevelPointer(Level * level)
 }
 
 
-std::vector<PhysicalBody> Player::GetBombRaysColliders()
-{
-	if (m_bomb != nullptr && m_bomb->GetState() == Bomb::exploding)
-		return m_bomb->GetBombRaysColliders();
-	else return std::vector<PhysicalBody>();//this will be changed when whole collisions system will be rewritten - don't worry Szymon :)
-}
-
-
 void Player::Update(const float & dt)
 {
 	m_animator->Animate(dt);
@@ -118,8 +110,18 @@ void Player::draw(sf::RenderTarget & target, sf::RenderStates states) const
 }
 
 
-void Player::ReactWhenIsInBombRay()
+void Player::OnBombCollision()
 {
 	//Animation etc
 	//std::cout << "\r[DEBUG] Player is colliding with bomb ray";
+}
+
+bool Player::isBombExplosion()
+{
+	return !(m_bomb == nullptr || m_bomb->GetState() != Bomb::exploding);
+}
+
+PhysicalBody Player::GetRay(unsigned int side)
+{
+	return m_bomb->GetRayPhysicalBody(side);
 }

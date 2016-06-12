@@ -143,36 +143,25 @@ void Game::draw()
 void Game::update(float deltaTime)
 {
 	m_physicsEngine.Update(deltaTime);
-	for (unsigned i = 0; i < m_players.size(); ++i)
+
+	std::vector<PhysicalBody> rays;
+
+	for (unsigned int i = 0; i < m_players.size(); ++i)
 	{
 		m_players[i].Update(deltaTime);
-		if (!i - 1 < 0)
-		{
-			for (short j = 0; j < m_players[i - 1].GetBombRaysColliders().size(); ++j)
-			{
-				if (m_players[i].IsCollision(m_players[i - 1].GetBombRaysColliders()[j]))
-				{
-					std::cout << "[DEBUG] Player " << i << " is colliding with bomb ray\n";
-					m_players[i].ReactWhenIsInBombRay();
-				}
-			}
-		}
-		else
-		{
-			for (short j = 0; j < m_players[i].GetBombRaysColliders().size(); ++j)
-			{
-				if (m_players[i].IsCollision(m_players[i].GetBombRaysColliders()[j]))
-				{
-					std::cout << "[DEBUG] Player " << i << " is colliding with bomb ray\n";
-					m_players[i].ReactWhenIsInBombRay();
-				}
-			}
-		}
 
+		if (m_players[i].isBombExplosion())
+			for (int j = 0; j < 4; j++)
+				rays.push_back(m_players[i].GetRay(j));	
 	}
-	//It should be given a ptr to std::vector filled with bombRays
-	//until only singlplayer is available, there is no need of changing collisions system
-	//it will be completely rewritten anyway
+
+	for (unsigned int i = 0; i < m_players.size(); ++i)
+		for (unsigned int j = 0; j < rays.size(); ++j)
+			if (rays[j].IsCollision(m_players[i]))
+			{
+				std::cout << "[DEBUG] Player " << i << " is colliding with bomb ray\n";
+				m_players[i].OnBombCollision();
+			}
 }
 
 
@@ -182,49 +171,37 @@ void Game::processEvents()
 		return; // if exiting: skip event processing!
 
 	sf::Event event;
-
-	int x1 = 0;
-	int y1 = 0;
+	std::pair<int,int> input[2];
 
 	// HACK 1st iteration only, add class Input later
 	// handle horizontal axis
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		x1 = -1;
+		input[0].first = -1;
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		x1 = 1;
+		input[0].first = 1;
 
 	// handle vertical axis
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		y1 = -1;
+		input[0].second = -1;
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-     {
-		y1 = 1;
-     }
-
-
-
-	int x2 = 0;
-	int y2 = 0;
-
-	// HACK 1st iteration only, add class Input later
+		 input[0].second = 1;
+    
 	// handle horizontal axis
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		x2 = -1;
+		input[1].first = -1;
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-	{
-		x2 = 1;
-    }
+		input[1].first = 1;
+   
 	// handle vertical axis
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		y2 = -1;
+		input[1].second = -1;
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-	{
-		y2 = 1;
-    }
+		input[1].second = 1;
 
-	// I have no idea how to make it in loop /Conrad
-	m_players[0].OnMoveKeyPressed(x2, y2);
-	m_players[1].OnMoveKeyPressed(x1, y1);
+
+    for(int i=0;i<2;i++)
+	m_players[i].OnMoveKeyPressed(input[i].first, input[i].second);
+
 
 	while (m_window.pollEvent(event))
 	{
