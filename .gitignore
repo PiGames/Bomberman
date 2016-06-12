@@ -293,3 +293,6 @@ cb.bmp
 
 #paint.net
 *.pdn
+
+#Compiled project
+Bomberman/Bomberman

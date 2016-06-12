@@ -28,6 +28,8 @@ private:
 	LevelView m_levelView;
 	Player m_localPlayer;
 	Player m_localPlayer2;
+
+
 	PhysicsEngine m_physicsEngine;
 
 	TextureAtlas m_atlasTerrain;
@@ -35,7 +37,7 @@ private:
 	TextureAtlas m_atlasPlayer2;
 	TextureAtlas m_atlasBomb;
 	TextureAtlas m_atlasBombRay;
-	
+
 
 	/// Draws all stuff on scene
 	void draw();
@@ -43,7 +45,7 @@ private:
 	/// Updates state of all objects, called before draw()
 	/// <param name="deltaTime">passed time from last draw frame in seconds</param>
 	void update(float deltaTime);
-	
+
 	/// Process all events
 	void processEvents();
 };

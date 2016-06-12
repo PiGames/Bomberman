@@ -99,7 +99,7 @@ void Game::Run()
 	m_localPlayer2.SetUpBomb(&m_atlasBomb, &m_atlasBombRay);
 	m_localPlayer2.SetLevelPointer(&m_level);
 
-	std::map<int, Player*> players;
+    std::map<int, PhysicalBody*> players;
 	players.emplace(6, &m_localPlayer);
 	players.emplace(5, &m_localPlayer2);
 	m_physicsEngine.Init(m_level, &players);

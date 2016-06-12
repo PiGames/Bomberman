@@ -16,12 +16,12 @@ PhysicsEngine::~PhysicsEngine()
 }
 
 
-void PhysicsEngine::Init(Level & level, std::map<int,Player*>* players)
+void PhysicsEngine::Init(Level & level, std::map<int,PhysicalBody*>* players)
 {
 	m_level = &level;
 	m_players = players;
 
-	std::map<int, Player*>::iterator m_body;
+	std::map<int, PhysicalBody*>::iterator m_body;
 	for (m_body = m_players->begin(); m_body != m_players->end(); ++m_body)
 	{
 		std::cout << "Player: " << m_body->first << std::endl;
@@ -47,7 +47,7 @@ void PhysicsEngine::Init(Level & level, std::map<int,Player*>* players)
 
 void PhysicsEngine::Update(const float & delta)
 {
-	std::map<int, Player*>::iterator m_body;
+	std::map<int, PhysicalBody*>::iterator m_body;
 	for (m_body = m_players->begin(); m_body != m_players->end(); ++m_body)
 	{
 
