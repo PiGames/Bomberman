@@ -23,8 +23,7 @@ Game::~Game()
 void Game::Run()
 {
 	/* TMP INIT BEGIN*/
-	const int RESOURCE_COUNT = 6;
-	std::string resourcePaths[RESOURCE_COUNT] =
+	std::string resourcePaths[] =
 	{
 		"data/sample_level.txt",
 		"data/sample_terraintextures.png",
@@ -151,7 +150,7 @@ void Game::update(float deltaTime)
 		m_players[i].Update(deltaTime);
 
 		if (m_players[i].isBombExplosion())
-			for (int j = 0; j < 4; j++)
+			for (int j = 0; j < 4; ++j)
 				rays.push_back(m_players[i].GetRay(j));	
 	}
 
@@ -168,7 +167,9 @@ void Game::update(float deltaTime)
 void Game::processEvents()
 {
 	if (m_exit)
+	{
 		return; // if exiting: skip event processing!
+	}
 
 	sf::Event event;
 	std::pair<int,int> input[2];
@@ -199,9 +200,10 @@ void Game::processEvents()
 		input[1].second = 1;
 
 
-    for(int i=0;i<2;i++)
-	m_players[i].OnMoveKeyPressed(input[i].first, input[i].second);
-
+	for (int i = 0; i < 2; ++i)
+	{
+		m_players[i].OnMoveKeyPressed(input[i].first, input[i].second);
+	}
 
 	while (m_window.pollEvent(event))
 	{
