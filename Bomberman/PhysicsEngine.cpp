@@ -165,6 +165,36 @@ void PhysicsEngine::Update(const float & delta)
 			}
 
 			break;
+
+		case OnFourTiles:
+			if(m_level->GetTile(m_playersInfo[m_body->first].leftBound, m_playersInfo[m_body->first].upBound )!= TT::NONE && bodyAfterXMovement.IsCollision(*m_physicalLevel[ m_playersInfo[m_body->first].upBound][m_playersInfo[m_body->first].leftBound ]))
+			{
+				setBodyPositionNextToAnotherBodyInAxisX(m_body->second, m_physicalLevel[ m_playersInfo[m_body->first].upBound  ][m_playersInfo[m_body->first].leftBound]);
+				moveInXAxis = false;
+				setBodyPositionNextToAnotherBodyInAxisY(m_body->second, m_physicalLevel[ m_playersInfo[m_body->first].upBound ][m_playersInfo[m_body->first].leftBound]);
+				moveInYAxis = false;
+			}
+			else if(m_level->GetTile(m_playersInfo[m_body->first].rightBound, m_playersInfo[m_body->first].upBound )!= TT::NONE && bodyAfterXMovement.IsCollision(*m_physicalLevel[ m_playersInfo[m_body->first].upBound][m_playersInfo[m_body->first].rightBound ]))
+			{
+				setBodyPositionNextToAnotherBodyInAxisX(m_body->second, m_physicalLevel[ m_playersInfo[m_body->first].upBound  ][m_playersInfo[m_body->first].rightBound]);
+				moveInXAxis = false;
+				setBodyPositionNextToAnotherBodyInAxisY(m_body->second, m_physicalLevel[ m_playersInfo[m_body->first].upBound ][m_playersInfo[m_body->first].rightBound]);
+				moveInYAxis = false;
+			}
+			else if(m_level->GetTile(m_playersInfo[m_body->first].leftBound, m_playersInfo[m_body->first].downBound )!= TT::NONE && bodyAfterXMovement.IsCollision(*m_physicalLevel[ m_playersInfo[m_body->first].downBound][m_playersInfo[m_body->first].leftBound ]))
+			{
+				setBodyPositionNextToAnotherBodyInAxisX(m_body->second, m_physicalLevel[ m_playersInfo[m_body->first].downBound  ][m_playersInfo[m_body->first].leftBound]);
+				moveInXAxis = false;
+				setBodyPositionNextToAnotherBodyInAxisY(m_body->second, m_physicalLevel[ m_playersInfo[m_body->first].downBound ][m_playersInfo[m_body->first].leftBound]);
+				moveInYAxis = false;
+			}
+			else if(m_level->GetTile(m_playersInfo[m_body->first].rightBound, m_playersInfo[m_body->first].downBound )!= TT::NONE && bodyAfterXMovement.IsCollision(*m_physicalLevel[ m_playersInfo[m_body->first].downBound][m_playersInfo[m_body->first].rightBound ]))
+			{
+				setBodyPositionNextToAnotherBodyInAxisX(m_body->second, m_physicalLevel[ m_playersInfo[m_body->first].downBound  ][m_playersInfo[m_body->first].rightBound]);
+				moveInXAxis = false;
+				setBodyPositionNextToAnotherBodyInAxisY(m_body->second, m_physicalLevel[ m_playersInfo[m_body->first].downBound ][m_playersInfo[m_body->first].rightBound]);
+				moveInYAxis = false;
+			}
 		}
 		if (moveInXAxis)
 		{
