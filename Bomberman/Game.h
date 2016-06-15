@@ -2,7 +2,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
-
 #include "Level.h"
 #include "LevelView.h"
 #include "Types.h"

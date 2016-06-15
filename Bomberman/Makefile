@@ -3,7 +3,7 @@ FLAGS=-g -std=c++11
 
 all: Bomberman
 
-Bomberman: Animator.o Bomb.o Game.o Level.o LevelView.o main.o PhysicalBody.o PhysicsEngine.o Player.o Ray.o TextureAtlas.o
+Bomberman: Animator.o Bomb.o Game.o Level.o LevelView.o main.o GUI.o PhysicalBody.o PhysicsEngine.o Player.o Ray.o TextureAtlas.o
 	g++ -g -std=c++11 *.o -o Bomberman -lsfml-graphics -lsfml-window -lsfml-system
 
 Animator.o: Animator.cpp
@@ -38,6 +38,9 @@ Ray.o: Ray.cpp
 
 TextureAtlas.o: TextureAtlas.cpp
 	g++ -c $(FLAGS) TextureAtlas.cpp
+
+GUI.o: GUI.cpp
+	g++ -c $(FLAGS) GUI.cpp
 
 rebuild: *.cpp
 	g++ -g -std=c++11 *.cpp -o Bomberman -lsfml-graphics -lsfml-window -lsfml-system
