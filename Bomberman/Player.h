@@ -22,7 +22,12 @@ public:
 	void SetHealth(short hp);
 	/// Adds value to current hp
 	/// <param name="val"> value to add to current hp </param>
-	void AddToHealth(short val);
+	void IncreaseHealth(short val);
+	/// Decrases value from current hp
+	void DecreaseHealth(short val);
+	/// Return Player's health
+	/// <returns> Player's health </returns>
+	short GetHealth();
 	/// Sets the player direction, possible values: -1, 0, 1
 	/// <param name="x">direction x</param>
 	/// <param name="y">direction y</param>

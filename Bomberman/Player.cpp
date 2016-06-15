@@ -37,9 +37,19 @@ void Player::SetHealth(short hp)
 	m_health = hp;
 }
 
-void Player::AddToHealth(short val)
+void Player::IncreaseHealth(short val)
 {
 	m_health += val;
+}
+
+void Player::DecreaseHealth(short val)
+{
+	m_health -= val;
+}
+
+short Player::GetHealth()
+{
+	return m_health;
 }
 
 
