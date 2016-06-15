@@ -32,24 +32,24 @@ void Player::SetAnimator(Animator& animator, size_t width, size_t height)
 	m_sprite.setPosition(sf::Vector2f(3 * tileSize + w, 5 * tileSize + h));
 }
 
-void Player::SetHealth(short hp)
+void Player::SetRespawns(short hp)
 {
-	m_health = hp;
+	m_respawns = hp;
 }
 
-void Player::IncreaseHealth(short val)
+void Player::IncreaseRespawns(short val)
 {
-	m_health += val;
+	m_respawns += val;
 }
 
-void Player::DecreaseHealth(short val)
+void Player::DecreaseRespawns(short val)
 {
-	m_health -= val;
+	m_respawns -= val;
 }
 
-short Player::GetHealth()
+short Player::GetRespawnsCount()
 {
-	return m_health;
+	return m_respawns;
 }
 
 

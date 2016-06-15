@@ -22,6 +22,8 @@ Game::~Game()
 
 void Game::Run()
 {
+	// https://youtu.be/BzUWKSYjpgQ?t=1s
+	// srlsy, make that init already
 	/* TMP INIT BEGIN*/
 	std::string resourcePaths[] =
 	{
@@ -86,6 +88,8 @@ void Game::Run()
 	m_players[0].SetAnimator(playerAnimator, m_atlasPlayer.GetCellSizeX(), m_atlasPlayer.GetCellSizeY());
 	playerAnimator.ChangeActiveState("default");
 
+	m_players[0].SetRespawns(1);
+
 	// setting up player2
 	Animator playerAnimator2;
 	playerAnimator2.AddAnimationState("default", m_atlasPlayer2, 0, m_atlasPlayer2.GetCount() - 1);
@@ -93,6 +97,8 @@ void Game::Run()
 
 	m_players[1].SetAnimator(playerAnimator2, m_atlasPlayer2.GetCellSizeX(), m_atlasPlayer2.GetCellSizeY());
 	playerAnimator2.ChangeActiveState("default");
+
+	m_players[1].SetRespawns(1);
 
 	
 	// setting up bomb (and something for physic engine) 
@@ -109,6 +115,10 @@ void Game::Run()
 	m_exit = false;
 	sf::Clock clock;
 
+	// setting up gui
+	sf::Font font;
+	font.loadFromFile("data/Cat.ttf");
+	m_gui = new GUI(font, 30, m_windowWidth, m_windowHeight);
 
 	// main loop
 	while (!m_exit)
@@ -134,6 +144,8 @@ void Game::draw()
 	{
 		m_window.draw(m_players[i]);
 	}
+
+	m_window.draw(*m_gui);
 
 	m_window.display();
 }
@@ -161,6 +173,8 @@ void Game::update(float deltaTime)
 				std::cout << "[DEBUG] Player " << i << " is colliding with bomb ray\n";
 				m_players[i].OnBombCollision();
 			}
+
+	m_gui->UpdateStats(m_players);
 }
 
 

@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "PhysicsEngine.h"
 #include "Animator.h"
+#include "GUI.h"
 
 
 class Game
@@ -46,6 +47,8 @@ private:
 	TextureAtlas m_atlasPlayer2;
 	TextureAtlas m_atlasBomb;
 	TextureAtlas m_atlasBombRay;
+	// probably we gonna dynamicly allocate memory for it (we don't need gameplay gui when we are in menu)
+	GUI * m_gui;
 
 	sf::RenderWindow m_window;
 

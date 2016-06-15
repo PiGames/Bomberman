@@ -2,7 +2,7 @@
 
 int main()
 {
-	Game game(640, 640);
+	Game game(1280, 720);
 	game.Run();
 
 	return 0;

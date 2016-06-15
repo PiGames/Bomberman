@@ -17,17 +17,17 @@ public:
 	/// Sets animator
 	/// <param name="animator">animator</param>
 	void SetAnimator(Animator& animator, size_t width, size_t height);
-	/// Sets health point
-	/// <param name="hp"> health points </param>
-	void SetHealth(short hp);
-	/// Adds value to current hp
-	/// <param name="val"> value to add to current hp </param>
-	void IncreaseHealth(short val);
-	/// Decrases value from current hp
-	void DecreaseHealth(short val);
-	/// Return Player's health
-	/// <returns> Player's health </returns>
-	short GetHealth();
+	/// Sets respawns count
+	/// <param name="respawns"> respawns </param>
+	void SetRespawns(short respawns);
+	/// Adds value to current respawns
+	/// <param name="val"> value to add to current respawns </param>
+	void IncreaseRespawns(short val);
+	/// Decrases value from current respawns
+	void DecreaseRespawns(short val);
+	/// Return Player's respawns
+	/// <returns> Player's respawns </returns>
+	short GetRespawnsCount();
 	/// Sets the player direction, possible values: -1, 0, 1
 	/// <param name="x">direction x</param>
 	/// <param name="y">direction y</param>
@@ -61,7 +61,7 @@ private:
 	TextureAtlas* m_bombTextureAtlas;
 
 	TextureAtlas * m_bombRayTextureAtlas;
-	short m_health;
+	short m_respawns;
 
 	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const override;
 };
