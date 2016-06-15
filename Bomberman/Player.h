@@ -15,9 +15,14 @@ public:
 
 
 	/// Sets animator
-	/// <param name="texture">animator</param>
+	/// <param name="animator">animator</param>
 	void SetAnimator(Animator& animator, size_t width, size_t height);
-	
+	/// Sets health point
+	/// <param name="hp"> health points </param>
+	void SetHealth(short hp);
+	/// Adds value to current hp
+	/// <param name="val"> value to add to current hp </param>
+	void AddToHealth(short val);
 	/// Sets the player direction, possible values: -1, 0, 1
 	/// <param name="x">direction x</param>
 	/// <param name="y">direction y</param>
@@ -29,7 +34,7 @@ public:
 	
 	void SetLevelPointer(Level * level);
 
-	std::vector<PhysicalBody> GetBombRaysColliders();
+//	std::vector<PhysicalBody> GetBombRaysColliders();
 
 	/// Update player position, update states etc...
 	/// <param name="dt">delta time in seconds</param>
@@ -51,6 +56,7 @@ private:
 	TextureAtlas* m_bombTextureAtlas;
 
 	TextureAtlas * m_bombRayTextureAtlas;
+	short m_health;
 
 	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const override;
 };

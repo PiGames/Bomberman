@@ -32,6 +32,16 @@ void Player::SetAnimator(Animator& animator, size_t width, size_t height)
 	m_sprite.setPosition(sf::Vector2f(3 * tileSize + w, 5 * tileSize + h));
 }
 
+void Player::SetHealth(short hp)
+{
+	m_health = hp;
+}
+
+void Player::AddToHealth(short val)
+{
+	m_health += val;
+}
+
 
 void Player::OnMoveKeyPressed(int x, int y)
 {
