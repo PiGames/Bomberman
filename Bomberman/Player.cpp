@@ -59,10 +59,10 @@ void Player::OnMoveKeyPressed(int x, int y)
 	SetVelocity(speed*x, speed*y);
 }
 
-void Player::SetUndamageableTime(sf::Time timeInSeconds)
-{
-	m_undamagabeTime = timeInSeconds;
-}
+//void Player::SetUndamageableTime(sf::Time timeInSeconds)
+//{
+//	m_undamagabeTime = timeInSeconds;
+//}
 
 
 void Player::OnActionKeyPressed()
@@ -140,11 +140,11 @@ void Player::OnBombCollision()
 	//Animation etc
 	//std::cout << "\r[DEBUG] Player is colliding with bomb ray";
 
-	if (m_undamageableClock.getElapsedTime().asSeconds() > m_undamagabeTime.asSeconds())
+	/*if (m_undamageableClock.getElapsedTime().asSeconds() > m_undamagabeTime.asSeconds())
 	{
 		m_respawns -= 1;
 		m_undamageableClock.restart();
-	}
+	}*/
 }
 
 bool Player::isBombExplosion()

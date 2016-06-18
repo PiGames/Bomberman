@@ -33,7 +33,7 @@ public:
 	/// <param name="y">direction y</param>
 	void OnMoveKeyPressed(int x, int y);
 
-	void SetUndamageableTime(sf::Time timeInSeconds);
+	//void SetUndamageableTime(sf::Time timeInSeconds);
 	
 	/// Sends the information about action key down (plant the bomb)
 	void OnActionKeyPressed();

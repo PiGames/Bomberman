@@ -13,6 +13,7 @@
 
 class Game
 {
+public: const int TILE_SIZE = 64;
 private:
 	/// Draws all stuff on scene
 	void draw();
@@ -27,29 +28,27 @@ private:
 public:
 	Game(size_t width, size_t height);
 	~Game();
-
+	void Initialize();
 	void Run();
 
 private:
 	size_t m_windowWidth;
 	size_t m_windowHeight;
-	std::vector<Player> m_players;
+	
 	bool m_exit;
 
-	Level m_level;
-	LevelView m_levelView;
+	Level* m_level;
+	LevelView* m_levelView;
+	int m_numberOfPlayers;
+	std::vector<Player*> m_players;
+	std::vector<Animator*>m_playersAnimators;
+	PhysicsEngine* m_physicsEngine;
+	std::vector<TextureAtlas*> m_atlases; // [0]-terrain, [1] - bomb, [2] bomb ray,  [3] - player , [>3] more players
 
-	PhysicsEngine m_physicsEngine;
-
-	TextureAtlas m_atlasTerrain;
-	TextureAtlas m_atlasPlayer;
-	TextureAtlas m_atlasPlayer2;
-	TextureAtlas m_atlasBomb;
-	TextureAtlas m_atlasBombRay;
-	// probably we gonna dynamicly allocate memory for it (we don't need gameplay gui when we are in menu)
+	sf::Font* m_font;
 	GUI * m_gui;
 
-	sf::RenderWindow m_window;
+	sf::RenderWindow* m_window;
 
 };
 

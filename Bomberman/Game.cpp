@@ -3,127 +3,157 @@
 
 Game::Game(size_t width, size_t height)
 {
+	m_window = new sf::RenderWindow();
 	m_windowWidth = width;
 	m_windowHeight = height;
-	m_window.create(sf::VideoMode(static_cast<int>(m_windowWidth), static_cast<int>(m_windowHeight)), "Bomberman | Created by PiGames", sf::Style::Close);
-	m_window.setFramerateLimit(60);
+	m_window->create(sf::VideoMode(static_cast<int>(m_windowWidth), static_cast<int>(m_windowHeight)), "Bomberman | Created by PiGames", sf::Style::Close);
+	m_window->setFramerateLimit(60);
 
-	//hmmm /Conrad
-	Player p;
-	m_players.push_back(p);
-	m_players.push_back(p);
+	/*ALLOCATING OBJECTS - BEGIN*/
+	m_level = new Level();
+	m_levelView = new LevelView();
+	m_physicsEngine = new PhysicsEngine();
+	
+	m_numberOfPlayers = 2; //HACK Additional parameter should be passed to initialize this variable
+	for (unsigned int i = 0; i < m_numberOfPlayers; ++i)
+	{
+		m_players.push_back(new Player());
+		m_playersAnimators.push_back(new Animator());
+	}
+
+	for (unsigned int i = 0; i < 3 + m_numberOfPlayers; ++i)//HACK this code assume that there are 3 atlases beside players
+	{
+		m_atlases.push_back(new TextureAtlas());
+	}
+
+	m_font = new sf::Font();
+
+	m_gui = new GUI(); 
+
+	/*ALLOCATING OBJECTS - END*/
 }
 
 
 Game::~Game()
 {
+	delete m_level;
+	delete m_levelView;
+	delete m_physicsEngine;
+	for (unsigned int i = 0; i < m_numberOfPlayers; ++i)
+	{
+		delete m_players[i];
+		delete m_playersAnimators[i];
+	}
+
+	for (unsigned int i = 0; i < 3 + m_numberOfPlayers; ++i)//HACK this code assume that there are 3 atlases beside players
+	{
+		delete m_atlases[i];
+	}
+
+	delete m_font;
+
+	delete m_gui;
+}
+
+void Game::Initialize()
+{
+	int resourcePathsCount = 6;
+	std::string resourcePaths[6] =
+	{
+		/*level file path */"data/sample_level.txt",
+		/*GUI font path*/"data/Cat.ttf",
+		/* terrain sprite sheet path*/"data/sample_terraintextures.png",
+		/* bomb sprite sheet path*/"data/sample_bombtextures.png",
+		/* bomb ray sprite sheet path*/"data/sample_raytextures.png",
+		/* player sprite sheet path*/"data/sample_playertextures.png"
+	};
+
+	/* LOADING RESOURCES - BEGIN*/ 
+	if (!m_level->LoadFromFile(resourcePaths[0]))
+	{
+		std::cerr << "[!] Cannot load file: \"" << resourcePaths[0] << "\". Exiting...\n";
+		std::cin.get();
+		std::exit(1);
+	}
+
+	if (!m_font->loadFromFile(resourcePaths[1]))
+	{
+		std::cerr << "[!] Cannot load file: \"" << resourcePaths[1] << "\". Exiting...\n";
+		std::cin.get();
+		exit(1);
+	}
+
+	for (unsigned int i = 0; i < m_atlases.size() - m_numberOfPlayers; ++i)
+	{
+		if (!m_atlases[i]->LoadFromFile(resourcePaths[i + 2/* becuase we do not include level path and font path*/]))
+			{
+				std::cerr << "[!] Cannot load resource: '" << resourcePaths[i + 2] << std::endl;
+				std::cin.get();
+				std::exit(1);
+			}
+	}
+	for (unsigned int i = m_atlases.size() - m_numberOfPlayers; i < m_atlases.size(); ++i)
+	{
+		if (!m_atlases[i]->LoadFromFile(resourcePaths[resourcePathsCount - 1/*last resource - player texture*/]))
+		{
+			std::cerr << "[!] Cannot load resource: '" << resourcePaths[resourcePathsCount - 1] << std::endl;
+			std::cin.get();
+			std::exit(1);
+		}
+	}
+	/* LOADING RESOURCES - END*/
+
+	//----------------------------
+
+	/*SETTING UP ANIMATORS - BEGIN*/
+	for (unsigned int i = 0; i < m_atlases.size() - m_numberOfPlayers; ++i)
+	{
+		m_atlases[i]->TrimByGrid(TILE_SIZE, TILE_SIZE);
+	}
+
+	for (unsigned int i = m_atlases.size() - m_numberOfPlayers; i < m_atlases.size(); ++i)
+	{
+		m_atlases[i]->TrimByGrid(TILE_SIZE/2, TILE_SIZE/2);
+	}
+	/*SETTING UP ANIMATORS - END*/
+
+	//-----------------------------
+
+	//SETTING UP LEVEL
+	m_levelView->SetLevel(m_level, m_atlases[0]);
+	m_level->SetLevelView(m_levelView);
+
+	//-----------------------------
+
+	/*SETTING UP PLAYERS - BEGIN*/
+	for (int i = 0; i < m_numberOfPlayers; ++i)
+	{
+		m_playersAnimators[i]->AddAnimationState("default", *m_atlases[m_atlases.size() - m_numberOfPlayers + i], 0, m_atlases[m_atlases.size() - m_numberOfPlayers + i]->GetCount() - 1);
+		m_playersAnimators[i]->SetLoop(true);
+
+		m_players[i]->SetAnimator(*m_playersAnimators[i], m_atlases[m_atlases.size() - m_numberOfPlayers +i]->GetCellSizeX(), m_atlases[m_atlases.size() - m_numberOfPlayers + i]->GetCellSizeY());
+		m_playersAnimators[i]->ChangeActiveState("default");
+
+		m_players[i]->SetRespawns(1);
+		//m_players[i]->SetUndamageableTime(sf::seconds(2)); //HACK Change this later 
+
+		m_players[i]->SetUpBomb(m_atlases[1], m_atlases[2]);
+		m_players[i]->SetLevelPointer(m_level);
+	}
+	/*SETTING UP PLAYERS - END*/
+
+	//----------------------------
+
+	m_physicsEngine->Init(m_level, &m_players);
+	
+	m_gui->Init(m_font, 30, m_windowWidth, m_windowHeight);
 }
 
 
 void Game::Run()
 {
-	// https://youtu.be/BzUWKSYjpgQ?t=1s
-	// srlsy, make that init already
-	/* TMP INIT BEGIN*/
-	std::string resourcePaths[] =
-	{
-		"data/sample_level.txt",
-		"data/sample_terraintextures.png",
-		"data/sample_playertextures.png",
-		"data/sample_bombtextures.png",
-		"data/sample_raytextures.png",
-		"data/sample_playertextures2.png"
-	};
-	if (!m_level.LoadFromFile(resourcePaths[0]))
-	{
-		std::cerr << "[!] Cannot load file: \"" << resourcePaths[0] << "\". Exiting...\n";
-		std::exit(1);
-	}
-
-	// loading resources
-	if (!m_atlasTerrain.LoadFromFile(resourcePaths[1]))
-	{
-		std::cerr << "[!] Cannot load resource: '" << resourcePaths[1] << std::endl;
-		std::exit(1);
-	}
-
-	if (!m_atlasPlayer.LoadFromFile(resourcePaths[2]))
-	{
-		std::cerr << "[!] Cannot load resource: '" << resourcePaths[2] << std::endl;
-		std::exit(1);
-	}
-
-	if (!m_atlasBomb.LoadFromFile(resourcePaths[3]))
-	{
-		std::cerr << "[!] Cannot load resource: '" << resourcePaths[3] << std::endl;
-		std::exit(1);
-	}
-	if (!m_atlasBombRay.LoadFromFile(resourcePaths[4]))
-	{
-		std::cerr << "[!] Cannot load resource: '" << resourcePaths[4] << std::endl;
-		std::exit(1);
-	}
-	if (!m_atlasPlayer2.LoadFromFile(resourcePaths[5]))
-	{
-		std::cerr << "[!] Cannot load resource: '" << resourcePaths[5] << std::endl;
-		std::exit(1);
-	}
-
-	// setting up resources
-	m_atlasTerrain.TrimByGrid(64, 64);
-	m_atlasPlayer.TrimByGrid(32, 32);
-	m_atlasPlayer2.TrimByGrid(32, 32);
-	m_atlasBomb.TrimByGrid(64, 64);
-	m_atlasBombRay.TrimByGrid(64, 64);
-
-	m_levelView.SetLevel(&m_level, &m_atlasTerrain);
-	m_level.SetLevelView(&m_levelView);
-
-
-	// setting up player
-	Animator playerAnimator;
-	playerAnimator.AddAnimationState("default", m_atlasPlayer, 0, m_atlasPlayer.GetCount() - 1);
-	playerAnimator.SetLoop(true);
-
-	m_players[0].SetAnimator(playerAnimator, m_atlasPlayer.GetCellSizeX(), m_atlasPlayer.GetCellSizeY());
-	playerAnimator.ChangeActiveState("default");
-
-	m_players[0].SetRespawns(1);
-	m_players[0].SetUndamageableTime(sf::seconds(2));
-
-	// setting up player2
-	Animator playerAnimator2;
-	playerAnimator2.AddAnimationState("default", m_atlasPlayer2, 0, m_atlasPlayer2.GetCount() - 1);
-	playerAnimator2.SetLoop(true);
-
-	m_players[1].SetAnimator(playerAnimator2, m_atlasPlayer2.GetCellSizeX(), m_atlasPlayer2.GetCellSizeY());
-	playerAnimator2.ChangeActiveState("default");
-
-	m_players[1].SetRespawns(1);
-	m_players[1].SetUndamageableTime(sf::seconds(2));
-
-	
-	// setting up bomb (and something for physic engine) 
-	std::map<int, PhysicalBody*> players;
-	for (unsigned i = 0; i < m_players.size(); ++i)
-	{
-		m_players[i].SetUpBomb(&m_atlasBomb, &m_atlasBombRay);
-		m_players[i].SetLevelPointer(&m_level);//HACK only temporary, we'll figure something out to properly separate layer's (server and client)
-		players.emplace(i, &m_players[i]);
-	}
-	
-	m_physicsEngine.Init(m_level, &players);
-
 	m_exit = false;
 	sf::Clock clock;
-
-	// setting up gui
-	sf::Font font;
-	if (!font.loadFromFile("data/Cat.ttf"))
-	{
-		exit(1);
-	}
-	m_gui = new GUI(font, 30, m_windowWidth, m_windowHeight);
 
 	// main loop
 	while (!m_exit)
@@ -141,45 +171,45 @@ void Game::Run()
 
 void Game::draw()
 {
-	m_window.clear();
+	m_window->clear();
 
-	m_window.draw(m_levelView);
+	m_window->draw(*m_levelView);
 
 	for (unsigned i = 0; i < m_players.size(); ++i)
 	{
-		m_window.draw(m_players[i]);
+		m_window->draw(*m_players[i]);
 	}
 
-	m_window.draw(*m_gui);
+	m_window->draw(*m_gui);
 
-	m_window.display();
+	m_window->display();
 }
 
 
 void Game::update(float deltaTime)
 {
-	m_physicsEngine.Update(deltaTime);
+	m_physicsEngine->Update(deltaTime);
 
 	std::vector<PhysicalBody> rays;
 
 	for (unsigned int i = 0; i < m_players.size(); ++i)
 	{
-		m_players[i].Update(deltaTime);
+		m_players[i]->Update(deltaTime);
 
-		if (m_players[i].isBombExplosion())
+		if (m_players[i]->isBombExplosion())
 			for (int j = 0; j < 4; ++j)
-				rays.push_back(m_players[i].GetRay(j));	
+				rays.push_back(m_players[i]->GetRay(j));	
 	}
 
 	for (unsigned int i = 0; i < m_players.size(); ++i)
 		for (unsigned int j = 0; j < rays.size(); ++j)
-			if (rays[j].IsCollision(m_players[i]))
+			if (rays[j].IsCollision(*m_players[i]))
 			{
 				std::cout << "[DEBUG] Player " << i << " is colliding with bomb ray\n";
-				m_players[i].OnBombCollision();
+				m_players[i]->OnBombCollision();
 			}
 
-	m_gui->UpdateStats(m_players);
+	m_gui->UpdateStats(&m_players);
 }
 
 
@@ -221,10 +251,10 @@ void Game::processEvents()
 
 	for (int i = 0; i < 2; ++i)
 	{
-		m_players[i].OnMoveKeyPressed(input[i].first, input[i].second);
+		m_players[i]->OnMoveKeyPressed(input[i].first, input[i].second);
 	}
 
-	while (m_window.pollEvent(event))
+	while (m_window->pollEvent(event))
 	{
 		if (event.type == sf::Event::Closed)
 		{
@@ -232,9 +262,9 @@ void Game::processEvents()
 			break;
 		}
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
-			m_players[0].OnActionKeyPressed();
+			m_players[0]->OnActionKeyPressed();
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::LControl)
-			m_players[1].OnActionKeyPressed();
+			m_players[1]->OnActionKeyPressed();
 
 		// handle more events
 	}

@@ -13,13 +13,13 @@ private:
 	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const;
 
 public:
-	GUI(sf::Font font, short textSize, int screenWidth, int screenHeight);
+	GUI();
 	~GUI();
-
-	void UpdateStats(std::vector<Player> & players);
+	void Init(sf::Font* font, short textSize, int screenWidth, int screenHeight);
+	void UpdateStats(std::vector<Player*> * players);
 
 private:
-	sf::Font m_font;
+	sf::Font * m_font;
 	short m_textSize;
 	int m_screenWidth;
 	int m_screenHeight;

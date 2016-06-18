@@ -5,7 +5,7 @@ void GUI::draw(sf::RenderTarget & target, sf::RenderStates states) const
 {
 	std::vector<sf::Text> texts;
 	sf::Text tempText;
-	tempText.setFont(m_font);
+	tempText.setFont(*m_font);
 	tempText.setColor(sf::Color::Red);
 	tempText.setCharacterSize(m_textSize);
 	tempText.setPosition(0, 0);
@@ -33,7 +33,16 @@ void GUI::draw(sf::RenderTarget & target, sf::RenderStates states) const
 	}
 }
 
-GUI::GUI(sf::Font font, short textSize, int screenWidth, int screenHeight)
+GUI::GUI()
+{
+	
+}
+
+GUI::~GUI()
+{
+}
+
+void GUI::Init(sf::Font * font, short textSize, int screenWidth, int screenHeight)
 {
 	m_font = font;
 	m_textSize = textSize;
@@ -41,17 +50,13 @@ GUI::GUI(sf::Font font, short textSize, int screenWidth, int screenHeight)
 	m_screenHeight = screenHeight;
 }
 
-GUI::~GUI()
+void GUI::UpdateStats(std::vector<Player*>* players)
 {
-}
+	m_respawns.resize(players->size());
 
-void GUI::UpdateStats(std::vector<Player>& players)
-{
-	m_respawns.resize(players.size());
-
-	for (short i = 0; i < players.size(); ++i)
+	for (short i = 0; i < players->size(); ++i)
 	{
-		m_respawns[i] = players[i].GetRespawnsCount();
+		m_respawns[i] = (*players)[i]->GetRespawnsCount();
 	}
 }
 
