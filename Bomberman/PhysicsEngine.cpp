@@ -80,7 +80,11 @@ void PhysicsEngine::Update(const float & delta)
 			moveInXAxis = false;
 		}
 		if (!isInMapBoundsY(bodyAfterYMovement))
+		{
 			moveInYAxis = false;
+			setBodyPositionNextToBoundY(m_players[i]);
+
+		}
 		switch (m_playersInfo[i].state)
 		{
 		case OnSingleTile:
