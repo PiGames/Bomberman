@@ -32,14 +32,14 @@ public:
 	/// <param name="x">direction x</param>
 	/// <param name="y">direction y</param>
 	void OnMoveKeyPressed(int x, int y);
+
+	void SetUndamageableTime(sf::Time timeInSeconds);
 	
 	/// Sends the information about action key down (plant the bomb)
 	void OnActionKeyPressed();
 	void SetUpBomb(TextureAtlas* atlasBomb, TextureAtlas* atlasRay);
 	
 	void SetLevelPointer(Level * level);
-
-//	std::vector<PhysicalBody> GetBombRaysColliders();
 
 	/// Update player position, update states etc...
 	/// <param name="dt">delta time in seconds</param>
@@ -62,6 +62,9 @@ private:
 
 	TextureAtlas * m_bombRayTextureAtlas;
 	short m_respawns;
+
+	sf::Clock m_undamageableClock;
+	sf::Time m_undamagabeTime;
 
 	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const override;
 };

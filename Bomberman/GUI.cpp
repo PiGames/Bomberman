@@ -12,7 +12,6 @@ void GUI::draw(sf::RenderTarget & target, sf::RenderStates states) const
 
 	for (short i = 0; i < m_respawns.size(); ++i)
 	{
-		// issue with displaying may cause this
 		tempText.setString("Player " + std::to_string(i+1) + std::string(" respawns:") + std::to_string(m_respawns[i]));
 
 		if (i)

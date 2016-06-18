@@ -89,6 +89,7 @@ void Game::Run()
 	playerAnimator.ChangeActiveState("default");
 
 	m_players[0].SetRespawns(1);
+	m_players[0].SetUndamageableTime(sf::seconds(2));
 
 	// setting up player2
 	Animator playerAnimator2;
@@ -99,6 +100,7 @@ void Game::Run()
 	playerAnimator2.ChangeActiveState("default");
 
 	m_players[1].SetRespawns(1);
+	m_players[1].SetUndamageableTime(sf::seconds(2));
 
 	
 	// setting up bomb (and something for physic engine) 
@@ -117,7 +119,10 @@ void Game::Run()
 
 	// setting up gui
 	sf::Font font;
-	font.loadFromFile("data/Cat.ttf");
+	if (!font.loadFromFile("data/Cat.ttf"))
+	{
+		exit(1);
+	}
 	m_gui = new GUI(font, 30, m_windowWidth, m_windowHeight);
 
 	// main loop

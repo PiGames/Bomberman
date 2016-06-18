@@ -31,6 +31,7 @@ public:
 
 	void SetPosition(float x, float y);
 	void Update(const float &dt);
+
 private:
 	/// True - horizontal, false - vertical
 	bool m_orientation;
