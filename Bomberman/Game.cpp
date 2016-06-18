@@ -139,6 +139,9 @@ void Game::Initialize()
 
 		m_players[i]->SetUpBomb(m_atlases[1], m_atlases[2]);
 		m_players[i]->SetLevelPointer(m_level);
+		m_players[i]->SetPositionX((TILE_SIZE* m_level->GetWidth() - TILE_SIZE)*i + TILE_SIZE / 2);
+		m_players[i]->SetPositionY((TILE_SIZE* m_level->GetHeight() - TILE_SIZE)*i + TILE_SIZE / 2);
+		m_players[i]->SetColor(i);
 	}
 	/*SETTING UP PLAYERS - END*/
 
@@ -226,27 +229,27 @@ void Game::processEvents()
 	// HACK 1st iteration only, add class Input later
 	// handle horizontal axis
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		input[0].first = -1;
+		input[1].first = -1;
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		input[0].first = 1;
+		input[1].first = 1;
 
 	// handle vertical axis
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		input[0].second = -1;
+		input[1].second = -1;
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		 input[0].second = 1;
+		 input[1].second = 1;
     
 	// handle horizontal axis
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		input[1].first = -1;
+		input[0].first = -1;
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		input[1].first = 1;
+		input[0].first = 1;
    
 	// handle vertical axis
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		input[1].second = -1;
+		input[0].second = -1;
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		input[1].second = 1;
+		input[0].second = 1;
 
 
 	for (int i = 0; i < 2; ++i)
@@ -262,9 +265,9 @@ void Game::processEvents()
 			break;
 		}
 		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
-			m_players[0]->OnActionKeyPressed();
-		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::LControl)
 			m_players[1]->OnActionKeyPressed();
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::LControl)
+			m_players[0]->OnActionKeyPressed();
 
 		// handle more events
 	}

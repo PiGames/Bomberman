@@ -49,6 +49,8 @@ public:
 
 	bool isBombExplosion();
 
+	void SetColor(int i);
+
 	PhysicalBody GetRay(unsigned int side);
 
 private:

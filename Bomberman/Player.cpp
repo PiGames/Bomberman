@@ -26,9 +26,6 @@ void Player::SetAnimator(Animator& animator, size_t width, size_t height)
 	
 	m_animator = &animator;
 	m_animator->SetSprite(m_sprite);
-
-	SetPositionX(3 * tileSize + w); 
-	SetPositionY(5 * tileSize + h);
 	m_sprite.setPosition(sf::Vector2f(3 * tileSize + w, 5 * tileSize + h));
 }
 
@@ -150,6 +147,16 @@ void Player::OnBombCollision()
 bool Player::isBombExplosion()
 {
 	return !(m_bomb == nullptr || m_bomb->GetState() != Bomb::exploding);
+}
+
+void Player::SetColor(int i)
+{
+	if (i)
+	{
+		m_sprite.setColor(sf::Color::Cyan);
+		return;
+	}
+
 }
 
 PhysicalBody Player::GetRay(unsigned int side)
