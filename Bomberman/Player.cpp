@@ -75,7 +75,7 @@ void Player::OnActionKeyPressed()
 		m_bomb->SetRayOnScreenTime(sf::seconds(1));
 		m_bomb->SetPosition(static_cast<int>(GetPositionX()), static_cast<int>(GetPositionY()));
 		m_bomb->SetLevelPointer(level);
-		level->SetTileAsIndestructible(GetPositionX()/TILE_SIZE,GetPositionY()/TILE_SIZE);
+		level->SetTileAsBomb(GetPositionX()/TILE_SIZE,GetPositionY()/TILE_SIZE);
 	}
 }
 

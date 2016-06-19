@@ -6,7 +6,7 @@ namespace TT {
 		NONE,
 		WEAK_WALL,
 		INDESTRUCTIBLE_WALL,
-
+		BOMB,
 		COUNT
 	};
 }

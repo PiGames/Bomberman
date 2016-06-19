@@ -82,9 +82,9 @@ bool Level::DestroyTile(size_t x, size_t y, bool destroyTexture)
 	
 }
 
-void Level::SetTileAsIndestructible(size_t x, size_t y)
+void Level::SetTileAsBomb(size_t x, size_t y)
 {
-	m_data[y][x] = TT::TileType::INDESTRUCTIBLE_WALL;
+	m_data[y][x] = TT::TileType::BOMB;
 }
 
 void Level::SetTileAsDestroyable(size_t x, size_t y)
