@@ -160,7 +160,7 @@ unsigned short Bomb::getRaySizeAfterCollisions(Ray::Side side)
 				size=i;
 			else break;
 		}
-		if (size != MAX_RAY_SIZE && m_positionInTilesCoordsY - size - 1 > 0 && level->GetTile(m_positionInTilesCoordsX, m_positionInTilesCoordsY - size - 1) == TT::TileType::WEAK_WALL)
+		if (size != MAX_RAY_SIZE && m_positionInTilesCoordsY - size - 1 >= 0 && level->GetTile(m_positionInTilesCoordsX, m_positionInTilesCoordsY - size - 1) == TT::TileType::WEAK_WALL)
 			m_tilesToDeleteAfterExplosion.push_back(std::pair<int, int>(m_positionInTilesCoordsX, m_positionInTilesCoordsY - ++size));
 
 		break;
