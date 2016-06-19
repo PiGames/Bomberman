@@ -41,6 +41,8 @@ TextureAtlas.o: TextureAtlas.cpp
 
 GUI.o: GUI.cpp
 	g++ -c $(FLAGS) GUI.cpp
+clean: *.o
+	rm *.o
 
 rebuild: *.cpp
 	g++ -g -std=c++11 *.cpp -o Bomberman -lsfml-graphics -lsfml-window -lsfml-system
