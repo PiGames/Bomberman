@@ -122,6 +122,16 @@ PhysicalBody Bomb::GetRayPhysicalBody(unsigned int side)
 	return static_cast<PhysicalBody>(*(m_rays[side]));
 }
 
+int Bomb::GetPositionInTileCoordinatesX()
+{
+	return m_positionInTilesCoordsX;
+}
+
+int Bomb::GetPositionInTileCoordinatesY()
+{
+	return m_positionInTilesCoordsY;
+}
+
 
 void Bomb::explode()
 {

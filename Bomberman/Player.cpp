@@ -75,6 +75,7 @@ void Player::OnActionKeyPressed()
 		m_bomb->SetRayOnScreenTime(sf::seconds(1));
 		m_bomb->SetPosition(static_cast<int>(GetPositionX()), static_cast<int>(GetPositionY()));
 		m_bomb->SetLevelPointer(level);
+		level->SetTileAsIndestructible(GetPositionX()/TILE_SIZE,GetPositionY()/TILE_SIZE);
 	}
 }
 
@@ -113,7 +114,11 @@ void Player::Update(const float & dt)
 	if (m_bomb != nullptr)
 	{
 		m_bomb->Update(dt);
-
+		if (m_bomb->GetState() == Bomb::exploding)
+		{
+			//HACK this code assume that position of the bomb will not change after planting
+			level->DestroyTile(m_bomb->GetPositionInTileCoordinatesX(), m_bomb->GetPositionInTileCoordinatesY(), false);
+		}
 		if (m_bomb->GetState() == Bomb::exploded)
 		{
 			delete m_bomb;

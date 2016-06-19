@@ -51,6 +51,8 @@ public:
 
 	PhysicalBody GetRayPhysicalBody(unsigned int side);
 
+	int GetPositionInTileCoordinatesX();
+	int GetPositionInTileCoordinatesY();
 private:
 	Animator* m_animator;
 	Level* level;

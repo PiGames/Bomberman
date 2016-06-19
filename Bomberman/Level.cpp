@@ -68,16 +68,28 @@ size_t Level::GetHeight() const
 	return m_height;
 }
 
-bool Level::DestroyTile(size_t x, size_t y)
+bool Level::DestroyTile(size_t x, size_t y, bool destroyTexture)
 {
-	if(m_data[y][x] == TT::TileType::INDESTRUCTIBLE_WALL || m_data[y][x] == TT::TileType::NONE)//jeœli kafel mo¿na zniszczyæ
+	if(m_data[y][x] == TT::TileType::NONE)//jeœli kafel mo¿na zniszczyæ
 		return false;
 
 	m_data[y][x] = TT::TileType::NONE;// zmienia wartoœæ warstwy logicznej kafla 
-	m_view->ChangeTileTextureToNone(x, y);
-	m_destroyableTiles.erase(getIteratorByValue(std::pair<int, int>(x,y)));//usuwa kafel o wspó³rzêdnych z argumnetów
-	return true;
+	if (destroyTexture) 
+	{
+		m_view->ChangeTileTextureToNone(x, y);
+		m_destroyableTiles.erase(getIteratorByValue(std::pair<int, int>(x, y)));//usuwa kafel o wspó³rzêdnych z argumnetów
+	}return true;
 	
+}
+
+void Level::SetTileAsIndestructible(size_t x, size_t y)
+{
+	m_data[y][x] = TT::TileType::INDESTRUCTIBLE_WALL;
+}
+
+void Level::SetTileAsDestroyable(size_t x, size_t y)
+{
+	m_data[y][x] = TT::TileType::WEAK_WALL;
 }
 
 void Level::SetLevelView(LevelView * view)
