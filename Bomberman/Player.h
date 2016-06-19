@@ -53,6 +53,9 @@ public:
 
 	PhysicalBody GetRay(unsigned int side);
 
+	bool GetIsAlive();
+	void SetIsAlive(bool var);
+
 private:
 	Level * level;
 	sf::Sprite m_sprite;
@@ -68,6 +71,9 @@ private:
 	sf::Clock m_undamageableClock;
 	sf::Time m_undamagabeTime;
 
+	bool m_isAlive;
+
 	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const override;
+	void endGame();
 };
 

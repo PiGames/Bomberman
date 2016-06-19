@@ -125,6 +125,12 @@ void Player::Update(const float & dt)
 			m_bomb = nullptr;
 		}
 	}
+
+	if (m_respawns <= 0 && m_isAlive)
+	{
+		endGame();
+		m_isAlive = false;
+	}
 }
 
 
@@ -134,6 +140,10 @@ void Player::draw(sf::RenderTarget & target, sf::RenderStates states) const
 		target.draw(*m_bomb);
 
 	target.draw(m_sprite);
+}
+
+void Player::endGame()
+{
 }
 
 
@@ -167,4 +177,14 @@ void Player::SetColor(int i)
 PhysicalBody Player::GetRay(unsigned int side)
 {
 	return m_bomb->GetRayPhysicalBody(side);
+}
+
+bool Player::GetIsAlive()
+{
+	return m_isAlive;
+}
+
+void Player::SetIsAlive(bool var)
+{
+	m_isAlive = var;
 }

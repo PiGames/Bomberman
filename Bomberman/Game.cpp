@@ -206,7 +206,7 @@ void Game::update(float deltaTime)
 
 	for (unsigned int i = 0; i < m_players.size(); ++i)
 		for (unsigned int j = 0; j < rays.size(); ++j)
-			if (rays[j].IsCollision(*m_players[i]))
+			if (rays[j].IsCollision(*m_players[i]) && m_players[i]->GetIsAlive())
 			{
 				std::cout << "[DEBUG] Player " << i << " is colliding with bomb ray\n";
 				m_players[i]->OnBombCollision();
