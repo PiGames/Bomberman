@@ -1,7 +1,4 @@
 #include "Game.h"
-#include <windows.h>
-#include <conio.h>
-#include <cstdio>
 
 Game::Game(size_t width, size_t height)
 {
@@ -232,32 +229,8 @@ void Game::update(float deltaTime)
 			}
 		}
 	}
-	
-	/*HANDLE hStdout;
 
-	hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD coordScreen = { 0, 0 };
-	SetConsoleCursorPosition(hStdout, coordScreen);
-
-	for (int y = 0; y < m_level->GetHeight(); ++y)
-	{
-		for (int x = 0; x < m_level->GetHeight(); ++x)
-			std::cout << static_cast<int>(m_level->GetTile(x, y)) << " ";
-		std::cout << std::endl;
-	}*/
-	/*|| (m_players[i]->GetPositionX() / TILE_SIZE == it->second->GetPositionInTileCoordinatesX()
-	&& m_players[i]->GetPositionY() / TILE_SIZE == it->second->GetPositionInTileCoordinatesY())*/
-	
-
-
-	//HACK checking collisions with bombs rays later
-	/*for (unsigned int i = 0; i < m_players.size(); ++i)
-		for (unsigned int j = 0; j < rays.size(); ++j)
-			if (rays[j].IsCollision(*m_players[i]) && m_players[i]->GetIsAlive())
-			{
-				std::cout << "[DEBUG] Player " << i << " is colliding with bomb ray\n";
-				m_players[i]->OnBombCollision();
-			}*/
+	//TODO checking collisions after explosion
 
 	m_gui->UpdateStats(&m_players);
 }
