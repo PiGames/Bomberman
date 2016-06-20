@@ -45,7 +45,7 @@ private:
 		unsigned int centerY;
 	};
 	///Physical player representation
-	std::vector<PhysicalBody*> m_players;
+	std::vector<Player*> m_players;
 
 	std::vector<MovableBodyInfo> m_playersInfo;
 

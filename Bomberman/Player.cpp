@@ -56,6 +56,16 @@ void Player::OnMoveKeyPressed(int x, int y)
 	SetVelocity(speed*x, speed*y);
 }
 
+bool Player::HasBomb()
+{
+	return (m_bomb != nullptr && m_bomb->GetState() == Bomb::waitingForExplosion);
+}
+
+Bomb * Player::GetBomb()
+{
+	return m_bomb;
+}
+
 //void Player::SetUndamageableTime(sf::Time timeInSeconds)
 //{
 //	m_undamagabeTime = timeInSeconds;
@@ -75,7 +85,7 @@ void Player::OnActionKeyPressed()
 		m_bomb->SetRayOnScreenTime(sf::seconds(1));
 		m_bomb->SetPosition(static_cast<int>(GetPositionX()), static_cast<int>(GetPositionY()));
 		m_bomb->SetLevelPointer(level);
-		level->SetTileAsBomb(GetPositionX()/TILE_SIZE,GetPositionY()/TILE_SIZE);
+		level->SetTileAsBomb(GetPositionX() / TILE_SIZE, GetPositionY() / TILE_SIZE);
 	}
 }
 
@@ -116,7 +126,6 @@ void Player::Update(const float & dt)
 		m_bomb->Update(dt);
 		if (m_bomb->GetState() == Bomb::exploding)
 		{
-			//HACK this code assume that position of the bomb will not change after planting
 			level->DestroyTile(m_bomb->GetPositionInTileCoordinatesX(), m_bomb->GetPositionInTileCoordinatesY(), false);
 		}
 		if (m_bomb->GetState() == Bomb::exploded)
@@ -161,7 +170,7 @@ void Player::OnBombCollision()
 
 bool Player::isBombExplosion()
 {
-	return !(m_bomb == nullptr || m_bomb->GetState() != Bomb::exploding);
+	return (m_bomb != nullptr && !m_bomb->isMoving());
 }
 
 void Player::SetColor(int i)
@@ -171,7 +180,6 @@ void Player::SetColor(int i)
 		m_sprite.setColor(sf::Color::Cyan);
 		return;
 	}
-
 }
 
 PhysicalBody Player::GetRay(unsigned int side)
@@ -187,4 +195,42 @@ bool Player::GetIsAlive()
 void Player::SetIsAlive(bool var)
 {
 	m_isAlive = var;
+}
+
+bool Player::IsCollidingWithBomb()
+{
+	return m_isCollidingWithBomb;
+}
+
+void Player::SetIsCollidingWithBomb(bool value)
+{
+	m_isCollidingWithBomb = value;
+}
+
+sf::Vector2i Player::GetSideBombCollidingWith()
+{
+	return m_sideBombCollidingWith;
+}
+
+void Player::SetSideBombCollidingWith(int x, int y)
+{
+	m_sideBombCollidingWith.x = x;
+	m_sideBombCollidingWith.y = y;
+
+	SetIsCollidingWithBomb(true);
+
+	m_bombCollidingWithLevelCoords.x = static_cast<int>(GetPositionX() / TILE_SIZE + x);
+
+	m_bombCollidingWithLevelCoords.y = static_cast<int>(GetPositionY() / TILE_SIZE + y);
+
+}
+
+sf::Vector2i Player::GetBombCollidingWithCoordinates()
+{
+	return m_bombCollidingWithLevelCoords;
+}
+
+void Player::ChangeTileToNone(int x, int y)
+{
+	level->DestroyTile(x, y, false);
 }

@@ -1,5 +1,7 @@
 #include "Game.h"
-
+#include <windows.h>
+#include <conio.h>
+#include <cstdio>
 
 Game::Game(size_t width, size_t height)
 {
@@ -134,7 +136,7 @@ void Game::Initialize()
 		m_players[i]->SetAnimator(*m_playersAnimators[i], m_atlases[m_atlases.size() - m_numberOfPlayers +i]->GetCellSizeX(), m_atlases[m_atlases.size() - m_numberOfPlayers + i]->GetCellSizeY());
 		m_playersAnimators[i]->ChangeActiveState("default");
 
-		m_players[i]->SetRespawns(1);
+		m_players[i]->SetRespawns(3);
 		//m_players[i]->SetUndamageableTime(sf::seconds(2)); //HACK Change this later 
 
 		m_players[i]->SetUpBomb(m_atlases[1], m_atlases[2]);
@@ -193,24 +195,69 @@ void Game::update(float deltaTime)
 {
 	m_physicsEngine->Update(deltaTime);
 
-	std::vector<PhysicalBody> rays;
+	std::map< std::pair<int, int>, Bomb*> bombs;
 
 	for (unsigned int i = 0; i < m_players.size(); ++i)
 	{
 		m_players[i]->Update(deltaTime);
-
-		if (m_players[i]->isBombExplosion())
-			for (int j = 0; j < 4; ++j)
-				rays.push_back(m_players[i]->GetRay(j));	
+		if (m_players[i]->HasBomb())
+		{
+			bombs.emplace(std::pair<int, int>(m_players[i]->GetBomb()->GetPositionInTileCoordinatesX(), m_players[i]->GetBomb()->GetPositionInTileCoordinatesY()),
+				m_players[i]->GetBomb());
+		}
 	}
+	std::map<std::pair<int, int>, Bomb*>::iterator bomb;
+	for (bomb = bombs.begin(); bomb != bombs.end(); ++bomb)
+	{
+		for (unsigned int i = 0; i < m_players.size(); ++i)
+		{
+			if (m_players[i]->IsCollidingWithBomb() && m_players[i]->GetBombCollidingWithCoordinates().x == bomb->first.first && m_players[i]->GetBombCollidingWithCoordinates().y == bomb->first.second)
+			{
+				bomb->second->SetMoveDirection(m_players[i]->GetSideBombCollidingWith());
+				m_players[i]->SetIsCollidingWithBomb(false);
+			}
+		}
 
-	for (unsigned int i = 0; i < m_players.size(); ++i)
+	
+		for (unsigned int i = 0; i < m_players.size(); ++i)
+		{
+			if (bomb->second->isMoving())
+			{
+				std::cout << bomb->second->GetNextPositionInTileCoordsX() << " || " << bomb->second->GetNextPositionInTileCoordsY() << std::endl;
+				if (static_cast<int>(m_players[i]->GetPositionX() / TILE_SIZE) == bomb->second->GetNextPositionInTileCoordsX()
+					&& static_cast<int>(m_players[i]->GetPositionY() / TILE_SIZE) == bomb->second->GetNextPositionInTileCoordsY())
+				{
+					bomb->second->StopMoving();
+				}
+			}
+		}
+	}
+	
+	/*HANDLE hStdout;
+
+	hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD coordScreen = { 0, 0 };
+	SetConsoleCursorPosition(hStdout, coordScreen);
+
+	for (int y = 0; y < m_level->GetHeight(); ++y)
+	{
+		for (int x = 0; x < m_level->GetHeight(); ++x)
+			std::cout << static_cast<int>(m_level->GetTile(x, y)) << " ";
+		std::cout << std::endl;
+	}*/
+	/*|| (m_players[i]->GetPositionX() / TILE_SIZE == it->second->GetPositionInTileCoordinatesX()
+	&& m_players[i]->GetPositionY() / TILE_SIZE == it->second->GetPositionInTileCoordinatesY())*/
+	
+
+
+	//HACK checking collisions with bombs rays later
+	/*for (unsigned int i = 0; i < m_players.size(); ++i)
 		for (unsigned int j = 0; j < rays.size(); ++j)
 			if (rays[j].IsCollision(*m_players[i]) && m_players[i]->GetIsAlive())
 			{
 				std::cout << "[DEBUG] Player " << i << " is colliding with bomb ray\n";
 				m_players[i]->OnBombCollision();
-			}
+			}*/
 
 	m_gui->UpdateStats(&m_players);
 }

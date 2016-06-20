@@ -2,7 +2,8 @@
 
 
 Bomb::Bomb()
-	:m_state(State::waitingForExplosion)
+	:m_state(State::waitingForExplosion),
+	m_isMoving(false)
 {
 	m_detonationClock.restart();
 	m_rays.resize(4);
@@ -93,12 +94,37 @@ void Bomb::SetLevelPointer(Level * level)
 void Bomb::Update(const float & dt)
 {
 	m_animator->Animate(dt);
+
+	if (m_state == State::waitingForExplosion)
+	{
+		
+		if (m_isMoving && m_positionInTilesCoordsX + m_direction.x >= 0  && m_positionInTilesCoordsX + m_direction.x < level->GetWidth() &&
+			m_positionInTilesCoordsY + m_direction.y >= 0 && m_positionInTilesCoordsY + m_direction.y < level->GetHeight() &&
+			level->GetTile(GetNextPositionInTileCoordsX(),GetNextPositionInTileCoordsY()) == TT::NONE)
+		{
+			SetPositionX(GetPositionX() + GetVelocityX() * dt);
+			SetPositionY(GetPositionY() + GetVelocityY() * dt);
+			if(level->GetTile(m_positionInTilesCoordsX, m_positionInTilesCoordsY) == TT::BOMB)
+				level->DestroyTile(m_positionInTilesCoordsX, m_positionInTilesCoordsY, false);
+		}
+		else
+		{
+			SetPositionX(m_positionInTilesCoordsX * TILE_SIZE + TILE_SIZE / 2);
+			SetPositionY(m_positionInTilesCoordsY * TILE_SIZE + TILE_SIZE / 2);
+			m_isMoving = false;
+			level->SetTileAsBomb(m_positionInTilesCoordsX, m_positionInTilesCoordsY);
+		}
+	}
+
 	m_sprite.setPosition(GetPositionX(), GetPositionY());
-	m_positionInTilesCoordsX = static_cast<int>(GetPositionX()) / TILE_SIZE;
-	m_positionInTilesCoordsY = static_cast<int>(GetPositionY()) / TILE_SIZE;
+	m_positionInTilesCoordsX = static_cast<int>(GetPositionX() / TILE_SIZE);
+	m_positionInTilesCoordsY = static_cast<int>(GetPositionY() / TILE_SIZE);
 
 	if (m_detonationClock.getElapsedTime() >= m_detonationTime && m_state < State::exploding)
 	{
+		SetPositionX(m_positionInTilesCoordsX * TILE_SIZE + TILE_SIZE / 2);
+		SetPositionY(m_positionInTilesCoordsY * TILE_SIZE + TILE_SIZE / 2);
+		level->DestroyTile(m_positionInTilesCoordsX, m_positionInTilesCoordsY, false);
 		m_state = State::exploding;
 		explode();
 	}
@@ -132,6 +158,31 @@ int Bomb::GetPositionInTileCoordinatesY()
 	return m_positionInTilesCoordsY;
 }
 
+void Bomb::SetMoveDirection(sf::Vector2i direction)
+{
+	SetVelocity(SPEED * direction.x, SPEED*direction.y);
+	m_direction = direction;
+	m_isMoving = true;
+}
+
+void Bomb::StopMoving()
+{
+	m_isMoving = false;
+}
+
+bool Bomb::isMoving()
+{
+	return m_isMoving;
+}
+
+int Bomb::GetNextPositionInTileCoordsX()
+{
+	return m_positionInTilesCoordsX + m_direction.x;
+}
+int Bomb::GetNextPositionInTileCoordsY()
+{
+	return m_positionInTilesCoordsY + m_direction.y;
+}
 
 void Bomb::explode()
 {

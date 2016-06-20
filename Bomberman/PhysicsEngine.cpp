@@ -90,22 +90,41 @@ void PhysicsEngine::Update(const float & delta)
 		case OnSingleTile:
 			if (moveInYAxis && m_playersInfo[i].centerY >= 1 && m_level->GetTile(m_playersInfo[i].centerX, m_playersInfo[i].centerY - 1) != TT::NONE && bodyAfterYMovement.IsCollision(*m_physicalLevel[m_playersInfo[i].centerY - 1][m_playersInfo[i].centerX]))
 			{
+				if (m_level->GetTile(m_playersInfo[i].centerX, m_playersInfo[i].centerY - 1) == TT::BOMB)
+				{
+					m_players[i]->SetSideBombCollidingWith(0, -1);
+				}
 				setBodyPositionNextToAnotherBodyInAxisY(m_players[i], m_physicalLevel[m_playersInfo[i].centerY - 1][m_playersInfo[i].centerX]);
 				moveInYAxis = false;
 			}
 			else if (moveInYAxis && m_playersInfo[i].centerY + 1 < m_level->GetHeight() && m_level->GetTile(m_playersInfo[i].centerX, m_playersInfo[i].centerY + 1) != TT::NONE && bodyAfterYMovement.IsCollision(*m_physicalLevel[m_playersInfo[i].centerY + 1][m_playersInfo[i].centerX]))
 			{
+				if (m_level->GetTile(m_playersInfo[i].centerX, m_playersInfo[i].centerY + 1) == TT::BOMB)
+				{
+					m_players[i]->SetSideBombCollidingWith(0, 1);
+				}
+			
 				setBodyPositionNextToAnotherBodyInAxisY(m_players[i], m_physicalLevel[m_playersInfo[i].centerY + 1][m_playersInfo[i].centerX]);
 				moveInYAxis = false;
 			}
 
 			if (moveInXAxis && m_playersInfo[i].centerX >= 1 && m_level->GetTile(m_playersInfo[i].centerX - 1, m_playersInfo[i].centerY) != TT::NONE && bodyAfterXMovement.IsCollision(*m_physicalLevel[m_playersInfo[i].centerY][m_playersInfo[i].centerX - 1]))
 			{
+				if (m_level->GetTile(m_playersInfo[i].centerX - 1, m_playersInfo[i].centerY) == TT::BOMB)
+				{
+					m_players[i]->SetSideBombCollidingWith(-1, 0);
+				}
 				setBodyPositionNextToAnotherBodyInAxisX(m_players[i], m_physicalLevel[m_playersInfo[i].centerY][m_playersInfo[i].centerX - 1]);
 				moveInXAxis = false;
 			}
 			else if (moveInXAxis && m_playersInfo[i].centerX + 1 < m_level->GetWidth() && m_level->GetTile(m_playersInfo[i].centerX + 1, m_playersInfo[i].centerY) != TT::NONE && bodyAfterXMovement.IsCollision(*m_physicalLevel[m_playersInfo[i].centerY][m_playersInfo[i].centerX + 1]))
 			{
+				if (m_level->GetTile(m_playersInfo[i].centerX + 1, m_playersInfo[i].centerY) == TT::BOMB)
+				{
+					m_players[i]->SetSideBombCollidingWith(1, 0);
+					m_level->DestroyTile(m_playersInfo[i].centerX + 1, m_playersInfo[i].centerY, false);
+					std::cout << "COS";
+				}
 				setBodyPositionNextToAnotherBodyInAxisX(m_players[i], m_physicalLevel[m_playersInfo[i].centerY][m_playersInfo[i].centerX + 1]);
 				moveInXAxis = false;
 			}

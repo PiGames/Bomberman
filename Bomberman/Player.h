@@ -33,7 +33,9 @@ public:
 	/// <param name="y">direction y</param>
 	void OnMoveKeyPressed(int x, int y);
 
-	//void SetUndamageableTime(sf::Time timeInSeconds);
+	bool HasBomb();
+
+	Bomb* GetBomb();
 	
 	/// Sends the information about action key down (plant the bomb)
 	void OnActionKeyPressed();
@@ -56,6 +58,18 @@ public:
 	bool GetIsAlive();
 	void SetIsAlive(bool var);
 
+	bool IsCollidingWithBomb();
+
+	void SetIsCollidingWithBomb(bool value);
+
+	sf::Vector2i GetSideBombCollidingWith();
+
+	void SetSideBombCollidingWith(int x, int y);
+
+	sf::Vector2i GetBombCollidingWithCoordinates();
+
+	void ChangeTileToNone(int x, int y);
+
 private:
 	Level * level;
 	sf::Sprite m_sprite;
@@ -72,6 +86,12 @@ private:
 	sf::Time m_undamagabeTime;
 
 	bool m_isAlive;
+
+	bool m_isCollidingWithBomb;
+
+	sf::Vector2i m_sideBombCollidingWith;
+
+	sf::Vector2i m_bombCollidingWithLevelCoords;
 
 	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const override;
 	void endGame();

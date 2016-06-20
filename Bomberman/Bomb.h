@@ -12,7 +12,7 @@ class Bomb :public sf::Drawable, public PhysicalBody
 public:
 	static const int TILE_SIZE = 64;
 	const int MAX_RAY_SIZE = 4;
-
+	const int SPEED = 200;
 	enum State
 	{
 		waitingForExplosion,
@@ -53,6 +53,16 @@ public:
 
 	int GetPositionInTileCoordinatesX();
 	int GetPositionInTileCoordinatesY();
+
+	void SetMoveDirection(sf::Vector2i direction);
+
+	void StopMoving();
+
+	bool isMoving();
+
+	int GetNextPositionInTileCoordsX();
+	int GetNextPositionInTileCoordsY();
+
 private:
 	Animator* m_animator;
 	Level* level;
@@ -74,7 +84,8 @@ private:
 	sf::Clock m_detonationClock;
 	std::vector<std::pair<int, int>>m_tilesToDeleteAfterExplosion;
 	State m_state;
-
+	sf::Vector2i m_direction;
+	bool m_isMoving;
 	void explode();
 
 	unsigned short getRaySizeAfterCollisions(Ray::Side side);
