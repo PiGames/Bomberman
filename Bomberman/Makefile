@@ -3,8 +3,8 @@ FLAGS=-g -std=c++11
 
 all: Bomberman
 
-Bomberman: Animator.o Bomb.o Game.o Level.o LevelView.o main.o GUI.o PhysicalBody.o PhysicsEngine.o Player.o Ray.o TextureAtlas.o
-	g++ -g -std=c++11 *.o -o Bomberman -lsfml-graphics -lsfml-window -lsfml-system
+Bomberman: Animator.o Bomb.o Game.o Level.o LevelView.o main.o GUI.o PhysicalBody.o PhysicsEngine.o Player.o Ray.o TextureAtlas.o BombManager.o
+	g++ $(FLAGS) *.o -o Bomberman -lsfml-graphics -lsfml-window -lsfml-system
 
 Animator.o: Animator.cpp
 	g++ -c $(FLAGS) Animator.cpp
@@ -41,6 +41,9 @@ TextureAtlas.o: TextureAtlas.cpp
 
 GUI.o: GUI.cpp
 	g++ -c $(FLAGS) GUI.cpp
+
+BombManager.o: BombManager.cpp
+	g++ -c $(FLAGS) BombManager.cpp
 clean: *.o
 	rm *.o
 
