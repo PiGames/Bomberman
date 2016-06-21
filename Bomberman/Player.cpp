@@ -3,7 +3,8 @@
 
 
 Player::Player()
-	:m_bomb(nullptr)
+	:m_bomb(nullptr),
+	m_canBeDamaged(true)
 {
 
 }
@@ -31,7 +32,7 @@ void Player::SetAnimator(Animator& animator, size_t width, size_t height)
 
 void Player::SetRespawns(short hp)
 {
-	m_respawns = hp;
+	m_respawns=m_maxNumberOfRespawns = hp;
 }
 
 void Player::IncreaseRespawns(short val)
@@ -56,6 +57,11 @@ void Player::OnMoveKeyPressed(int x, int y)
 	SetVelocity(speed*x, speed*y);
 }
 
+void Player::SetAfterRespawnSafeTime(float value)
+{
+	m_respawnSafeTime = sf::seconds(value);
+}
+
 bool Player::HasBomb()
 {
 	return (m_bomb != nullptr && m_bomb->GetState() == Bomb::waitingForExplosion);
@@ -65,12 +71,6 @@ Bomb * Player::GetBomb()
 {
 	return m_bomb;
 }
-
-//void Player::SetUndamageableTime(sf::Time timeInSeconds)
-//{
-//	m_undamagabeTime = timeInSeconds;
-//}
-
 
 void Player::OnActionKeyPressed()
 {
@@ -134,8 +134,11 @@ void Player::Update(const float & dt)
 			m_bomb = nullptr;
 		}
 	}
-
-	if (m_respawns <= 0 && m_isAlive)
+	if (m_respawns > 0 && m_respawns < m_maxNumberOfRespawns && (m_respawnClock.getElapsedTime() >= m_respawnSafeTime))
+	{
+		m_canBeDamaged = true;
+	}
+	else if (m_respawns <= 0 && m_isAlive)
 	{
 		endGame();
 		m_isAlive = false;
@@ -158,19 +161,12 @@ void Player::endGame()
 
 void Player::OnBombCollision()
 {
-	//Animation etc
-	//std::cout << "\r[DEBUG] Player is colliding with bomb ray";
-
-	/*if (m_undamageableClock.getElapsedTime().asSeconds() > m_undamagabeTime.asSeconds())
-	{
-		m_respawns -= 1;
-		m_undamageableClock.restart();
-	}*/
+	if (m_canBeDamaged)Respawn();
 }
 
 bool Player::isBombExplosion()
 {
-	return (m_bomb != nullptr && !m_bomb->isMoving());
+	return (m_bomb != nullptr && m_bomb->GetState() == Bomb::exploding);
 }
 
 void Player::SetColor(int i)
@@ -182,7 +178,7 @@ void Player::SetColor(int i)
 	}
 }
 
-PhysicalBody Player::GetRay(unsigned int side)
+Ray* Player::GetRay(unsigned int side)
 {
 	return m_bomb->GetRayPhysicalBody(side);
 }
@@ -241,4 +237,24 @@ void Player::SetSideBombCollidingWith(int x, int y)
 sf::Vector2i Player::GetBombCollidingWithCoordinates()
 {
 	return m_bombCollidingWithLevelCoords;
+}
+
+void Player::SetRespawnPosition(size_t x, size_t y)
+{
+	m_respawnPosition.x = x;
+	m_respawnPosition.y = y;
+}
+
+void Player::Spawn()
+{
+	SetPositionX(static_cast<int>(m_respawnPosition.x*TILE_SIZE + TILE_SIZE / 2));
+	SetPositionY(static_cast<int>(m_respawnPosition.y*TILE_SIZE + TILE_SIZE / 2));
+}
+
+void Player::Respawn()
+{
+	m_canBeDamaged = false;
+	Spawn();
+	m_respawns--;
+	m_respawnClock.restart();
 }

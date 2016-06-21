@@ -15,7 +15,7 @@ private:
 	std::map<std::pair<int*, int*>, Bomb*> bombs;
 	std::map<std::pair<int*, int*>, Bomb*>::iterator bomb;
 	std::vector<Player*>* m_players;
-	std::vector<PhysicalBody*>rays;
+	std::vector<Ray*>rays;
 	Level* m_level;
 };
 

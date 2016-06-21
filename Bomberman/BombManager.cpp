@@ -19,6 +19,8 @@ void BombManager::Init(Level * level, std::vector<Player*>* players)
 
 void BombManager::Update(const float & dt)
 {
+
+	/*BOMBS INFO GATHERING BEGIN */
 	for (unsigned int i = 0; i < m_players->size(); ++i)
 	{
 
@@ -27,8 +29,13 @@ void BombManager::Update(const float & dt)
 			bombs.emplace(std::pair<int*, int*>((*m_players)[i]->GetBomb()->GetPositionPointerInTileCoordinatesX(), (*m_players)[i]->GetBomb()->GetPositionPointerInTileCoordinatesY()),
 				(*m_players)[i]->GetBomb());
 		}
+		if ((*m_players)[i]->isBombExplosion())
+			for(unsigned int j =0 ; j<4 ; ++j)
+				rays.push_back((*m_players)[i]->GetRay(j));
 	}
-	
+	/*BOMBS INFO GATHERING END */
+
+
 	for (bomb = bombs.begin(); bomb != bombs.end(); ++bomb)
 	{
 
@@ -76,5 +83,18 @@ void BombManager::Update(const float & dt)
 			}
 		}
 	}
+
+	for (unsigned int i = rays.size(); i > 0 ; --i)
+	{
+
+		for (unsigned int j = 0; j < m_players->size(); ++j)
+		{
+			if (rays[i-1]->IsCollision(*(*m_players)[j]))
+				(*m_players)[j]->OnBombCollision();
+		}
+		rays.pop_back();
+	}
+
 	bombs.clear();
+	
 }

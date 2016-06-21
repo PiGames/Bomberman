@@ -121,9 +121,9 @@ void Bomb::Update(const float & dt)
 
 }
 
-PhysicalBody Bomb::GetRayPhysicalBody(unsigned int side)
+Ray* Bomb::GetRayPhysicalBody(unsigned int side)
 {
-	return static_cast<PhysicalBody>(*(m_rays[side]));
+	return m_rays[side];
 }
 
 int Bomb::GetPositionInTileCoordinatesX()

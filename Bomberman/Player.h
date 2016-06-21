@@ -13,7 +13,6 @@ public:
 	Player();
 	~Player();
 
-
 	/// Sets animator
 	/// <param name="animator">animator</param>
 	void SetAnimator(Animator& animator, size_t width, size_t height);
@@ -32,6 +31,8 @@ public:
 	/// <param name="x">direction x</param>
 	/// <param name="y">direction y</param>
 	void OnMoveKeyPressed(int x, int y);
+
+	void SetAfterRespawnSafeTime(float value);
 
 	bool HasBomb();
 
@@ -53,7 +54,7 @@ public:
 
 	void SetColor(int i);
 
-	PhysicalBody GetRay(unsigned int side);
+	Ray* GetRay(unsigned int side);
 
 	bool GetIsAlive();
 	void SetIsAlive(bool var);
@@ -72,6 +73,10 @@ public:
 
 	sf::Vector2i GetBombCollidingWithCoordinates();
 
+	void SetRespawnPosition(size_t x, size_t y);
+	void Spawn();
+	void Respawn();
+
 private:
 	Level * level;
 	sf::Sprite m_sprite;
@@ -83,13 +88,16 @@ private:
 
 	TextureAtlas * m_bombRayTextureAtlas;
 	short m_respawns;
-
-	sf::Clock m_undamageableClock;
-	sf::Time m_undamagabeTime;
+	short m_maxNumberOfRespawns;
+	bool m_canBeDamaged;
+	sf::Clock m_respawnClock;
+	sf::Time m_respawnSafeTime;
 
 	bool m_isAlive;
 
 	bool m_isCollidingWithBomb;
+
+	sf::Vector2i m_respawnPosition;
 
 	sf::Vector2i m_sideBombCollidingWith;
 

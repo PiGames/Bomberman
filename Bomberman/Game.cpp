@@ -140,8 +140,14 @@ void Game::Initialize()
 
 		m_players[i]->SetUpBomb(m_atlases[1], m_atlases[2]);
 		m_players[i]->SetLevelPointer(m_level);
-		m_players[i]->SetPositionX((TILE_SIZE* m_level->GetWidth() - TILE_SIZE)*i + -i * 2 * TILE_SIZE * 2.f + TILE_SIZE * 2.5f);//HACK make this shorter
-		m_players[i]->SetPositionY((TILE_SIZE* m_level->GetHeight() - TILE_SIZE)*i + -i*2*TILE_SIZE * 2.f + TILE_SIZE * 2.5f);
+		
+		if (!i)
+			m_players[i]->SetRespawnPosition(2, 2);
+		else
+			m_players[i]->SetRespawnPosition(m_level->GetWidth() - 3, m_level->GetHeight() -3);
+		m_players[i]->SetAfterRespawnSafeTime(2.5f);
+		m_players[i]->Spawn();
+
 		m_players[i]->SetColor(i);
 	}
 	/*SETTING UP PLAYERS - END*/

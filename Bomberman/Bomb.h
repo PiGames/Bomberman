@@ -49,7 +49,7 @@ public:
 
 	void Update(const float & dt);
 
-	PhysicalBody GetRayPhysicalBody(unsigned int side);
+	Ray* GetRayPhysicalBody(unsigned int side);
 
 	int GetPositionInTileCoordinatesX();
 	int* GetPositionPointerInTileCoordinatesX();
