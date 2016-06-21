@@ -72,8 +72,6 @@ public:
 
 	sf::Vector2i GetBombCollidingWithCoordinates();
 
-	void ChangeTileToNone(int x, int y);
-
 private:
 	Level * level;
 	sf::Sprite m_sprite;

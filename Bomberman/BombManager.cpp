@@ -27,7 +27,7 @@ void BombManager::Update()
 				(*m_players)[i]->GetBomb());
 		}
 	}
-	std::map<std::pair<int, int>, Bomb*>::iterator bomb;
+	
 	for (bomb = bombs.begin(); bomb != bombs.end(); ++bomb)
 	{
 		for (unsigned int i = 0; i < m_players->size(); ++i)
@@ -36,7 +36,8 @@ void BombManager::Update()
 			{
 				bomb->second->SetMoveDirection((*m_players)[i]->GetSideBombCollidingWith());
 				(*m_players)[i]->SetIsCollidingWithBomb(false);
-			}
+				(*m_players)[i]->SetSideBombCollidingWith(0,0);
+ 			}
 		}
 
 
@@ -52,4 +53,5 @@ void BombManager::Update()
 			}
 		}
 	}
+	bombs.clear();
 }

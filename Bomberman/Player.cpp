@@ -226,21 +226,15 @@ void Player::SetSideBombCollidingWith(int x, int y)
 {
 	m_sideBombCollidingWith.x = x;
 	m_sideBombCollidingWith.y = y;
+	if (x || y)
+	{
+		m_bombCollidingWithLevelCoords.x = static_cast<int>(GetPositionX() / TILE_SIZE + x);
 
-	SetIsCollidingWithBomb(true);
-
-	m_bombCollidingWithLevelCoords.x = static_cast<int>(GetPositionX() / TILE_SIZE + x);
-
-	m_bombCollidingWithLevelCoords.y = static_cast<int>(GetPositionY() / TILE_SIZE + y);
-
+		m_bombCollidingWithLevelCoords.y = static_cast<int>(GetPositionY() / TILE_SIZE + y);
+	}
 }
 
 sf::Vector2i Player::GetBombCollidingWithCoordinates()
 {
 	return m_bombCollidingWithLevelCoords;
-}
-
-void Player::ChangeTileToNone(int x, int y)
-{
-	level->DestroyTile(x, y, false);
 }

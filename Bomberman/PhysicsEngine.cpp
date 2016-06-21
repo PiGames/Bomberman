@@ -93,6 +93,7 @@ void PhysicsEngine::Update(const float & delta)
 				if (m_level->GetTile(m_playersInfo[i].centerX, m_playersInfo[i].centerY - 1) == TT::BOMB)
 				{
 					m_players[i]->SetSideBombCollidingWith(0, -1);
+					m_players[i]->SetIsCollidingWithBomb(true);
 				}
 				setBodyPositionNextToAnotherBodyInAxisY(m_players[i], m_physicalLevel[m_playersInfo[i].centerY - 1][m_playersInfo[i].centerX]);
 				moveInYAxis = false;
@@ -102,6 +103,7 @@ void PhysicsEngine::Update(const float & delta)
 				if (m_level->GetTile(m_playersInfo[i].centerX, m_playersInfo[i].centerY + 1) == TT::BOMB)
 				{
 					m_players[i]->SetSideBombCollidingWith(0, 1);
+					m_players[i]->SetIsCollidingWithBomb(true);
 				}
 			
 				setBodyPositionNextToAnotherBodyInAxisY(m_players[i], m_physicalLevel[m_playersInfo[i].centerY + 1][m_playersInfo[i].centerX]);
@@ -113,6 +115,7 @@ void PhysicsEngine::Update(const float & delta)
 				if (m_level->GetTile(m_playersInfo[i].centerX - 1, m_playersInfo[i].centerY) == TT::BOMB)
 				{
 					m_players[i]->SetSideBombCollidingWith(-1, 0);
+					m_players[i]->SetIsCollidingWithBomb(true);
 				}
 				setBodyPositionNextToAnotherBodyInAxisX(m_players[i], m_physicalLevel[m_playersInfo[i].centerY][m_playersInfo[i].centerX - 1]);
 				moveInXAxis = false;
@@ -122,8 +125,7 @@ void PhysicsEngine::Update(const float & delta)
 				if (m_level->GetTile(m_playersInfo[i].centerX + 1, m_playersInfo[i].centerY) == TT::BOMB)
 				{
 					m_players[i]->SetSideBombCollidingWith(1, 0);
-					m_level->DestroyTile(m_playersInfo[i].centerX + 1, m_playersInfo[i].centerY, false);
-					std::cout << "COS";
+					m_players[i]->SetIsCollidingWithBomb(true);
 				}
 				setBodyPositionNextToAnotherBodyInAxisX(m_players[i], m_physicalLevel[m_playersInfo[i].centerY][m_playersInfo[i].centerX + 1]);
 				moveInXAxis = false;
