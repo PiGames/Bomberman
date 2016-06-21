@@ -197,6 +197,16 @@ void Player::SetIsAlive(bool var)
 	m_isAlive = var;
 }
 
+int Player::GetPositionInTilesCoordsX()
+{
+	return static_cast<int>(GetPositionX() / TILE_SIZE);
+}
+
+int Player::GetPositionInTilesCoordsY()
+{
+	return static_cast<int>(GetPositionY() / TILE_SIZE);
+}
+
 bool Player::IsCollidingWithBomb()
 {
 	return m_isCollidingWithBomb;

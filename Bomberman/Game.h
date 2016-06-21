@@ -9,6 +9,7 @@
 #include "PhysicsEngine.h"
 #include "Animator.h"
 #include "GUI.h"
+#include "BombManager.h"
 
 
 class Game
@@ -44,7 +45,7 @@ private:
 	std::vector<Animator*>m_playersAnimators;
 	PhysicsEngine* m_physicsEngine;
 	std::vector<TextureAtlas*> m_atlases; // [0]-terrain, [1] - bomb, [2] bomb ray,  [3] - player , [>3] more players
-
+	BombManager* m_bombManager;
 	sf::Font* m_font;
 	GUI * m_gui;
 

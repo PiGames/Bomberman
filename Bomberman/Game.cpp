@@ -25,6 +25,8 @@ Game::Game(size_t width, size_t height)
 		m_atlases.push_back(new TextureAtlas());
 	}
 
+	m_bombManager = new BombManager();
+
 	m_font = new sf::Font();
 
 	m_gui = new GUI(); 
@@ -146,6 +148,8 @@ void Game::Initialize()
 
 	//----------------------------
 
+	m_bombManager->Init(&m_players);
+
 	m_physicsEngine->Init(m_level, &m_players);
 	
 	m_gui->Init(m_font, 30, m_windowWidth, m_windowHeight);
@@ -194,41 +198,10 @@ void Game::update(float deltaTime)
 
 	std::map< std::pair<int, int>, Bomb*> bombs;
 
-	for (unsigned int i = 0; i < m_players.size(); ++i)
-	{
+	for(unsigned int i=0; i<m_players.size(); ++i)
 		m_players[i]->Update(deltaTime);
-		if (m_players[i]->HasBomb())
-		{
-			bombs.emplace(std::pair<int, int>(m_players[i]->GetBomb()->GetPositionInTileCoordinatesX(), m_players[i]->GetBomb()->GetPositionInTileCoordinatesY()),
-				m_players[i]->GetBomb());
-		}
-	}
-	std::map<std::pair<int, int>, Bomb*>::iterator bomb;
-	for (bomb = bombs.begin(); bomb != bombs.end(); ++bomb)
-	{
-		for (unsigned int i = 0; i < m_players.size(); ++i)
-		{
-			if (m_players[i]->IsCollidingWithBomb() && m_players[i]->GetBombCollidingWithCoordinates().x == bomb->first.first && m_players[i]->GetBombCollidingWithCoordinates().y == bomb->first.second)
-			{
-				bomb->second->SetMoveDirection(m_players[i]->GetSideBombCollidingWith());
-				m_players[i]->SetIsCollidingWithBomb(false);
-			}
-		}
 
-	
-		for (unsigned int i = 0; i < m_players.size(); ++i)
-		{
-			if (bomb->second->isMoving())
-			{
-				std::cout << bomb->second->GetNextPositionInTileCoordsX() << " || " << bomb->second->GetNextPositionInTileCoordsY() << std::endl;
-				if (static_cast<int>(m_players[i]->GetPositionX() / TILE_SIZE) == bomb->second->GetNextPositionInTileCoordsX()
-					&& static_cast<int>(m_players[i]->GetPositionY() / TILE_SIZE) == bomb->second->GetNextPositionInTileCoordsY())
-				{
-					bomb->second->StopMoving();
-				}
-			}
-		}
-	}
+	m_bombManager->Update();
 
 	//TODO checking collisions after explosion
 

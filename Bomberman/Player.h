@@ -58,6 +58,10 @@ public:
 	bool GetIsAlive();
 	void SetIsAlive(bool var);
 
+	int GetPositionInTilesCoordsX();
+	
+	int GetPositionInTilesCoordsY();
+
 	bool IsCollidingWithBomb();
 
 	void SetIsCollidingWithBomb(bool value);
