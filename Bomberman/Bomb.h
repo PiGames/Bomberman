@@ -52,7 +52,9 @@ public:
 	PhysicalBody GetRayPhysicalBody(unsigned int side);
 
 	int GetPositionInTileCoordinatesX();
+	int* GetPositionPointerInTileCoordinatesX();
 	int GetPositionInTileCoordinatesY();
+	int* GetPositionPointerInTileCoordinatesY();
 
 	void SetMoveDirection(sf::Vector2i direction);
 
@@ -62,6 +64,8 @@ public:
 
 	int GetNextPositionInTileCoordsX();
 	int GetNextPositionInTileCoordsY();
+
+	void FixPosition();
 
 private:
 	Animator* m_animator;

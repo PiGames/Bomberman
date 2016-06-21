@@ -95,35 +95,13 @@ void Bomb::Update(const float & dt)
 {
 	m_animator->Animate(dt);
 
-	if (m_state == State::waitingForExplosion)
-	{
-		
-		if (m_isMoving && m_positionInTilesCoordsX + m_direction.x >= 0  && m_positionInTilesCoordsX + m_direction.x < level->GetWidth() &&
-			m_positionInTilesCoordsY + m_direction.y >= 0 && m_positionInTilesCoordsY + m_direction.y < level->GetHeight() &&
-			level->GetTile(GetNextPositionInTileCoordsX(),GetNextPositionInTileCoordsY()) == TT::NONE)
-		{
-			SetPositionX(GetPositionX() + GetVelocityX() * dt);
-			SetPositionY(GetPositionY() + GetVelocityY() * dt);
-			if(level->GetTile(m_positionInTilesCoordsX, m_positionInTilesCoordsY) == TT::BOMB)
-				level->DestroyTile(m_positionInTilesCoordsX, m_positionInTilesCoordsY, false);
-		}
-		else
-		{
-			SetPositionX(m_positionInTilesCoordsX * TILE_SIZE + TILE_SIZE / 2);
-			SetPositionY(m_positionInTilesCoordsY * TILE_SIZE + TILE_SIZE / 2);
-			m_isMoving = false;
-			level->SetTileAsBomb(m_positionInTilesCoordsX, m_positionInTilesCoordsY);
-		}
-	}
-
 	m_sprite.setPosition(GetPositionX(), GetPositionY());
 	m_positionInTilesCoordsX = static_cast<int>(GetPositionX() / TILE_SIZE);
 	m_positionInTilesCoordsY = static_cast<int>(GetPositionY() / TILE_SIZE);
 
 	if (m_detonationClock.getElapsedTime() >= m_detonationTime && m_state < State::exploding)
 	{
-		SetPositionX(m_positionInTilesCoordsX * TILE_SIZE + TILE_SIZE / 2);
-		SetPositionY(m_positionInTilesCoordsY * TILE_SIZE + TILE_SIZE / 2);
+		//FixPosition();
 		level->DestroyTile(m_positionInTilesCoordsX, m_positionInTilesCoordsY, false);
 		m_state = State::exploding;
 		explode();
@@ -153,9 +131,19 @@ int Bomb::GetPositionInTileCoordinatesX()
 	return m_positionInTilesCoordsX;
 }
 
+int * Bomb::GetPositionPointerInTileCoordinatesX()
+{
+	return &m_positionInTilesCoordsX;
+}
+
 int Bomb::GetPositionInTileCoordinatesY()
 {
 	return m_positionInTilesCoordsY;
+}
+
+int * Bomb::GetPositionPointerInTileCoordinatesY()
+{
+	return &m_positionInTilesCoordsY;
 }
 
 void Bomb::SetMoveDirection(sf::Vector2i direction)
@@ -182,6 +170,12 @@ int Bomb::GetNextPositionInTileCoordsX()
 int Bomb::GetNextPositionInTileCoordsY()
 {
 	return m_positionInTilesCoordsY + m_direction.y;
+}
+
+void Bomb::FixPosition()
+{
+	SetPositionX(m_positionInTilesCoordsX * TILE_SIZE + TILE_SIZE / 2);
+	SetPositionY(m_positionInTilesCoordsY * TILE_SIZE + TILE_SIZE / 2);
 }
 
 void Bomb::explode()

@@ -9,12 +9,13 @@ class BombManager
 public:
 	BombManager();
 	~BombManager();
-	void Init(std::vector<Player*>* players);
-	void Update();
+	void Init(Level* level, std::vector<Player*>* players);
+	void Update(const float & dt);
 private:
-	std::map<std::pair<int, int>, Bomb*> bombs;
-	std::map<std::pair<int, int>, Bomb*>::iterator bomb;
+	std::map<std::pair<int*, int*>, Bomb*> bombs;
+	std::map<std::pair<int*, int*>, Bomb*>::iterator bomb;
 	std::vector<Player*>* m_players;
 	std::vector<PhysicalBody*>rays;
+	Level* m_level;
 };
 

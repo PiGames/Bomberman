@@ -232,6 +232,10 @@ void Player::SetSideBombCollidingWith(int x, int y)
 
 		m_bombCollidingWithLevelCoords.y = static_cast<int>(GetPositionY() / TILE_SIZE + y);
 	}
+	else
+	{
+		m_bombCollidingWithLevelCoords = sf::Vector2i(NULL,NULL);
+	}
 }
 
 sf::Vector2i Player::GetBombCollidingWithCoordinates()

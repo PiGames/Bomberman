@@ -148,7 +148,7 @@ void Game::Initialize()
 
 	//----------------------------
 
-	m_bombManager->Init(&m_players);
+	m_bombManager->Init(m_level, &m_players);
 
 	m_physicsEngine->Init(m_level, &m_players);
 	
@@ -201,7 +201,7 @@ void Game::update(float deltaTime)
 	for(unsigned int i=0; i<m_players.size(); ++i)
 		m_players[i]->Update(deltaTime);
 
-	m_bombManager->Update();
+	m_bombManager->Update(deltaTime);
 
 	//TODO checking collisions after explosion
 
