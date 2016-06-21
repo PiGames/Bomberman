@@ -56,14 +56,5 @@ private:
 
 	void setBodyPositionNextToAnotherBodyInAxisX(PhysicalBody * bodyToSetPostition, PhysicalBody * referenceBody);
 
-	bool isInMapBoundsX(PhysicalBody & body);
-
-	bool isInMapBoundsY(PhysicalBody & body);
-
-	///The method decides itself which bound set a body next to
-	void setBodyPositionNextToBoundX(PhysicalBody * body);
-
-	///The method decides itself which bound set a body next to
-	void setBodyPositionNextToBoundY(PhysicalBody * body);
 };
 

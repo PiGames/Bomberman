@@ -35,8 +35,7 @@ void BombManager::Update(const float & dt)
 		if (bomb->second->GetState() == Bomb::State::waitingForExplosion)
 		{
 
-			if (bomb->second->isMoving() && bomb->second->GetNextPositionInTileCoordsX() >= 0 && bomb->second->GetNextPositionInTileCoordsX() < m_level->GetWidth() &&
-				bomb->second->GetNextPositionInTileCoordsY() >= 0 && bomb->second->GetNextPositionInTileCoordsY() < m_level->GetHeight() &&
+			if (bomb->second->isMoving() &&
 				m_level->GetTile(bomb->second->GetNextPositionInTileCoordsX(), bomb->second->GetNextPositionInTileCoordsY()) == TT::NONE)
 			{
 				bomb->second->SetPositionX(bomb->second->GetPositionX() + bomb->second->GetVelocityX() * dt);
