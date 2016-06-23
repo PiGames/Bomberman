@@ -296,3 +296,6 @@ cb.bmp
 
 #Compiled project
 Bomberman/Bomberman
+#Monodevelop
+*.cproj
+
