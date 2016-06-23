@@ -145,6 +145,16 @@ void Player::Update(const float & dt)
 	}
 }
 
+bool Player::IsTileCollidingInAxisX(size_t x)
+{
+	return (x == GetPositionInTilesCoordsX() || x==BodyInfo.leftBound || x==BodyInfo.rightBound);
+}
+
+bool Player::IsTileCollidingInAxisY(size_t y)
+{
+	return (y == GetPositionInTilesCoordsY() || y == BodyInfo.upBound || y == BodyInfo.downBound);
+}
+
 
 void Player::draw(sf::RenderTarget & target, sf::RenderStates states) const
 {

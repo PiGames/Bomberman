@@ -8,6 +8,21 @@ public:
 	PhysicalBody();
 	~PhysicalBody();
 
+	enum BodyPositionState { OnSingleTile, OnTwoTilesHorizontal, OnTwoTilesVertical, OnFourTiles };
+
+	struct MovableBodyInfo
+	{
+		BodyPositionState state;
+
+		unsigned int upBound; 
+		unsigned int downBound;
+		unsigned int leftBound;
+		unsigned int rightBound;
+		unsigned int centerX;
+		unsigned int centerY;
+	};
+
+	MovableBodyInfo BodyInfo;
 
 	/// Sets the velocity
 	/// <param name="x">x velocity</param>

@@ -101,7 +101,7 @@ void Bomb::Update(const float & dt)
 
 	if (m_detonationClock.getElapsedTime() >= m_detonationTime && m_state < State::exploding)
 	{
-		//FixPosition();
+		FixPosition();
 		level->DestroyTile(m_positionInTilesCoordsX, m_positionInTilesCoordsY, false);
 		m_state = State::exploding;
 		explode();

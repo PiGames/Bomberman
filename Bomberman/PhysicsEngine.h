@@ -31,24 +31,9 @@ private:
 	///Physical level representation
 	std::vector <std::vector<PhysicalBody*>> m_physicalLevel;
 
-	enum BodyPositionState { OnSingleTile, OnTwoTilesHorizontal, OnTwoTilesVertical, OnFourTiles };
-
-	struct MovableBodyInfo
-	{
-		BodyPositionState state;
-
-		unsigned int upBound; // casted to level index
-		unsigned int downBound;
-		unsigned int leftBound;
-		unsigned int rightBound;
-		unsigned int centerX;
-		unsigned int centerY;
-	};
+	
 	///Physical player representation
 	std::vector<Player*> m_players;
-
-	std::vector<MovableBodyInfo> m_playersInfo;
-
 
 	void setBodyPositionInfo(int key);
 
