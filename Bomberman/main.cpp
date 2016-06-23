@@ -2,7 +2,7 @@
 
 int main()
 {
-	Game game(14*64, 14*64);
+	Game game(12*64, 10*64);
 	game.Initialize();
 	game.Run();
 

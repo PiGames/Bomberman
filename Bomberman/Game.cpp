@@ -142,9 +142,9 @@ void Game::Initialize()
 		m_players[i]->SetLevelPointer(m_level);
 		
 		if (!i)
-			m_players[i]->SetRespawnPosition(2, 2);
+			m_players[i]->SetRespawnPosition(1, 1);
 		else
-			m_players[i]->SetRespawnPosition(m_level->GetWidth() - 3, m_level->GetHeight() -3);
+			m_players[i]->SetRespawnPosition(m_level->GetWidth() - 2, m_level->GetHeight() -2);
 		m_players[i]->SetAfterRespawnSafeTime(2.5f);
 		m_players[i]->Spawn();
 
