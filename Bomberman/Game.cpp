@@ -120,36 +120,8 @@ void Game::Initialize()
 
 	//-----------------------------
 
-	//SETTING UP LEVEL
-	m_levelView->SetLevel(m_level, m_atlases[0]);
-	m_level->SetLevelView(m_levelView);
+	initGameplay();
 
-	//-----------------------------
-
-	/*SETTING UP PLAYERS - BEGIN*/
-	for (int i = 0; i < m_numberOfPlayers; ++i)
-	{
-		m_playersAnimators[i]->AddAnimationState("default", *m_atlases[m_atlases.size() - m_numberOfPlayers + i], 0, m_atlases[m_atlases.size() - m_numberOfPlayers + i]->GetCount() - 1);
-		m_playersAnimators[i]->SetLoop(true);
-
-		m_players[i]->SetAnimator(*m_playersAnimators[i], m_atlases[m_atlases.size() - m_numberOfPlayers +i]->GetCellSizeX(), m_atlases[m_atlases.size() - m_numberOfPlayers + i]->GetCellSizeY());
-		m_playersAnimators[i]->ChangeActiveState("default");
-
-		m_players[i]->SetRespawns(3);
-		//m_players[i]->SetUndamageableTime(sf::seconds(2)); //HACK Change this later 
-
-		m_players[i]->SetUpBomb(m_atlases[1], m_atlases[2]);
-		m_players[i]->SetLevelPointer(m_level);
-		
-		if (!i)
-			m_players[i]->SetRespawnPosition(1, 1);
-		else
-			m_players[i]->SetRespawnPosition(m_level->GetWidth() - 2, m_level->GetHeight() -2);
-		m_players[i]->SetAfterRespawnSafeTime(2.5f);
-		m_players[i]->Spawn();
-
-		m_players[i]->SetColor(i);
-	}
 	/*SETTING UP PLAYERS - END*/
 
 	//----------------------------
@@ -204,14 +176,38 @@ void Game::update(float deltaTime)
 
 	std::map< std::pair<int, int>, Bomb*> bombs;
 
-	for(unsigned int i=0; i<m_players.size(); ++i)
-		m_players[i]->Update(deltaTime);
+	for (short i = 0; i < m_players.size(); ++i)
+	{
+		if (!m_endOfGame)
+		{
+			m_players[i]->Update(deltaTime);
+		}
+
+		if (!m_players[i]->GetIsAlive())
+		{
+			m_endOfGame = true;
+
+			if (!i)
+			{
+				m_players[1]->SetWin(true);
+				break;
+			}
+			
+			m_players[0]->SetWin(true);
+			break;
+		}
+	}
 
 	m_bombManager->Update(deltaTime);
 
 	//TODO checking collisions after explosion
 
 	m_gui->UpdateStats(&m_players);
+
+	if (m_endOfGame && m_playAgain)
+	{
+		initGameplay();
+	}
 }
 
 
@@ -222,39 +218,43 @@ void Game::processEvents()
 		return; // if exiting: skip event processing!
 	}
 
-	sf::Event event;
-	std::pair<int,int> input[2];
-
-	// HACK 1st iteration only, add class Input later
-	// handle horizontal axis
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		input[1].first = -1;
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		input[1].first = 1;
-
-	// handle vertical axis
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		input[1].second = -1;
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		 input[1].second = 1;
-    
-	// handle horizontal axis
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		input[0].first = -1;
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		input[0].first = 1;
-   
-	// handle vertical axis
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		input[0].second = -1;
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		input[0].second = 1;
-
-
-	for (int i = 0; i < 2; ++i)
+	if (!m_endOfGame)
 	{
-		m_players[i]->OnMoveKeyPressed(input[i].first, input[i].second);
-	}
+		std::pair<int, int> input[2];
+
+		// HACK 1st iteration only, add class Input later
+		// handle horizontal axis
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+			input[1].first = -1;
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+			input[1].first = 1;
+
+		// handle vertical axis
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+			input[1].second = -1;
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+			input[1].second = 1;
+
+		// handle horizontal axis
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+			input[0].first = -1;
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+			input[0].first = 1;
+
+		// handle vertical axis
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+			input[0].second = -1;
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+			input[0].second = 1;
+
+
+		for (int i = 0; i < 2; ++i)
+		{
+			m_players[i]->OnMoveKeyPressed(input[i].first, input[i].second);
+		}
+	}	
+	
+	sf::Event event;
 
 	while (m_window->pollEvent(event))
 	{
@@ -263,11 +263,73 @@ void Game::processEvents()
 			m_exit = true;
 			break;
 		}
-		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
-			m_players[1]->OnActionKeyPressed();
-		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::LControl)
-			m_players[0]->OnActionKeyPressed();
+		
+		if (!m_endOfGame)
+		{
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
+				m_players[1]->OnActionKeyPressed();
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::LControl)
+				m_players[0]->OnActionKeyPressed();
+		}
 
+		if (m_endOfGame)
+		{
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+			{
+				m_exit = true;
+			}
+			else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return)
+			{
+				m_playAgain = true;
+			}
+		}
+		
 		// handle more events
 	}
+}
+
+void Game::initGameplay()
+{
+
+	//SETTING UP LEVEL
+	m_levelView->SetLevel(m_level, m_atlases[0]);
+	m_level->SetLevelView(m_levelView);
+
+	//-----------------------------
+
+	/*SETTING UP PLAYERS - BEGIN*/
+	for (int i = 0; i < m_numberOfPlayers; ++i)
+	{
+		m_playersAnimators[i]->AddAnimationState("default", *m_atlases[m_atlases.size() - m_numberOfPlayers + i], 0, m_atlases[m_atlases.size() - m_numberOfPlayers + i]->GetCount() - 1);
+		m_playersAnimators[i]->SetLoop(true);
+
+		m_players[i]->SetAnimator(*m_playersAnimators[i], m_atlases[m_atlases.size() - m_numberOfPlayers + i]->GetCellSizeX(), m_atlases[m_atlases.size() - m_numberOfPlayers + i]->GetCellSizeY());
+		m_playersAnimators[i]->ChangeActiveState("default");
+
+		m_players[i]->SetRespawns(3);
+		//m_players[i]->SetUndamageableTime(sf::seconds(2)); //HACK Change this later 
+
+		m_players[i]->SetUpBomb(m_atlases[1], m_atlases[2]);
+		m_players[i]->SetLevelPointer(m_level);
+
+		if (!i)
+			m_players[i]->SetRespawnPosition(1, 1);
+		else
+			m_players[i]->SetRespawnPosition(m_level->GetWidth() - 2, m_level->GetHeight() - 2);
+		m_players[i]->SetAfterRespawnSafeTime(2.5f);
+		m_players[i]->Spawn();
+
+		m_players[i]->SetColor(i);
+	}
+
+	// For position change or something, just must be in init
+	for (short i = 0; i < m_players.size(); ++i)
+	{
+		m_players[i]->Update(0);
+		m_players[i]->SetWin(false);
+		m_players[i]->SetRespawns(3);
+	}
+
+	m_endOfGame = false;
+	m_playAgain = false;
 }

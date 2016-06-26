@@ -77,6 +77,9 @@ public:
 
 	sf::Vector2i GetBombCollidingWithCoordinates();
 
+	void SetWin(bool val);
+	bool GetWin();
+
 	void SetRespawnPosition(size_t x, size_t y);
 	void Spawn();
 	void Respawn();
@@ -109,5 +112,7 @@ private:
 
 	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const override;
 	void endGame();
+
+	bool m_win;
 };
 

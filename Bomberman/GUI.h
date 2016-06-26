@@ -24,5 +24,7 @@ private:
 	int m_screenWidth;
 	int m_screenHeight;
 	std::vector<short> m_respawns;
+	// player id, win?
+	std::pair<short, bool> m_whoWin;
 };
 

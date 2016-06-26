@@ -25,6 +25,8 @@ private:
 
 	/// Process all events
 	void processEvents();
+	/// Inits level and players (also after endGame)
+	void initGameplay();
 
 public:
 	Game(size_t width, size_t height);
@@ -50,6 +52,9 @@ private:
 	GUI * m_gui;
 
 	sf::RenderWindow* m_window;
+
+	bool m_endOfGame;
+	bool m_playAgain;
 
 };
 

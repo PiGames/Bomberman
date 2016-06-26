@@ -143,6 +143,10 @@ void Player::Update(const float & dt)
 		endGame();
 		m_isAlive = false;
 	}
+	else
+	{
+		m_isAlive = true;
+	}
 }
 
 bool Player::IsTileCollidingInAxisX(size_t x)
@@ -166,6 +170,8 @@ void Player::draw(sf::RenderTarget & target, sf::RenderStates states) const
 
 void Player::endGame()
 {
+	m_vX = 0;
+	m_vY = 0;
 }
 
 
@@ -247,6 +253,16 @@ void Player::SetSideBombCollidingWith(int x, int y)
 sf::Vector2i Player::GetBombCollidingWithCoordinates()
 {
 	return m_bombCollidingWithLevelCoords;
+}
+
+void Player::SetWin(bool val)
+{
+	m_win = val;
+}
+
+bool Player::GetWin()
+{
+	return m_win;
 }
 
 void Player::SetRespawnPosition(size_t x, size_t y)
