@@ -281,6 +281,7 @@ void Game::processEvents()
 			else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return)
 			{
 				m_playAgain = true;
+				m_players[0]->Spawn();
 			}
 		}
 		
@@ -328,6 +329,7 @@ void Game::initGameplay()
 		m_players[i]->Update(0);
 		m_players[i]->SetWin(false);
 		m_players[i]->SetRespawns(3);
+		m_players[i]->SetAlive();
 	}
 
 	m_endOfGame = false;

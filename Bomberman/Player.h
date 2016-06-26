@@ -83,6 +83,7 @@ public:
 	void SetRespawnPosition(size_t x, size_t y);
 	void Spawn();
 	void Respawn();
+	void SetAlive();
 
 private:
 	Level * level;

@@ -267,8 +267,15 @@ bool Player::GetWin()
 
 void Player::SetRespawnPosition(size_t x, size_t y)
 {
+	
 	m_respawnPosition.x = x;
 	m_respawnPosition.y = y;
+}
+
+void Player::SetAlive()
+{
+	m_isAlive = true;
+	m_canBeDamaged = true;
 }
 
 void Player::Spawn()
