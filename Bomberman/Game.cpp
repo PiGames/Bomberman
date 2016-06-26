@@ -202,7 +202,14 @@ void Game::update(float deltaTime)
 
 	//TODO checking collisions after explosion
 
-	m_gui->UpdateStats(&m_players);
+	if (m_endOfGame)
+	{
+		m_gui->UpdateStats(&m_players, sf::Mouse::getPosition(*m_window).x, sf::Mouse::getPosition(*m_window).y, m_playAgain, m_exit);
+	}
+	else
+	{
+		m_gui->UpdateStats(&m_players, sf::Mouse::getPosition(*m_window).x, sf::Mouse::getPosition(*m_window).y);
+	}
 
 	if (m_endOfGame && m_playAgain)
 	{
@@ -270,19 +277,6 @@ void Game::processEvents()
 				m_players[1]->OnActionKeyPressed();
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::LControl)
 				m_players[0]->OnActionKeyPressed();
-		}
-
-		if (m_endOfGame)
-		{
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
-			{
-				m_exit = true;
-			}
-			else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return)
-			{
-				m_playAgain = true;
-				m_players[0]->Spawn();
-			}
 		}
 		
 		// handle more events

@@ -4,6 +4,7 @@
 #include <string>
 
 #include "Player.h"
+#include "Option.h"
 
 
 class GUI:
@@ -16,7 +17,8 @@ public:
 	GUI();
 	~GUI();
 	void Init(sf::Font* font, short textSize, int screenWidth, int screenHeight);
-	void UpdateStats(std::vector<Player*> * players);
+	void UpdateStats(std::vector<Player*> * players, short mouseX, short mouseY);
+	void UpdateStats(std::vector<Player*> * players, short mouseX, short mouseY, bool & playAgain, bool & exit);
 
 private:
 	sf::Font * m_font;
@@ -26,5 +28,8 @@ private:
 	std::vector<short> m_respawns;
 	// player id, win?
 	std::pair<short, bool> m_whoWin;
+
+	Option * m_optionPlayAgain;
+	Option * m_optionExit;
 };
 

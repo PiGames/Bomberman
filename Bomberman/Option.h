@@ -13,8 +13,6 @@ class Option :
 {
 private:
 	void draw(sf::RenderTarget & target, sf::RenderStates states) const;
-	///When button is clicked
-	virtual void action() = 0;
 	bool isSelected(short & posX, short & posY);
 
 public:
@@ -25,17 +23,19 @@ public:
 	/// <param name = "posX"> Position X (relative to upper-left corner) </param>
 	/// <param name = "posY"> Position Y (relative to upper-left corner) </param>
 	/// <param name = "buttonCol"> Button color </param>
-	Option(sf::Font * fontPointer, std::string * optionNamePointer, short characterSize, short posX, short posY, sf::Color buttonCol, sf::Color textNormal, sf::Color textSelected);
+	Option(sf::Font * fontPointer, std::string optionName, short characterSize, short posX, short posY, sf::Color buttonCol, sf::Color buttonSelected);
 	~Option();
 
 	void Update(short & mousePosX, short & mousePosY);
 
+	bool IsClicked();
+
 private:
 	sf::Font * m_font;
 	sf::RectangleShape m_rectangle;
-	sf::Color m_textNormal;
-	sf::Color m_textSelected;
-	std::string * m_optionName;
+	sf::Color m_buttonNormal;
+	sf::Color m_buttonSelected;
+	std::string m_optionName;
 	bool m_selected;
 	bool m_clicked;
 	short m_characterSize;
