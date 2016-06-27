@@ -33,7 +33,7 @@ void GUI::draw(sf::RenderTarget & target, sf::RenderStates states) const
 		winText.setFont(*m_font);
 		winText.setCharacterSize(m_textSize);
 		winText.setColor(sf::Color::Black);
-		winText.setString("Player " + std::to_string(m_whoWin.first) + " win!");
+		winText.setString("Player " + std::to_string(m_whoWin.first + 1) + " win!");
 		winText.setPosition(m_screenWidth / 2 - winText.getGlobalBounds().width, m_screenHeight / 2 - winText.getGlobalBounds().height);
 
 		target.draw(thing, states);

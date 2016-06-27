@@ -174,8 +174,6 @@ void Game::update(float deltaTime)
 {
 	m_physicsEngine->Update(deltaTime);
 
-	std::map< std::pair<int, int>, Bomb*> bombs;
-
 	for (short i = 0; i < m_players.size(); ++i)
 	{
 		if (!m_endOfGame)
@@ -200,9 +198,7 @@ void Game::update(float deltaTime)
 
 	m_bombManager->Update(deltaTime);
 
-	//TODO checking collisions after explosion
-
-	if (m_endOfGame)
+	if (m_endOfGame && !m_exit)
 	{
 		m_gui->UpdateStats(&m_players, sf::Mouse::getPosition(*m_window).x, sf::Mouse::getPosition(*m_window).y, m_playAgain, m_exit);
 	}
