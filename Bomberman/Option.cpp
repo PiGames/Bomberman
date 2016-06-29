@@ -27,12 +27,12 @@ Option::~Option()
 {
 }
 
-bool Option::isSelected(short & posX, short & posY)
+bool Option::isSelected(const short & posX, const short & posY)
 {
 	return m_rectangle.getGlobalBounds().contains(posX, posY);
 }
 
-void Option::Update(short & mousePosX, short & mousePosY)
+void Option::Update(const short & mousePosX, const short & mousePosY)
 {
 	m_clicked = (isSelected(mousePosX, mousePosY) && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) ? true : false);
 	m_selected = isSelected(mousePosX, mousePosY);

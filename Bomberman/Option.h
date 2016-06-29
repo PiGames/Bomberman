@@ -13,7 +13,7 @@ class Option :
 {
 private:
 	void draw(sf::RenderTarget & target, sf::RenderStates states) const;
-	bool isSelected(short & posX, short & posY);
+	bool isSelected(const short & posX, const short & posY);
 
 public:
 	/// Option constructor
@@ -26,7 +26,7 @@ public:
 	Option(sf::Font * fontPointer, std::string optionName, short characterSize, short posX, short posY, sf::Color buttonCol, sf::Color buttonSelected);
 	~Option();
 
-	void Update(short & mousePosX, short & mousePosY);
+	void Update(const short & mousePosX, const short & mousePosY);
 
 	bool IsClicked();
 
