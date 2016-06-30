@@ -22,7 +22,7 @@ private:
 	Option * m_options[4];
 	sf::Font * m_font;
 
-	static const uint8_t m_SCREEN_WIDTH = 800;
-	static const uint8_t m_SCREEN_HEIGHT = 600;
+	static const uint16_t m_SCREEN_WIDTH = 800;
+	static const uint16_t m_SCREEN_HEIGHT = 600;
 };
 
