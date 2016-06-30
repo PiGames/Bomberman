@@ -10,7 +10,6 @@
 #include "Animator.h"
 #include "GUI.h"
 #include "BombManager.h"
-#include "Menu.h"
 
 
 class Game
@@ -56,8 +55,6 @@ private:
 
 	bool m_endOfGame;
 	bool m_playAgain;
-
-	Menu * m_menu;
 
 };
 

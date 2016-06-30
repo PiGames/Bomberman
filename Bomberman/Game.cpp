@@ -54,8 +54,6 @@ Game::~Game()
 	delete m_font;
 
 	delete m_gui;
-
-	delete m_menu;
 }
 
 void Game::Initialize()
@@ -275,11 +273,7 @@ void Game::processEvents()
 				m_players[1]->OnActionKeyPressed();
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::LControl)
 				m_players[0]->OnActionKeyPressed();
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
-				m_menu = new Menu();
-				if (!m_menu->Run())	
-					m_exit = true;
-		}	
+		}
 		
 		// handle more events
 	}
