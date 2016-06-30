@@ -39,7 +39,6 @@ Menu::Menu()
 	m_options[1] = new Option(m_font, "How To Play", 30, 300, 380, sf::Color::Blue, sf::Color::Black);
 	m_options[2] = new Option(m_font, "Credits", 30, 300, 460, sf::Color::Blue, sf::Color::Black);
 	m_options[3] = new Option(m_font, "Exit", 30, 300, 540 , sf::Color::Blue, sf::Color::Black);
-
 }
 
 Menu::~Menu()
@@ -71,7 +70,7 @@ bool Menu::Run()
 		//im cleverst gui in the world hehe ~Con
 		if (option != -1)
 		{
-			if (!option)
+			if (option == 0)
 			{
 				return true;
 			}

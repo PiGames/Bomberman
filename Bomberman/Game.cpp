@@ -55,10 +55,7 @@ Game::~Game()
 
 	delete m_gui;
 
-	if(m_menu != nullptr)
-	{
-		delete m_menu;
-	}
+	delete m_menu;
 }
 
 void Game::Initialize()
@@ -75,6 +72,12 @@ void Game::Initialize()
 	};
 
 	/* LOADING RESOURCES - BEGIN*/ 
+	if (!m_level->LoadFromFile(resourcePaths[0]))
+	{
+		std::cerr << "[!] Cannot load file: \"" << resourcePaths[0] << "\". Exiting...\n";
+		std::cin.get();
+		std::exit(1);
+	}
 
 	if (!m_font->loadFromFile(resourcePaths[1]))
 	{
@@ -119,14 +122,17 @@ void Game::Initialize()
 
 	//-----------------------------
 
-	initGameplay(resourcePaths[0]);
+	initGameplay();
 
 	/*SETTING UP PLAYERS - END*/
 
 	//----------------------------
+
+	m_bombManager->Init(m_level, &m_players);
+
+	m_physicsEngine->Init(m_level, &m_players);
 	
 	m_gui->Init(m_font, 30, m_windowWidth, m_windowHeight);
-	m_menu = nullptr;
 }
 
 
@@ -205,7 +211,7 @@ void Game::update(float deltaTime)
 
 	if (m_endOfGame && m_playAgain)
 	{
-		initGameplay(std::string("data/sample_level.txt"));
+		initGameplay();
 	}
 }
 
@@ -270,37 +276,17 @@ void Game::processEvents()
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::LControl)
 				m_players[0]->OnActionKeyPressed();
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
-			{
-				if (m_menu == nullptr)
-				{
-					m_menu = new Menu;
-					if (!m_menu->Run())
-					{
-						m_exit = true;
-					}
-
-					else
-					{
-						delete m_menu;
-						m_menu = nullptr;
-					}
-				}
-			}
-
+				m_menu = new Menu();
+				if (!m_menu->Run())	
+					m_exit = true;
 		}	
 		
 		// handle more events
 	}
 }
 
-void Game::initGameplay(std::string & lvlPath)
+void Game::initGameplay()
 {
-	if (!m_level->LoadFromFile(lvlPath))
-	{
-		std::cerr << "[!] Cannot load file: \"" << lvlPath << "\". Exiting...\n";
-		std::cin.get();
-		std::exit(1);
-	}
 
 	//SETTING UP LEVEL
 	m_levelView->SetLevel(m_level, m_atlases[0]);
@@ -344,9 +330,4 @@ void Game::initGameplay(std::string & lvlPath)
 
 	m_endOfGame = false;
 	m_playAgain = false;
-
-
-	m_bombManager->Init(m_level, &m_players);
-
-	m_physicsEngine->Init(m_level, &m_players);
 }
