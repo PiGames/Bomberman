@@ -30,7 +30,7 @@ private:
 	sf::Font m_font;
 	sf::Text m_text;
 
-	bool m_press;
+	bool m_press = false;
 
 
 };

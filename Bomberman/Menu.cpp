@@ -1,12 +1,14 @@
 #include "Menu.h"
+#include <iostream>
 
 
 Menu::Menu(sf::RenderWindow* window)
 {
 	m_window = window;
 
-	m_buttonsPointers[0] = new Button(sf::Vector2f(m_window->getSize().x/2-150, 300), sf::Vector2i(300, 75), "data/pressButton.png", "data/unpressButton.png", "START");
-
+	m_buttonsPointers[0] = new Button(sf::Vector2f(m_window->getSize().x / 2 - 150, m_window->getSize().y/2.3f), sf::Vector2i(300, 75.f), "data/pressButton.png", "data/unpressButton.png", "START");
+	m_buttonsPointers[1] = new Button(sf::Vector2f(m_window->getSize().x / 2 - 150, m_window->getSize().y / 1.7f), sf::Vector2i(300, 75.f), "data/pressButton.png", "data/unpressButton.png", "OPTION");
+	m_buttonsPointers[2] = new Button(sf::Vector2f(m_window->getSize().x / 2 - 150, m_window->getSize().y / 1.7f + m_window->getSize().y / 1.7f - m_window->getSize().y / 2.3f), sf::Vector2i(300, 75.f), "data/pressButton.png", "data/unpressButton.png", "EXIT");
 	
 	m_backgroundTexture.loadFromFile("data/menuBackground.png");
 	m_backgroundSprite.setTexture(m_backgroundTexture);
@@ -16,6 +18,23 @@ Menu::Menu(sf::RenderWindow* window)
 	m_pigamesLogoTexture.loadFromFile("data/menuPiGames.png");
 	m_pigamesLogoSprite.setTexture(m_pigamesLogoTexture);
 	m_pigamesLogoSprite.setScale(sf::Vector2f((float)m_window->getSize().y / (float)m_pigamesLogoTexture.getSize().y / 8.f, (float)m_window->getSize().y / (float)m_pigamesLogoTexture.getSize().y / 8.f));
+
+	m_gameLogoTexture.loadFromFile("data/menuLogo.png");
+	m_gameLogoSprite.setTexture(m_gameLogoTexture);
+	m_gameLogoSprite.setScale(sf::Vector2f((float)m_window->getSize().y / (float)m_gameLogoTexture.getSize().y / 7.f, (float)m_window->getSize().y / (float)m_gameLogoTexture.getSize().y / 7.f));
+	m_gameLogoSprite.setPosition(sf::Vector2f(m_window->getSize().x / 2.f - (m_gameLogoTexture.getSize().x * m_gameLogoSprite.getScale().x) / 2.f, m_window->getSize().y/5.f));
+
+	m_font.loadFromFile("data/micross.ttf");
+	m_gameVersion.setFont(m_font);
+	m_gameVersion.setColor(sf::Color(32, 32, 32, 128));
+	m_gameVersion.setString("Alpha Verion 0.1a");
+	m_gameVersion.setScale(0.6f, 0.6f);
+	//m_gameVersion.setPosition(m_gameLogoSprite.getPosition().x + m_gameLogoTexture.getSize().x - 50, m_gameLogoSprite.getPosition().y + m_pigamesLogoTexture.getSize().y);
+	
+	sf::FloatRect textRect = m_gameVersion.getLocalBounds();
+	
+	m_gameVersion.setPosition(m_gameLogoSprite.getPosition().x + m_gameLogoTexture.getSize().x * m_gameLogoSprite.getScale().x - textRect.width *0.8f, m_gameLogoSprite.getPosition().y + m_gameLogoTexture.getSize().y * m_gameLogoSprite.getScale().y);
+
 }
 
 Menu::~Menu()
@@ -40,10 +59,18 @@ void Menu::draw()
 	m_window->draw(m_backgroundSprite);
 	m_window->draw(m_pigamesLogoSprite);
 
+	m_window->draw(m_gameLogoSprite);
+
+	m_window->draw(m_gameVersion);
+
 	m_window->draw(*m_buttonsPointers[0]->GetSpritePointer());
 	m_window->draw(*m_buttonsPointers[0]->GetTextPointer());
 
-	
+	m_window->draw(*m_buttonsPointers[1]->GetSpritePointer());
+	m_window->draw(*m_buttonsPointers[1]->GetTextPointer());
+
+	m_window->draw(*m_buttonsPointers[2]->GetSpritePointer());
+	m_window->draw(*m_buttonsPointers[2]->GetTextPointer());
 
 	m_window->display();
 }
@@ -64,6 +91,8 @@ void Menu::processEvents()
 			if (event.mouseButton.button == sf::Mouse::Left)
 			{
 				m_buttonsPointers[0]->Update(sf::Mouse::getPosition(*m_window), true);
+				m_buttonsPointers[1]->Update(sf::Mouse::getPosition(*m_window), true);
+				m_buttonsPointers[2]->Update(sf::Mouse::getPosition(*m_window), true);
 			}
 		}
 		if (event.type == sf::Event::MouseButtonReleased)
@@ -71,6 +100,8 @@ void Menu::processEvents()
 			if (event.mouseButton.button == sf::Mouse::Left)
 			{
 				m_buttonsPointers[0]->Update(sf::Mouse::getPosition(*m_window), false);
+				m_buttonsPointers[1]->Update(sf::Mouse::getPosition(*m_window), false);
+				m_buttonsPointers[2]->Update(sf::Mouse::getPosition(*m_window), false);
 			}
 		}
 	}

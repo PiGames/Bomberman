@@ -24,9 +24,14 @@ Button::Button(sf::Vector2f position, sf::Vector2i size, std::string pressTextur
 
 	m_pressSprite.setPosition(position);
 	m_unpressSprite.setPosition(position);
-	m_text.setPosition(sf::Vector2f(position.x+size.x/2-40,position.y+size.y/4));
-}
 
+	//m_text.setPosition(sf::Vector2f(position.x+size.x/2-40,position.y+size.y/4));
+
+
+	sf::FloatRect textRect = m_text.getLocalBounds();
+	m_text.setOrigin(textRect.left + textRect.width / 2.0f,0);
+	m_text.setPosition(sf::Vector2f((position.x + size.x/2.f), position.y + size.y / 4));
+}
 
 Button::~Button()
 {
