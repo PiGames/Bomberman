@@ -10,6 +10,7 @@
 #include "Animator.h"
 #include "GUI.h"
 #include "BombManager.h"
+#include "Menu.h"
 
 
 class Game
@@ -37,6 +38,8 @@ public:
 private:
 	size_t m_windowWidth;
 	size_t m_windowHeight;
+
+	Menu* m_menu;
 	
 	bool m_exit;
 

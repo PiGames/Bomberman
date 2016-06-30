@@ -8,6 +8,9 @@ Game::Game(size_t width, size_t height)
 	m_window->create(sf::VideoMode(static_cast<int>(m_windowWidth), static_cast<int>(m_windowHeight)), "Bomberman | Created by PiGames", sf::Style::Close);
 	m_window->setFramerateLimit(60);
 
+	//Create Menu
+	m_menu = new Menu(m_window);
+
 	/*ALLOCATING OBJECTS - BEGIN*/
 	m_level = new Level();
 	m_levelView = new LevelView();
@@ -136,6 +139,8 @@ void Game::Initialize()
 
 void Game::Run()
 {
+	m_menu->Run();
+
 	m_exit = false;
 	sf::Clock clock;
 
