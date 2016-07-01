@@ -15,7 +15,7 @@ Button::Button(sf::Vector2f position, sf::Vector2i size, std::string pressTextur
 	m_pressSprite.setScale(sf::Vector2f((float)size.x / (float)m_pressTexture.getSize().x, (float)size.y / (float)m_pressTexture.getSize().y));
 	m_unpressSprite.setScale(sf::Vector2f((float)size.x / (float)m_pressTexture.getSize().x, (float)size.y / (float)m_pressTexture.getSize().y));
 
-	m_font.loadFromFile("data/Cat.ttf");
+	m_font.loadFromFile("data/ahronbd.ttf");
 	m_text.setFont(m_font);
 	m_text.setString(text);
 	m_text.setColor(sf::Color(0.f,107,139));

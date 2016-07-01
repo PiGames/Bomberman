@@ -30,7 +30,7 @@ Menu::Menu(size_t width, size_t height)
 	m_gameLogoSprite.setScale(sf::Vector2f((float)m_window->getSize().y / (float)m_gameLogoTexture.getSize().y / 7.f, (float)m_window->getSize().y / (float)m_gameLogoTexture.getSize().y / 7.f));
 	m_gameLogoSprite.setPosition(sf::Vector2f(m_window->getSize().x / 2.f - (m_gameLogoTexture.getSize().x * m_gameLogoSprite.getScale().x) / 2.f, m_window->getSize().y/5.f));
 
-	m_font.loadFromFile("data/Cat.ttf");
+	m_font.loadFromFile("data/micross.ttf");
 	m_gameVersion.setFont(m_font);
 	m_gameVersion.setColor(sf::Color(32, 32, 32, 128));
 	m_gameVersion.setString("Alpha Verion 0.1a");
