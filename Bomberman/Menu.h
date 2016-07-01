@@ -1,15 +1,18 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Button.h"
+#include "Game.h"
 
 class Menu
 {
 public:
-	Menu(sf::RenderWindow* window);
+	Menu(size_t width, size_t height);
 	~Menu();
 	void Run();
 
 private:
+	Game* m_game;
+
 	void draw();
 	void processEvents();
 
@@ -31,6 +34,8 @@ private:
 
 	bool m_exit;
 
+	size_t m_windowHeight;
+	size_t m_windowWidth;
 
 };
 

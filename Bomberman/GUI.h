@@ -18,7 +18,7 @@ public:
 	~GUI();
 	void Init(sf::Font* font, short textSize, int screenWidth, int screenHeight);
 	void UpdateStats(std::vector<Player*> * players, short mouseX, short mouseY);
-	void UpdateStats(std::vector<Player*> * players, short mouseX, short mouseY, bool & playAgain, bool & exit);
+	void UpdateStats(std::vector<Player*> * players, short mouseX, short mouseY, bool & playAgain, bool & exit, bool & enterMenu);
 
 private:
 	sf::Font * m_font;
@@ -31,5 +31,6 @@ private:
 
 	Option * m_optionPlayAgain;
 	Option * m_optionExit;
+	Option * m_optionReturnMenu;
 };
 

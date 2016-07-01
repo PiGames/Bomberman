@@ -1,15 +1,8 @@
 #include "Game.h"
 
-Game::Game(size_t width, size_t height)
+Game::Game(sf::RenderWindow* window)
 {
-	m_window = new sf::RenderWindow();
-	m_windowWidth = width;
-	m_windowHeight = height;
-	m_window->create(sf::VideoMode(static_cast<int>(m_windowWidth), static_cast<int>(m_windowHeight)), "Bomberman | Created by PiGames", sf::Style::Close);
-	m_window->setFramerateLimit(60);
-
-	//Create Menu
-	m_menu = new Menu(m_window);
+	m_window = window;
 
 	/*ALLOCATING OBJECTS - BEGIN*/
 	m_level = new Level();
@@ -133,14 +126,12 @@ void Game::Initialize()
 
 	m_physicsEngine->Init(m_level, &m_players);
 	
-	m_gui->Init(m_font, 30, m_windowWidth, m_windowHeight);
+	m_gui->Init(m_font, 30, m_window->getSize().x, m_window->getSize().y);
 }
 
 
-void Game::Run()
+bool Game::Run()
 {
-	m_menu->Run();
-
 	m_exit = false;
 	sf::Clock clock;
 
@@ -152,9 +143,9 @@ void Game::Run()
 		float dt = clock.getElapsedTime().asSeconds();
 		update(dt);
 		clock.restart();
-
-		draw();
+		draw();		
 	}
+	return enterMenu;
 }
 
 
@@ -205,7 +196,7 @@ void Game::update(float deltaTime)
 
 	if (m_endOfGame && !m_exit)
 	{
-		m_gui->UpdateStats(&m_players, sf::Mouse::getPosition(*m_window).x, sf::Mouse::getPosition(*m_window).y, m_playAgain, m_exit);
+		m_gui->UpdateStats(&m_players, sf::Mouse::getPosition(*m_window).x, sf::Mouse::getPosition(*m_window).y, m_playAgain, m_exit, enterMenu);
 	}
 	else
 	{
@@ -269,6 +260,7 @@ void Game::processEvents()
 		if (event.type == sf::Event::Closed)
 		{
 			m_exit = true;
+			enterMenu = false;
 			break;
 		}
 		
@@ -303,8 +295,6 @@ void Game::initGameplay()
 		m_playersAnimators[i]->ChangeActiveState("default");
 
 		m_players[i]->SetRespawns(3);
-		//m_players[i]->SetUndamageableTime(sf::seconds(2)); //HACK Change this later 
-
 		m_players[i]->SetUpBomb(m_atlases[1], m_atlases[2]);
 		m_players[i]->SetLevelPointer(m_level);
 

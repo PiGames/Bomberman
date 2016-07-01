@@ -40,6 +40,7 @@ void GUI::draw(sf::RenderTarget & target, sf::RenderStates states) const
 		target.draw(winText, states);
 		target.draw(*m_optionPlayAgain, states);
 		target.draw(*m_optionExit, states);
+		target.draw(*m_optionReturnMenu, states);
 	}
 }
 
@@ -71,8 +72,9 @@ void GUI::UpdateStats(std::vector<Player*>* players, short mouseX, short mouseY)
 		{
 			m_whoWin.first = i;
 			m_whoWin.second = true;
-			m_optionPlayAgain = new Option(m_font, "Play Again ", 30, m_screenWidth / 2 + 25, m_screenHeight / 2 - 60, sf::Color::Red, sf::Color::Green);
-			m_optionExit = new Option(m_font, "     Exit    ", 30, m_screenWidth / 2 + 25, m_screenHeight / 2, sf::Color::Red, sf::Color::Green);
+			m_optionPlayAgain = new Option(m_font, "Play Again ", 30, m_screenWidth / 2 + 25, m_screenHeight / 2 - 60, sf::Color::Blue, sf::Color::White);
+			m_optionExit = new Option(m_font, "     Exit    ", 30, m_screenWidth / 2 + 25, m_screenHeight / 2, sf::Color::Blue, sf::Color::White);
+			m_optionReturnMenu = new Option(m_font, "Return Menu", 30, m_screenWidth / 2 + 25, m_screenHeight / 2 - 120, sf::Color::Blue, sf::Color::White);
 			break;
 		}
 		else
@@ -85,10 +87,11 @@ void GUI::UpdateStats(std::vector<Player*>* players, short mouseX, short mouseY)
 	{
 		m_optionPlayAgain->Update(mouseX, mouseY);
 		m_optionExit->Update(mouseX, mouseY);
+		m_optionReturnMenu->Update(mouseX, mouseY);
 	}
 }
 
-void GUI::UpdateStats(std::vector<Player*>* players, short mouseX, short mouseY, bool & playAgain, bool & exit)
+void GUI::UpdateStats(std::vector<Player*>* players, short mouseX, short mouseY, bool & playAgain, bool & exit, bool & enterMenu)
 {
 	UpdateStats(players, mouseX, mouseY);
 
@@ -99,6 +102,11 @@ void GUI::UpdateStats(std::vector<Player*>* players, short mouseX, short mouseY,
 
 	playAgain = m_optionPlayAgain->IsClicked();
 	exit = m_optionExit->IsClicked();
+	if (m_optionReturnMenu->IsClicked())
+	{
+		enterMenu = true;
+		exit = true;
+	}
 }
 
 

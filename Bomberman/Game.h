@@ -10,7 +10,6 @@
 #include "Animator.h"
 #include "GUI.h"
 #include "BombManager.h"
-#include "Menu.h"
 
 
 class Game
@@ -30,17 +29,16 @@ private:
 	void initGameplay();
 
 public:
-	Game(size_t width, size_t height);
+	Game(sf::RenderWindow * window);
 	~Game();
 	void Initialize();
-	void Run();
+	bool Run();
 
 private:
 	size_t m_windowWidth;
 	size_t m_windowHeight;
 
-	Menu* m_menu;
-	
+	bool enterMenu;
 	bool m_exit;
 
 	Level* m_level;
@@ -49,7 +47,7 @@ private:
 	std::vector<Player*> m_players;
 	std::vector<Animator*>m_playersAnimators;
 	PhysicsEngine* m_physicsEngine;
-	std::vector<TextureAtlas*> m_atlases; // [0]-terrain, [1] - bomb, [2] bomb ray,  [3] - player , [>3] more players
+	std::vector<TextureAtlas*> m_atlases; // [0]-terrain, [1] - bomb,[3] - player , [>3] more players
 	BombManager* m_bombManager;
 	sf::Font* m_font;
 	GUI * m_gui;

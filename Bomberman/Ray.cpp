@@ -35,6 +35,7 @@ void Ray::SetRaySpriteSize(unsigned short size)
 	m_size = size;
 	m_sprite.setTextureRect(sf::IntRect(0, 0, m_size*TILE_SIZE,TILE_SIZE));
 	m_sprite.setOrigin(0, m_sprite.getGlobalBounds().height / 2.f);
+	m_sprite.getTexture();
 	switch (m_side)
 	{
 	case Ray::Up:

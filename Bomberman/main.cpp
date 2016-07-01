@@ -1,10 +1,8 @@
-#include "Game.h"
+#include "Menu.h"
 
 int main()
 {
-	Game game(12*64, 10*64);
-	game.Initialize();
-	game.Run();
-
+	Menu menu(12 * 64, 10 * 64);
+	menu.Run();
 	return 0;
 }
