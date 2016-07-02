@@ -37,5 +37,7 @@ private:
 	size_t m_windowHeight;
 	size_t m_windowWidth;
 
+	sf::Music m_music;
+
 };
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML\Audio.hpp>
 #include "PhysicalBody.h"
 #include "Animator.h"
 #include "Bomb.h"
@@ -115,5 +116,8 @@ private:
 	void endGame();
 
 	bool m_win;
+
+	sf::Sound m_soundHit;
+	sf::SoundBuffer m_soundBuffer;
 };
 

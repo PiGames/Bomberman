@@ -6,7 +6,14 @@ Player::Player()
 	:m_bomb(nullptr),
 	m_canBeDamaged(true)
 {
-
+	if (!m_soundBuffer.loadFromFile("data/hurt.wav"))
+	{
+		std::cerr << "[!] Cannot load resource: 'data/hurt.wav'" << std::endl;
+		std::cin.get();
+		std::exit(1);
+	}
+	m_soundHit.setBuffer(m_soundBuffer);
+	m_soundHit.setLoop(false);
 }
 
 
@@ -177,7 +184,11 @@ void Player::endGame()
 
 void Player::OnBombCollision()
 {
-	if (m_canBeDamaged)Respawn();
+	if (m_canBeDamaged)
+	{
+		Respawn();
+		m_soundHit.play();
+	}
 }
 
 bool Player::isBombExplosion()

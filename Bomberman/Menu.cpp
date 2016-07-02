@@ -41,6 +41,15 @@ Menu::Menu(size_t width, size_t height)
 	
 	m_gameVersion.setPosition(m_gameLogoSprite.getPosition().x + m_gameLogoTexture.getSize().x * m_gameLogoSprite.getScale().x - textRect.width *0.8f, m_gameLogoSprite.getPosition().y + m_gameLogoTexture.getSize().y * m_gameLogoSprite.getScale().y);
 
+	if (!m_music.openFromFile("data/menu.wav"))
+	{
+		std::cerr << "[!] Cannot load resource: 'data/menu.wav'" << std::endl;
+		std::cin.get();
+		std::exit(1);
+	}
+
+	m_music.play();
+	m_music.setLoop(true);
 }
 
 Menu::~Menu()
@@ -101,9 +110,11 @@ void Menu::processEvents()
 			sf::Vector2f mouse = sf::Vector2f(sf::Mouse::getPosition(*m_window).x, sf::Mouse::getPosition(*m_window).y);
 			if (m_buttonsPointers[0]->GetSpritePointer()->getGlobalBounds().contains(mouse))
 			{
+				m_music.stop();
 				m_game = new Game(m_window);
 				m_game->Initialize();
 				m_exit = !m_game->Run();
+				m_music.play();
 				delete m_game;
 				return;
 			}
@@ -120,8 +131,4 @@ void Menu::processEvents()
 			m_buttonsPointers[2]->Update(sf::Mouse::getPosition(*m_window), true);
 		}
 	}
-
-
-
-
 }
