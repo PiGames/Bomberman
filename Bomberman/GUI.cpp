@@ -33,24 +33,35 @@ void GUI::draw(sf::RenderTarget & target, sf::RenderStates states) const
 		winText.setFont(*m_font);
 		winText.setCharacterSize(m_textSize);
 		winText.setColor(sf::Color::Black);
-		winText.setString("Player " + std::to_string(m_whoWin.first + 1) + " win!");
+		winText.setString("Player " + std::to_string(m_whoWin.first + 1) + " wins!");
 		winText.setPosition(m_screenWidth / 2 - winText.getGlobalBounds().width, m_screenHeight / 2 - winText.getGlobalBounds().height);
 
 		target.draw(thing, states);
 		target.draw(winText, states);
-		target.draw(*m_optionPlayAgain, states);
-		target.draw(*m_optionExit, states);
-		target.draw(*m_optionReturnMenu, states);
+		if (m_optionPlayAgain != nullptr)
+		{
+			target.draw(*m_optionPlayAgain, states);
+			target.draw(*m_optionExit, states);
+			target.draw(*m_optionReturnMenu, states);
+		}
 	}
 }
 
 GUI::GUI()
 {
-	
+	m_optionPlayAgain = nullptr;
+	m_optionReturnMenu = nullptr;
+	m_optionExit = nullptr;
 }
 
 GUI::~GUI()
 {
+	if (m_optionPlayAgain != nullptr)
+	{
+		delete m_optionPlayAgain;
+		delete m_optionExit;
+		delete m_optionReturnMenu;
+	}
 }
 
 void GUI::Init(sf::Font * font, short textSize, int screenWidth, int screenHeight)
@@ -72,14 +83,27 @@ void GUI::UpdateStats(std::vector<Player*>* players, short mouseX, short mouseY)
 		{
 			m_whoWin.first = i;
 			m_whoWin.second = true;
-			m_optionPlayAgain = new Option(m_font, "Play Again ", 30, m_screenWidth / 2 + 25, m_screenHeight / 2 - 60, sf::Color::Blue, sf::Color::White);
-			m_optionExit = new Option(m_font, "     Exit    ", 30, m_screenWidth / 2 + 25, m_screenHeight / 2, sf::Color::Blue, sf::Color::White);
-			m_optionReturnMenu = new Option(m_font, "Return Menu", 30, m_screenWidth / 2 + 25, m_screenHeight / 2 - 120, sf::Color::Blue, sf::Color::White);
+			if (m_optionPlayAgain == nullptr)
+			{
+				m_optionPlayAgain = new Option(m_font, "Play Again ", 30, m_screenWidth / 2 + 25, m_screenHeight / 2 - 60, sf::Color::Blue, sf::Color::White);
+				m_optionExit = new Option(m_font, "     Exit    ", 30, m_screenWidth / 2 + 25, m_screenHeight / 2, sf::Color::Blue, sf::Color::White);
+				m_optionReturnMenu = new Option(m_font, "Return Menu", 30, m_screenWidth / 2 + 25, m_screenHeight / 2 - 120, sf::Color::Blue, sf::Color::White);
+			}
+			
 			break;
 		}
 		else
 		{
 			m_whoWin.second = false;
+			if (m_optionPlayAgain != nullptr)
+			{
+				delete m_optionPlayAgain;
+				delete m_optionExit;
+				delete m_optionReturnMenu;
+				m_optionPlayAgain = nullptr;
+				m_optionReturnMenu = nullptr;
+				m_optionExit = nullptr;
+			}
 		}
 	}
 

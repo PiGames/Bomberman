@@ -311,5 +311,4 @@ void Player::Respawn()
 	m_respawns--;
 	m_respawnClock.restart();
 	m_soundHit.play();
-
 }
