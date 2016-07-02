@@ -118,6 +118,8 @@ private:
 	bool m_win;
 
 	sf::Sound m_soundHit;
-	sf::SoundBuffer m_soundBuffer;
+	sf::Sound m_soundPlant;
+	sf::SoundBuffer m_soundBufferHit;
+	sf::SoundBuffer m_soundBufferPlant;
 };
 

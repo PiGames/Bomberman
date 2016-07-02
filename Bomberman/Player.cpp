@@ -6,14 +6,22 @@ Player::Player()
 	:m_bomb(nullptr),
 	m_canBeDamaged(true)
 {
-	if (!m_soundBuffer.loadFromFile("data/hurt.wav"))
+	if (!m_soundBufferHit.loadFromFile("data/hurt.wav"))
 	{
 		std::cerr << "[!] Cannot load resource: 'data/hurt.wav'" << std::endl;
 		std::cin.get();
 		std::exit(1);
 	}
-	m_soundHit.setBuffer(m_soundBuffer);
-	m_soundHit.setLoop(false);
+
+	if (!m_soundBufferPlant.loadFromFile("data/plant.wav"))
+	{
+		std::cerr << "[!] Cannot load resource: 'data/plant.wav'" << std::endl;
+		std::cin.get();
+		std::exit(1);
+	}
+
+	m_soundHit.setBuffer(m_soundBufferHit);
+	m_soundPlant.setBuffer(m_soundBufferPlant);
 }
 
 
@@ -93,6 +101,8 @@ void Player::OnActionKeyPressed()
 		m_bomb->SetPosition(static_cast<int>(GetPositionX()), static_cast<int>(GetPositionY()));
 		m_bomb->SetLevelPointer(level);
 		level->SetTileAsBomb(GetPositionX() / TILE_SIZE, GetPositionY() / TILE_SIZE);
+
+		m_soundPlant.play();
 	}
 }
 
@@ -187,7 +197,6 @@ void Player::OnBombCollision()
 	if (m_canBeDamaged)
 	{
 		Respawn();
-		m_soundHit.play();
 	}
 }
 
@@ -301,4 +310,6 @@ void Player::Respawn()
 	Spawn();
 	m_respawns--;
 	m_respawnClock.restart();
+	m_soundHit.play();
+
 }

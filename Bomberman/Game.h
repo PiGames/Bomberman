@@ -58,9 +58,6 @@ private:
 	bool m_endOfGame;
 	bool m_playAgain;
 
-	sf::SoundBuffer m_soundBuffer[2];//0-planting bomb, 1-explosion
-	sf::Sound m_soundA;
-	sf::Sound m_soundB; //helping sound
 	sf::Music m_music;
 };
 

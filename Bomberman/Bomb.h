@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML\Audio.hpp>
 #include <vector>
 #include "PhysicalBody.h"
 #include "Animator.h"
@@ -94,5 +95,8 @@ private:
 
 	unsigned short getRaySizeAfterCollisions(Ray::Side side);
 	void draw(sf::RenderTarget&, sf::RenderStates) const;
+
+	sf::Sound m_explosionSound;
+	sf::SoundBuffer m_soundBuffer;
 };
 

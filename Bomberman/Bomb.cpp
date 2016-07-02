@@ -7,6 +7,15 @@ Bomb::Bomb()
 {
 	m_detonationClock.restart();
 	m_rays.resize(4);
+
+	if (!m_soundBuffer.loadFromFile("data/expl.wav"))
+	{
+		std::cerr << "[!] Cannot load resource: 'data/expl.wav'" << std::endl;
+		std::cin.get();
+		std::exit(1);
+	}
+
+	m_explosionSound.setBuffer(m_soundBuffer);
 }
 
 
@@ -180,7 +189,7 @@ void Bomb::FixPosition()
 
 void Bomb::explode()
 {
-
+	m_explosionSound.play();
 	for (unsigned int i = 0; i < m_rays.size(); i++)
 	{
 		m_rays[i] = new Ray(static_cast<Ray::Side>(i));

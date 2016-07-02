@@ -128,23 +128,7 @@ void Game::Initialize()
 	
 	m_gui->Init(m_font, 30, m_window->getSize().x, m_window->getSize().y);
 	
-	//	/* planting bomb sound path */"data/plant.wav",
-	//	/* hit sound path */"data/hurt.wav",
-	//	/* explosion sound path */"data/expl.wav",
-	//	/* in-game music */"data/game.wav"
-		
-	if (!m_soundBuffer[0].loadFromFile("data/plant.wav"))
-	{
-		std::cerr << "[!] Cannot load resource: 'data/plant.wav'"<< std::endl;
-		std::cin.get();
-		std::exit(1);
-	}
-	if (!m_soundBuffer[1].loadFromFile("data/expl.wav"))
-	{
-		std::cerr << "[!] Cannot load resource: 'data/expl.wav'" << std::endl;
-		std::cin.get();
-		std::exit(1);
-	}
+
 	if (!m_music.openFromFile("data/game.wav"))
 	{
 		std::cerr << "[!] Cannot load resource: 'data/game.wav'" << std::endl;
@@ -196,43 +180,7 @@ void Game::draw()
 void Game::update(float deltaTime)
 {
 	m_physicsEngine->Update(deltaTime);
-	if (!m_endOfGame)
-	{
-		for (uint8_t i = 0; i < 2; ++i)
-		{
-
-			if (!m_players[i]->GetIsAlive())
-			{
-				if (m_soundA.getStatus() == sf::Sound::Stopped)
-				{
-					m_soundA.setBuffer(m_soundBuffer[0]);
-					m_soundA.setLoop(false);
-					m_soundA.play();
-					break;
-				}
-
-				if (m_soundA.getStatus() == sf::Sound::Status::Playing)
-				{
-					if (m_soundB.getStatus() == sf::Sound::Status::Playing)
-					{
-						m_soundA.setBuffer(m_soundBuffer[0]);
-						m_soundA.setLoop(false);
-						m_soundA.play();
-						break;
-					}
-				}
-				else if (m_soundB.getStatus() == sf::Sound::Status::Stopped)
-				{
-					m_soundB.setBuffer(m_soundBuffer[0]);
-					m_soundB.setLoop(false);
-					m_soundB.play();
-					break;
-				}
-
-			}
-		}
-	}
-
+	
 
 	for (short i = 0; i < m_players.size(); ++i)
 	{
@@ -258,12 +206,7 @@ void Game::update(float deltaTime)
 
 	m_bombManager->Update(deltaTime);
 
-	if (m_endOfGame)
-	{
-		m_soundA.stop();
-		m_soundB.stop();
-	}
-
+	
 	if (m_endOfGame && !m_exit)
 	{
 		m_gui->UpdateStats(&m_players, sf::Mouse::getPosition(*m_window).x, sf::Mouse::getPosition(*m_window).y, m_playAgain, m_exit, enterMenu);
@@ -277,44 +220,6 @@ void Game::update(float deltaTime)
 	{
 		initGameplay();
 	}
-
-	if (!m_endOfGame)
-	{
-		for (uint8_t i = 0; i < 2; ++i)
-		{
-			if (m_players[i]->GetBomb() != nullptr && m_players[i]->GetBomb()->GetState() == Bomb::State::exploding)
-			{
-				if (m_soundA.getStatus() == sf::Sound::Stopped)
-				{
-					m_soundA.setBuffer(m_soundBuffer[1]);
-					m_soundA.setLoop(false);
-					m_soundA.play();
-					break;
-				}
-
-				if (m_soundA.getStatus() == sf::Sound::Status::Playing)
-				{
-					if (m_soundB.getStatus() == sf::Sound::Status::Playing)
-					{
-						m_soundA.setBuffer(m_soundBuffer[1]);
-						m_soundA.setLoop(false);
-						m_soundA.play();
-						break;
-					}
-				}
-				else if (m_soundB.getStatus() == sf::Sound::Status::Stopped)
-				{
-					m_soundB.setBuffer(m_soundBuffer[1]);
-					m_soundB.setLoop(false);
-					m_soundB.play();
-					break;
-				}
-			}
-
-
-		}
-	}
-
 }
 
 
@@ -377,66 +282,10 @@ void Game::processEvents()
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
 			{
 				m_players[1]->OnActionKeyPressed();
-				if (m_players[1]->HasBomb())
-				{
-					if (m_soundA.getStatus() == sf::Sound::Stopped)
-					{
-						m_soundA.setBuffer(m_soundBuffer[0]);
-						m_soundA.setLoop(false);
-						m_soundA.play();
-						break;
-					}
-
-					if (m_soundA.getStatus() == sf::Sound::Status::Playing)
-					{
-						if (m_soundB.getStatus() == sf::Sound::Status::Playing)
-						{
-							m_soundA.setBuffer(m_soundBuffer[0]);
-							m_soundA.setLoop(false);
-							m_soundA.play();
-							break;
-						}
-					}
-					else if (m_soundB.getStatus() == sf::Sound::Status::Stopped)
-					{
-						m_soundB.setBuffer(m_soundBuffer[0]);
-						m_soundB.setLoop(false);
-						m_soundB.play();
-						break;
-					}
-				}
 			}
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::LControl)
 			{
 				m_players[0]->OnActionKeyPressed();
-				if (m_players[0]->HasBomb())
-				{
-					if (m_soundA.getStatus() == sf::Sound::Stopped)
-					{
-						m_soundA.setBuffer(m_soundBuffer[0]);
-						m_soundA.setLoop(false);
-						m_soundA.play();
-						break;
-					}
-
-					if (m_soundA.getStatus() == sf::Sound::Status::Playing)
-					{
-						if (m_soundB.getStatus() == sf::Sound::Status::Playing)
-						{
-							m_soundA.setBuffer(m_soundBuffer[0]);
-							m_soundA.setLoop(false);
-							m_soundA.play();
-							break;
-						}
-					}
-					else if (m_soundB.getStatus() == sf::Sound::Status::Stopped)
-					{
-						m_soundB.setBuffer(m_soundBuffer[0]);
-						m_soundB.setLoop(false);
-						m_soundB.play();
-						break;
-					}
-				}
 			}
 		}
 		
@@ -488,6 +337,4 @@ void Game::initGameplay()
 	m_endOfGame = false;
 	m_playAgain = false;
 	m_music.stop();
-	m_soundA.stop();
-	m_soundB.stop();
 }
