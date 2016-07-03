@@ -27,7 +27,7 @@ private:
 	/// Process all events
 	void processEvents();
 	/// Inits level and players (also after endGame)
-	void initGameplay();
+	void initGameplay(std::string & lvlPath);
 
 public:
 	Game(sf::RenderWindow * window);

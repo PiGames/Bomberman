@@ -28,6 +28,8 @@ Game::Game(sf::RenderWindow* window)
 	m_gui = new GUI(); 
 
 	/*ALLOCATING OBJECTS - END*/
+
+
 }
 
 
@@ -64,14 +66,6 @@ void Game::Initialize()
 		/* bomb ray sprite sheet path */"data/sample_raytextures.png",
 		/* player sprite sheet path */"data/sample_playertextures.png",
 	};
-
-	/* LOADING RESOURCES - BEGIN*/ 
-	if (!m_level->LoadFromFile(resourcePaths[0]))
-	{
-		std::cerr << "[!] Cannot load file: \"" << resourcePaths[0] << "\". Exiting...\n";
-		std::cin.get();
-		std::exit(1);
-	}
 
 	if (!m_font->loadFromFile(resourcePaths[1]))
 	{
@@ -116,7 +110,7 @@ void Game::Initialize()
 
 	//-----------------------------
 
-	initGameplay();
+	initGameplay(resourcePaths[0]);
 
 	/*SETTING UP PLAYERS - END*/
 
@@ -124,7 +118,6 @@ void Game::Initialize()
 
 	m_bombManager->Init(m_level, &m_players);
 
-	m_physicsEngine->Init(m_level, &m_players);
 	
 	m_gui->Init(m_font, 30, m_window->getSize().x, m_window->getSize().y);
 	
@@ -218,7 +211,7 @@ void Game::update(float deltaTime)
 
 	if (m_endOfGame && m_playAgain)
 	{
-		initGameplay();
+		initGameplay(std::string("data/sample_level.txt"));
 	}
 }
 
@@ -293,10 +286,19 @@ void Game::processEvents()
 	}
 }
 
-void Game::initGameplay()
+void Game::initGameplay(std::string & lvlPath)
 {
-
+	for (int i = 0; i < 2; ++i)
+	{
+		m_players[i]->DeleteBomb();
+	}
 	//SETTING UP LEVEL
+	if (!m_level->LoadFromFile(lvlPath))
+	{
+		std::cerr << "[!] Cannot load file: \"" << lvlPath << "\". Exiting...\n";
+		std::cin.get();
+		std::exit(1);
+	}
 	m_levelView->SetLevel(m_level, m_atlases[0]);
 	m_level->SetLevelView(m_levelView);
 
@@ -326,15 +328,19 @@ void Game::initGameplay()
 	}
 
 	// For position change or something, just must be in init
+
 	for (short i = 0; i < m_players.size(); ++i)
 	{
 		m_players[i]->Update(0);
 		m_players[i]->SetWin(false);
 		m_players[i]->SetRespawns(3);
 		m_players[i]->SetAlive();
+		
 	}
 
 	m_endOfGame = false;
 	m_playAgain = false;
-	m_music.stop();
+
+	m_physicsEngine->Init(m_level, &m_players);
+	
 }

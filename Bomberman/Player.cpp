@@ -298,6 +298,15 @@ void Player::SetAlive()
 	m_canBeDamaged = true;
 }
 
+void Player::DeleteBomb()
+{
+	if (m_bomb != nullptr)
+	{
+		delete m_bomb;
+		m_bomb = nullptr;
+	}
+}
+
 void Player::Spawn()
 {
 	SetPositionX(static_cast<int>(m_respawnPosition.x*TILE_SIZE + TILE_SIZE / 2));

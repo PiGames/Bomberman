@@ -85,6 +85,7 @@ public:
 	void Spawn();
 	void Respawn();
 	void SetAlive();
+	void DeleteBomb();
 
 private:
 	Level * level;
