@@ -31,7 +31,8 @@ int Ray::GetSide()
 }
 
 void Ray::SetRaySpriteSize(unsigned short size)
-{
+{	
+	
 	m_size = size;
 	m_sprite.setTextureRect(sf::IntRect(0, 0, m_size*TILE_SIZE,TILE_SIZE));
 	m_sprite.setOrigin(0, m_sprite.getGlobalBounds().height / 2.f);
@@ -42,21 +43,25 @@ void Ray::SetRaySpriteSize(unsigned short size)
 		m_sprite.setPosition(m_sprite.getPosition().x,m_sprite.getPosition().y - TILE_SIZE/2);
 		m_sprite.setRotation(270);
 		SetSize(TILE_SIZE, TILE_SIZE*size + TILE_SIZE);
+		SetPositionY(static_cast<int>(GetPositionY() / TILE_SIZE) * TILE_SIZE);
 		PhysicalBody::SetPositionY(GetPositionY()- ((TILE_SIZE*size) + TILE_SIZE)/2);
 		break;
 	case Ray::Down:
+		SetPositionY(static_cast<int>(GetPositionY() / TILE_SIZE) * TILE_SIZE);
 		m_sprite.setPosition(m_sprite.getPosition().x, m_sprite.getPosition().y + TILE_SIZE/2);
 		m_sprite.setRotation(90);
 		SetSize(TILE_SIZE, TILE_SIZE*size);
 		PhysicalBody::SetPositionY(GetPositionY() + (TILE_SIZE*size) / 2 );
 		break;
 	case Ray::Left:
+		SetPositionX(static_cast<int>(GetPositionX() / TILE_SIZE) * TILE_SIZE);
 		m_sprite.setPosition(m_sprite.getPosition().x - TILE_SIZE/2, m_sprite.getPosition().y );
 		m_sprite.setRotation(180);
 		SetSize(TILE_SIZE*size, TILE_SIZE);
 		PhysicalBody::SetPositionX(GetPositionX() - (TILE_SIZE*size) / 2);
 		break;
 	case Ray::Right:
+		SetPositionX(static_cast<int>(GetPositionX() / TILE_SIZE) * TILE_SIZE);
 		m_sprite.setPosition(m_sprite.getPosition().x + TILE_SIZE/2, m_sprite.getPosition().y);
 		SetSize(TILE_SIZE*size, TILE_SIZE);
 		PhysicalBody::SetPositionX(GetPositionX() + (TILE_SIZE*size) / 2);
