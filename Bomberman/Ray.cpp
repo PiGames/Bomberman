@@ -51,7 +51,7 @@ void Ray::SetRaySpriteSize(unsigned short size)
 		m_sprite.setPosition(m_sprite.getPosition().x, m_sprite.getPosition().y + TILE_SIZE/2);
 		m_sprite.setRotation(90);
 		SetSize(TILE_SIZE, TILE_SIZE*size);
-		PhysicalBody::SetPositionY(GetPositionY() + (TILE_SIZE*size) / 2 );
+		PhysicalBody::SetPositionY(GetPositionY() +TILE_SIZE + (TILE_SIZE*size) / 2 );
 		break;
 	case Ray::Left:
 		SetPositionX(static_cast<int>(GetPositionX() / TILE_SIZE) * TILE_SIZE);
@@ -64,7 +64,7 @@ void Ray::SetRaySpriteSize(unsigned short size)
 		SetPositionX(static_cast<int>(GetPositionX() / TILE_SIZE) * TILE_SIZE);
 		m_sprite.setPosition(m_sprite.getPosition().x + TILE_SIZE/2, m_sprite.getPosition().y);
 		SetSize(TILE_SIZE*size, TILE_SIZE);
-		PhysicalBody::SetPositionX(GetPositionX() + (TILE_SIZE*size) / 2);
+		PhysicalBody::SetPositionX(GetPositionX() +TILE_SIZE + (TILE_SIZE*size) / 2);
 		break;
 	default:
 		break;
@@ -81,6 +81,6 @@ void Ray::SetPosition(float x, float y)
 
 void Ray::Update(const float & dt)
 {
-	//m_animator->Animate(dt);
+	
 }
 
