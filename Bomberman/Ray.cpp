@@ -42,7 +42,7 @@ void Ray::SetRaySpriteSize(unsigned short size)
 		m_sprite.setPosition(m_sprite.getPosition().x,m_sprite.getPosition().y - TILE_SIZE/2);
 		m_sprite.setRotation(270);
 		SetSize(TILE_SIZE, TILE_SIZE*size + TILE_SIZE);
-		PhysicalBody::SetPositionY(GetPositionY()- (TILE_SIZE*size)/2 + TILE_SIZE);
+		PhysicalBody::SetPositionY(GetPositionY()- ((TILE_SIZE*size) + TILE_SIZE)/2);
 		break;
 	case Ray::Down:
 		m_sprite.setPosition(m_sprite.getPosition().x, m_sprite.getPosition().y + TILE_SIZE/2);
