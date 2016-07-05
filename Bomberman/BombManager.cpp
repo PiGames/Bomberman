@@ -36,7 +36,7 @@ void BombManager::handleBombKicking(const float & dt)
 		{
 
 			if (tmpBomb->isMoving() &&
-				m_level->GetTile(tmpBomb->GetNextPositionInTileCoordsX(), tmpBomb->GetNextPositionInTileCoordsY()) == TT::NONE)
+				(m_level->GetTile(tmpBomb->GetNextPositionInTileCoordsX(), tmpBomb->GetNextPositionInTileCoordsY()) == TT::NONE || m_level->GetTile(tmpBomb->GetNextPositionInTileCoordsX(), tmpBomb->GetNextPositionInTileCoordsY()) == TT::NONE_WITH_SHADOW))
 			{
 				tmpBomb->SetPositionX(tmpBomb->GetPositionX() + tmpBomb->GetVelocityX() * dt);
 				tmpBomb->SetPositionY(tmpBomb->GetPositionY() + tmpBomb->GetVelocityY() * dt);
