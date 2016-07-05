@@ -14,6 +14,7 @@ LevelView::~LevelView()
 
 void LevelView::SetLevel(Level * level, TextureAtlas* atlas)
 {
+	m_atlas = atlas;
 	int tileSize = static_cast<int>(atlas->GetCellSizeX());
 	m_data.resize(level->GetHeight());
 	TILE_SIZE = tileSize;
@@ -41,8 +42,8 @@ void LevelView::draw(sf::RenderTarget & target, sf::RenderStates states) const
 
 }
 
-void LevelView::ChangeTileTextureToNone(size_t x, size_t y)
+void LevelView::ChangeTileTexture(size_t x, size_t y, TT::TileType tileNumber)
 {
-	m_data[y][x].setTextureRect(sf::IntRect(0, 0, TILE_SIZE, TILE_SIZE));
+	m_atlas->SetSpriteTextureByIndex(m_data[y][x], static_cast<int>(tileNumber));
 }
 

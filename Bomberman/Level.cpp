@@ -68,13 +68,34 @@ size_t Level::GetHeight() const
 
 bool Level::DestroyTile(size_t x, size_t y, bool destroyTexture)
 {
-	if(m_data[y][x] == TT::TileType::NONE)//jeœli kafel mo¿na zniszczyæ
+	if(m_data[y][x] <= TT::TileType::NONE_WITH_SHADOW)
 		return false;
 
-	m_data[y][x] = TT::TileType::NONE;// zmienia wartoœæ warstwy logicznej kafla 
-	if (destroyTexture) 
+	if (m_data[y - 1][x] >= TT::TileType::WEAK_WALL)
 	{
-		m_view->ChangeTileTextureToNone(x, y);
+		m_data[y][x] = TT::TileType::NONE_WITH_SHADOW;
+		m_view->ChangeTileTexture(x, y, TT::TileType::NONE_WITH_SHADOW);
+	}	
+	else
+	{
+		m_data[y][x] = TT::TileType::NONE;
+		m_view->ChangeTileTexture(x, y, TT::TileType::NONE);
+	}
+
+	if (m_data[y + 1][x] == TT::TileType::NONE_WITH_SHADOW)
+	{
+		m_data[y+1][x] = TT::TileType::NONE;
+		m_view->ChangeTileTexture(x, y+1, TT::TileType::NONE);
+	}
+	if (m_data[y - 1][x] == TT::TileType::DOUBLE_WEAK_WALL)
+	{
+		m_data[y - 1][x] = TT::TileType::WEAK_WALL;
+		m_view->ChangeTileTexture(x, y - 1, TT::TileType::WEAK_WALL);
+	}
+	if (m_data[y - 1][x] == TT::TileType::DOUBLE_INDESTRUCTIBLE_WALL)
+	{
+		m_data[y - 1][x] = TT::TileType::INDESTRUCTIBLE_WALL;
+		m_view->ChangeTileTexture(x, y - 1, TT::TileType::INDESTRUCTIBLE_WALL);
 	}
 	return true;
 	
