@@ -97,6 +97,11 @@ bool Level::DestroyTile(size_t x, size_t y, bool destroyTexture)
 		m_data[y - 1][x] = TT::TileType::INDESTRUCTIBLE_WALL;
 		m_view->ChangeTileTexture(x, y - 1, TT::TileType::INDESTRUCTIBLE_WALL);
 	}
+	if (m_data[y - 1][x] == TT::TileType::HALF_INDESTRUCTIBLE_WALL)
+	{
+		m_data[y - 1][x] = TT::TileType::INDESTRUCTIBLE_WALL;
+		m_view->ChangeTileTexture(x, y - 1, TT::TileType::INDESTRUCTIBLE_WALL);
+	}
 	return true;
 	
 }
