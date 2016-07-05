@@ -210,35 +210,36 @@ unsigned short Bomb::getRaySizeAfterCollisions(Ray::Side side)
 	case Ray::Up:
 		for (int i = 1; i <= MAX_RAY_SIZE; ++i)
 		{
-			if (level->GetTile(m_positionInTilesCoordsX, m_positionInTilesCoordsY - i) == TT::TileType::NONE)
+			if (level->GetTile(m_positionInTilesCoordsX, m_positionInTilesCoordsY - i) <= TT::NONE_WITH_SHADOW)
 				size=i;
 			else break;
 		}
-		if (size != MAX_RAY_SIZE && m_positionInTilesCoordsY - size - 1 >= 0 && level->GetTile(m_positionInTilesCoordsX, m_positionInTilesCoordsY - size - 1) == TT::TileType::WEAK_WALL)
+		if (size != MAX_RAY_SIZE && m_positionInTilesCoordsY - size - 1 >= 0 && (level->GetTile(m_positionInTilesCoordsX, m_positionInTilesCoordsY - size - 1) == TT::TileType::WEAK_WALL 
+			|| level->GetTile(m_positionInTilesCoordsX, m_positionInTilesCoordsY - size - 1) == TT::TileType::DOUBLE_WEAK_WALL))
 			m_tilesToDeleteAfterExplosion.push_back(std::pair<int, int>(m_positionInTilesCoordsX, m_positionInTilesCoordsY - ++size));
 
 		break;
 	case Ray::Down:
 		for (int i = 1; i <= MAX_RAY_SIZE; ++i)
 		{
-			if (level->GetTile(m_positionInTilesCoordsX, m_positionInTilesCoordsY + i) == TT::TileType::NONE)
+			if (level->GetTile(m_positionInTilesCoordsX, m_positionInTilesCoordsY + i) <= TT::NONE_WITH_SHADOW)
 				size = i;
 			else break;
 		}
-		if (size != MAX_RAY_SIZE && m_positionInTilesCoordsY + size + 1 < level->GetHeight() && level->GetTile(m_positionInTilesCoordsX, m_positionInTilesCoordsY + size + 1) == TT::TileType::WEAK_WALL)
+		if (size != MAX_RAY_SIZE && m_positionInTilesCoordsY + size + 1 < level->GetHeight() && (level->GetTile(m_positionInTilesCoordsX, m_positionInTilesCoordsY + size + 1) == TT::TileType::WEAK_WALL || level->GetTile(m_positionInTilesCoordsX, m_positionInTilesCoordsY + size + 1) == TT::TileType::DOUBLE_WEAK_WALL))
 			m_tilesToDeleteAfterExplosion.push_back(std::pair<int, int>(m_positionInTilesCoordsX, m_positionInTilesCoordsY + ++size));
 		break;
 	case Ray::Left:
 		for (int i = 1; i <= MAX_RAY_SIZE; ++i)
 		{
-			if ( level->GetTile(m_positionInTilesCoordsX - i, m_positionInTilesCoordsY) == TT::TileType::NONE)
+			if ( level->GetTile(m_positionInTilesCoordsX - i, m_positionInTilesCoordsY) <= TT::NONE_WITH_SHADOW)
 			{
 				size = i;
 			}
 			else break;
 		}
 
-		if (size != MAX_RAY_SIZE && level->GetTile(m_positionInTilesCoordsX - size - 1, m_positionInTilesCoordsY) == TT::TileType::WEAK_WALL)
+		if (size != MAX_RAY_SIZE && (level->GetTile(m_positionInTilesCoordsX - size - 1, m_positionInTilesCoordsY) == TT::TileType::WEAK_WALL || m_positionInTilesCoordsX - size - 1, m_positionInTilesCoordsY == TT::TileType::DOUBLE_WEAK_WALL))
 		{
 			m_tilesToDeleteAfterExplosion.push_back(std::pair<int, int>(m_positionInTilesCoordsX - ++size, m_positionInTilesCoordsY));
 		}
@@ -246,11 +247,11 @@ unsigned short Bomb::getRaySizeAfterCollisions(Ray::Side side)
 	case Ray::Right:
 		for (int i = 1; i <= MAX_RAY_SIZE; ++i)
 		{
-			if (level->GetTile(m_positionInTilesCoordsX + i, m_positionInTilesCoordsY) == TT::TileType::NONE)
+			if (level->GetTile(m_positionInTilesCoordsX + i, m_positionInTilesCoordsY) <= TT::NONE_WITH_SHADOW)
 				size = i;
 			else break;
 		}
-		if (size != MAX_RAY_SIZE && level->GetTile(m_positionInTilesCoordsX + size + 1, m_positionInTilesCoordsY) == TT::TileType::WEAK_WALL)
+		if (size != MAX_RAY_SIZE && (level->GetTile(m_positionInTilesCoordsX + size + 1, m_positionInTilesCoordsY) == TT::TileType::WEAK_WALL || m_positionInTilesCoordsX + size + 1, m_positionInTilesCoordsY == TT::TileType::DOUBLE_WEAK_WALL))
 			m_tilesToDeleteAfterExplosion.push_back(std::pair<int, int>(m_positionInTilesCoordsX + ++size, m_positionInTilesCoordsY));
 
 		break;

@@ -43,8 +43,6 @@ bool Level::LoadFromFile(const std::string & path)
 		{
 			file >> raw;
 			m_data[i][j] = static_cast<TT::TileType>(raw);
-			if (m_data[i][j] == TT::TileType::WEAK_WALL)
-				m_destroyableTiles[m_destroyableTilesKey++] = std::pair<int,int>(j,i);
 		}
 	}
 	return true;
@@ -77,8 +75,8 @@ bool Level::DestroyTile(size_t x, size_t y, bool destroyTexture)
 	if (destroyTexture) 
 	{
 		m_view->ChangeTileTextureToNone(x, y);
-		m_destroyableTiles.erase(getIteratorByValue(std::pair<int, int>(x, y)));//usuwa kafel o wspó³rzêdnych z argumnetów
-	}return true;
+	}
+	return true;
 	
 }
 
@@ -96,16 +94,3 @@ void Level::SetLevelView(LevelView * view)
 {
 	m_view = view;
 }
-
-std::map<int, std::pair<int, int> >::iterator Level::getIteratorByValue(std::pair<int, int> coords)
-{
-	std::map<int, std::pair<int, int> >::iterator it;
-
-	for (it = m_destroyableTiles.begin(); it != m_destroyableTiles.end(); ++it)
-		if (it->second == coords)
-			return it;
-	
-	return it;
-}
-
-
