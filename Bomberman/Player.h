@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML\Audio.hpp>
 #include "PhysicalBody.h"
 #include "Animator.h"
 #include "Bomb.h"
@@ -13,35 +14,77 @@ public:
 	Player();
 	~Player();
 
-
 	/// Sets animator
-	/// <param name="texture">animator</param>
+	/// <param name="animator">animator</param>
 	void SetAnimator(Animator& animator, size_t width, size_t height);
-	
-
-	/// Sets bomb ray texture
-	/// <param name="texture">texture of ray</param>
-	void SetBombRayTexture(sf::Texture * texture); // TODO: use animator
-	
-	
+	/// Sets respawns count
+	/// <param name="respawns"> respawns </param>
+	void SetRespawns(short respawns);
+	/// Adds value to current respawns
+	/// <param name="val"> value to add to current respawns </param>
+	void IncreaseRespawns(short val);
+	/// Decrases value from current respawns
+	void DecreaseRespawns(short val);
+	/// Return Player's respawns
+	/// <returns> Player's respawns </returns>
+	short GetRespawnsCount();
 	/// Sets the player direction, possible values: -1, 0, 1
 	/// <param name="x">direction x</param>
 	/// <param name="y">direction y</param>
 	void OnMoveKeyPressed(int x, int y);
+
+	void SetAfterRespawnSafeTime(float value);
+
+	bool HasBomb();
+
+	Bomb* GetBomb();
 	
 	/// Sends the information about action key down (plant the bomb)
-	void TryPlantingTheBomb();
-	void SetBombTexture(sf::Texture * texture);
+	void OnActionKeyPressed();
+	void SetUpBomb(TextureAtlas* atlasBomb, TextureAtlas* atlasRay);
 	
 	void SetLevelPointer(Level * level);
-
-	std::vector<sf::FloatRect> GetBombRaysColliders();
-	//to chyba powinno byc prywatne
-	void CheckIsPlayerInBombRay(std::vector<sf::FloatRect> * bombRays);
 
 	/// Update player position, update states etc...
 	/// <param name="dt">delta time in seconds</param>
 	void Update(const float& dt);
+
+	bool IsTileCollidingInAxisX(size_t x);
+	bool IsTileCollidingInAxisY(size_t y);
+
+	void OnBombCollision();
+
+	bool isBombExplosion();
+
+	void SetColor(int i);
+
+	Ray* GetRay(unsigned int side);
+
+	bool GetIsAlive();
+	void SetIsAlive(bool var);
+
+	int GetPositionInTilesCoordsX();
+	
+	int GetPositionInTilesCoordsY();
+
+	bool IsCollidingWithBomb();
+
+	void SetIsCollidingWithBomb(bool value);
+
+	sf::Vector2i GetSideBombCollidingWith();
+
+	void SetSideBombCollidingWith(int x, int y);
+
+	sf::Vector2i GetBombCollidingWithCoordinates();
+
+	void SetWin(bool val);
+	bool GetWin();
+
+	void SetRespawnPosition(size_t x, size_t y);
+	void Spawn();
+	void Respawn();
+	void SetAlive();
+	void DeleteBomb();
 
 private:
 	Level * level;
@@ -49,10 +92,35 @@ private:
 	Animator* m_animator;
 
 	Bomb * m_bomb;
-	sf::Texture * m_bombTexture;
-	sf::Texture * m_bombRayTexture;
+	Animator* m_bombAnimator;
+	TextureAtlas* m_bombTextureAtlas;
+
+	TextureAtlas * m_bombRayTextureAtlas;
+	short m_respawns;
+	short m_maxNumberOfRespawns;
+	bool m_canBeDamaged;
+	sf::Clock m_respawnClock;
+	sf::Time m_respawnSafeTime;
+
+	bool m_isAlive;
+
+	bool m_isCollidingWithBomb;
+
+	sf::Vector2i m_respawnPosition;
+
+	sf::Vector2i m_sideBombCollidingWith;
+
+	sf::Vector2i m_bombCollidingWithLevelCoords;
 
 	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const override;
-	void reactWhenIsInBombRay();
+	void endGame();
+	void managePlayersTextureDirection();
+
+	bool m_win;
+
+	sf::Sound m_soundHit;
+	sf::Sound m_soundPlant;
+	sf::SoundBuffer m_soundBufferHit;
+	sf::SoundBuffer m_soundBufferPlant;
 };
 

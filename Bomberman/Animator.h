@@ -25,7 +25,7 @@ public:
 	/// <param name="end">ending index of state's animation in atlas</param>
 	/// <returns>true OK</returns>
 	/// <returns>false cannot add animation</returns>
-	bool AddAnimationState(std::string name, TextureAtlas& atlas, size_t begin, size_t end);
+	bool AddAnimationState(std::string name, TextureAtlas& atlas, size_t begin, size_t end, bool autoPlay=false);
 	
 	
 	/// Change active state of animation
@@ -57,6 +57,23 @@ public:
 	/// Updates animation state
 	/// <param name="dt">delta time</param>
 	void Animate(const float& dt);
+
+
+	/// Check anim playing state
+	/// <returns>TRUE is playing</returns>
+	bool IsPlaying();
+
+	
+	/// Resume animation
+	void Play();
+
+
+	/// Pause animation
+	void Pause();
+
+
+	/// Stop animation and set current frame to 0
+	void Stop();
 
 private:
 	struct AnimationStateInfo

@@ -33,18 +33,16 @@ bool Level::LoadFromFile(const std::string & path)
 	file >> m_height;
 
 	m_data.resize(m_height);
-	for (int i = 0; i < m_height; ++i)
+	for (unsigned int i = 0; i < m_height; ++i)
 		m_data[i].resize(m_width);
 
 	int raw;
-	for (int i = 0; i < m_height; ++i)
+	for (unsigned int i = 0; i < m_height; ++i)
 	{
-		for (int j = 0; j < m_width; ++j)
+		for (unsigned int j = 0; j < m_width; ++j)
 		{
 			file >> raw;
 			m_data[i][j] = static_cast<TT::TileType>(raw);
-			if (m_data[i][j] == TT::TileType::WEAK_WALL)
-				m_destroyableTiles[m_destroyableTilesKey++] = std::pair<int,int>(j,i);
 		}
 	}
 	return true;
@@ -68,30 +66,57 @@ size_t Level::GetHeight() const
 	return m_height;
 }
 
-bool Level::DestroyTile(size_t x, size_t y)
+bool Level::DestroyTile(size_t x, size_t y, bool destroyTexture)
 {
-	if(m_data[y][x] == TT::TileType::INDESTRUCTIBLE_WALL || m_data[y][x] == TT::TileType::NONE)//jeœli kafel mo¿na zniszczyæ
+	if(m_data[y][x] <= TT::TileType::NONE_WITH_SHADOW)
 		return false;
 
-	m_data[y][x] = TT::TileType::NONE;// zmienia wartoœæ warstwy logicznej kafla 
-	m_view->ChangeTileTextureToNone(x, y);
-	m_destroyableTiles.erase(getIteratorByValue(std::pair<int, int>(x,y)));//usuwa kafel o wspó³rzêdnych z argumnetów
+	if (m_data[y - 1][x] >= TT::TileType::WEAK_WALL)
+	{
+		m_data[y][x] = TT::TileType::NONE_WITH_SHADOW;
+		m_view->ChangeTileTexture(x, y, TT::TileType::NONE_WITH_SHADOW);
+	}	
+	else
+	{
+		m_data[y][x] = TT::TileType::NONE;
+		m_view->ChangeTileTexture(x, y, TT::TileType::NONE);
+	}
+
+	if (m_data[y + 1][x] == TT::TileType::NONE_WITH_SHADOW)
+	{
+		m_data[y+1][x] = TT::TileType::NONE;
+		m_view->ChangeTileTexture(x, y+1, TT::TileType::NONE);
+	}
+	if (m_data[y - 1][x] == TT::TileType::DOUBLE_WEAK_WALL)
+	{
+		m_data[y - 1][x] = TT::TileType::WEAK_WALL;
+		m_view->ChangeTileTexture(x, y - 1, TT::TileType::WEAK_WALL);
+	}
+	if (m_data[y - 1][x] == TT::TileType::DOUBLE_INDESTRUCTIBLE_WALL)
+	{
+		m_data[y - 1][x] = TT::TileType::INDESTRUCTIBLE_WALL;
+		m_view->ChangeTileTexture(x, y - 1, TT::TileType::INDESTRUCTIBLE_WALL);
+	}
+	if (m_data[y - 1][x] == TT::TileType::HALF_INDESTRUCTIBLE_WALL)
+	{
+		m_data[y - 1][x] = TT::TileType::INDESTRUCTIBLE_WALL;
+		m_view->ChangeTileTexture(x, y - 1, TT::TileType::INDESTRUCTIBLE_WALL);
+	}
 	return true;
 	
+}
+
+void Level::SetTileAsBomb(size_t x, size_t y)
+{
+	m_data[y][x] = TT::TileType::BOMB;
+}
+
+void Level::SetTileAsDestroyable(size_t x, size_t y)
+{
+	m_data[y][x] = TT::TileType::WEAK_WALL;
 }
 
 void Level::SetLevelView(LevelView * view)
 {
 	m_view = view;
 }
-
-std::map<int, std::pair<int, int> >::iterator Level::getIteratorByValue(std::pair<int, int> coords)
-{
-	std::map<int, std::pair<int, int> >::iterator it;
-
-	for (it = m_destroyableTiles.begin(); it != m_destroyableTiles.end(); ++it)
-		if (it->second == coords)
-			return it;
-}
-
-

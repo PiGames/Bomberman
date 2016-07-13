@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include <math.h>
 #include <iostream>
+#include "Player.h"
 
 class PhysicsEngine
 {
@@ -17,7 +18,7 @@ public:
 	/// Sets current level data and reference to player
 	/// <param name="level">level data</param>
 	/// <param name="player">player's body</param>
-	void Init(Level& level, PhysicalBody& player /* HACK 1st iteration only, add map later */);
+	void Init(Level* level, std::vector<Player*>* players);
 
 	/// Check collisions, update speeds, ...
 	/// <param name="delta">delta time in ms</param>
@@ -28,41 +29,17 @@ private:
 	Level* m_level;
 
 	///Physical level representation
-	std::vector <std::vector<PhysicalBody*>> m_physicalLevel; 
+	std::vector <std::vector<PhysicalBody*>> m_physicalLevel;
+
 	
-	enum BodyPositionState { OnSingleTile, OnTwoTilesHorizontal, OnTwoTilesVertical, OnFourTiles };
-
-	struct MovableBodyInfo
-	{
-		BodyPositionState state;
-
-		int	upBound; // casted to level index
-		int downBound;
-		int leftBound;
-		int rightBound;
-		int centerX;
-		int centerY;
-	};
 	///Physical player representation
-	PhysicalBody* m_body;
+	std::vector<Player*> m_players;
 
-	MovableBodyInfo m_bodyInfo;
-
-
-	void setBodyPositionInfo(PhysicalBody* body, MovableBodyInfo & bodyInfo);
+	void setBodyPositionInfo(int key);
 
 	void setBodyPositionNextToAnotherBodyInAxisY(PhysicalBody * bodyToSetPostition, PhysicalBody * referenceBody);
 
 	void setBodyPositionNextToAnotherBodyInAxisX(PhysicalBody * bodyToSetPostition, PhysicalBody * referenceBody);
 
-	bool isInMapBoundsX(PhysicalBody & body);
-
-	bool isInMapBoundsY(PhysicalBody & body);
-
-	///The method decides itself which bound set a body next to
-	void setBodyPositionNextToBoundX(PhysicalBody * body);
-
-	///The method decides itself which bound set a body next to
-	void setBodyPositionNextToBoundY(PhysicalBody * body);
 };
 

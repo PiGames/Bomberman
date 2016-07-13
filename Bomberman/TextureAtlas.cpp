@@ -74,8 +74,8 @@ void TextureAtlas::SetSpriteTextureByIndex(sf::Sprite & sprite, size_t index)
 	if (m_count == 0 || index >= m_count)
 		return;
 
-	int x = static_cast<int>(index % m_rows * m_cellWidth);
-	int y = static_cast<int>(index % m_columns * m_cellHeight);
+	int x = static_cast<int>(index % (m_rows) * m_cellWidth);
+	int y = static_cast<int>(index / (m_rows) * m_cellHeight);
 
 	sprite.setTexture(m_texture);
 	sprite.setTextureRect(sf::IntRect(x, y, static_cast<int>(m_cellWidth), static_cast<int>(m_cellHeight)));

@@ -6,7 +6,7 @@ PhysicalBody::PhysicalBody()
 {
 	m_sizeX = m_sizeY = m_posX = m_posY = m_vX = m_vY = 0.0f;
 
-	
+
 }
 
 

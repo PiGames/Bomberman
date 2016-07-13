@@ -290,3 +290,12 @@ paket-files/
 *.depend
 *.layout
 cb.bmp
+
+#paint.net
+*.pdn
+
+#Compiled project
+Bomberman/Bomberman
+#Monodevelop
+*.cproj
+

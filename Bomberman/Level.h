@@ -43,7 +43,9 @@ public:
 	/// <param="y">y'th index</param>
 	/// <returns>True if tile can be destroyed</returns>
 	/// <returns>False if cannot be destroyed</returns>
-	bool DestroyTile(size_t x, size_t y);
+	bool DestroyTile(size_t x, size_t y, bool destroyTexture=true);
+	void SetTileAsDestroyable(size_t x, size_t y);
+	void SetTileAsBomb(size_t x, size_t y);
 
 	void SetLevelView(LevelView* view);
 
