@@ -176,7 +176,7 @@ void Player::managePlayersTextureDirection()
 		m_animator->Pause();
 		return;
 	}
-
+	
 	std::string targetState;
 
 	if (x < 0)
@@ -197,6 +197,7 @@ void Player::managePlayersTextureDirection()
 
 		m_animator->ChangeActiveState(targetState);
 	}
+	m_animator->Play();
 }
 
 

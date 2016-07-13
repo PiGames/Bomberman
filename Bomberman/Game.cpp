@@ -305,7 +305,7 @@ void Game::initGameplay(std::string & lvlPath)
 		m_playersAnimators[i]->AddAnimationState("WEST", *m_atlases[3],39, 43);
 		m_playersAnimators[i]->SetLoop(true);
 
-		m_players[i]->SetAnimator(*m_playersAnimators[i], m_atlases[3]->GetCellSizeX(), m_atlases[3]->GetCellSizeY());
+		m_players[i]->SetAnimator(*m_playersAnimators[i], m_atlases[3]->GetCellSizeX(), m_atlases[3]->GetCellSizeY()-5);
 		m_playersAnimators[i]->ChangeActiveState("EAST_WITH_BOMB");
 		m_playersAnimators[i]->Stop();
 		m_playersAnimators[i]->SetDelayBetweenFrames(0.1f);
