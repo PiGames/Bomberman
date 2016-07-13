@@ -49,7 +49,6 @@ public:
 	/// <param name="dt">delta time in seconds</param>
 	void Update(const float& dt);
 
-
 	bool IsTileCollidingInAxisX(size_t x);
 	bool IsTileCollidingInAxisY(size_t y);
 
@@ -115,6 +114,7 @@ private:
 
 	virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const override;
 	void endGame();
+	void managePlayersTextureDirection();
 
 	bool m_win;
 

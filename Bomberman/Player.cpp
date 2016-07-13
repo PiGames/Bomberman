@@ -133,7 +133,7 @@ void Player::Update(const float & dt)
 		movementX /= 1.41f;
 		movementY /= 1.41f;
 	}
-	
+	managePlayersTextureDirection();
 	SetPositionX(GetPositionX() + movementX);
 	SetPositionY(GetPositionY() + movementY);
 	m_sprite.setPosition(GetPositionX(),GetPositionY());
@@ -165,6 +165,40 @@ void Player::Update(const float & dt)
 		m_isAlive = true;
 	}
 }
+
+void Player::managePlayersTextureDirection()
+{
+	float x = movementX;
+	float y = movementY;
+
+	if (x == 0 && y == 0)
+	{
+		m_animator->Pause();
+		return;
+	}
+
+	std::string targetState;
+
+	if (x < 0)
+		targetState = "WEST";
+	else if (x > 0)
+		targetState = "EAST";
+
+	if (y < 0)
+		targetState = "NORTH";
+	else if (y > 0)
+		targetState = "SOUTH";
+
+	if (!(targetState == m_animator->GetActiveState()|| targetState + "_WITH_BOMB" == m_animator->GetActiveState()) 
+		|| (m_animator->GetActiveState().size() > 5 && m_bomb!=nullptr) 
+		|| (m_animator->GetActiveState().size() <= 5 && m_bomb == nullptr))
+	{
+		if (m_bomb == nullptr)targetState += "_WITH_BOMB";
+
+		m_animator->ChangeActiveState(targetState);
+	}
+}
+
 
 bool Player::IsTileCollidingInAxisX(size_t x)
 {
@@ -209,7 +243,7 @@ void Player::SetColor(int i)
 {
 	if (i)
 	{
-		m_sprite.setColor(sf::Color::Cyan);
+		m_sprite.setColor(sf::Color(243,197,48));
 		return;
 	}
 }

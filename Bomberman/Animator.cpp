@@ -73,7 +73,7 @@ bool Animator::ChangeActiveState(const std::string & name)
 	m_currentFrame = m_activeStateInfo->beg;
 	m_lastFrame = m_activeStateInfo->end;
 
-	m_activeStateInfo->atlas->SetSpriteTextureByIndex(*m_sprite);
+	m_activeStateInfo->atlas->SetSpriteTextureByIndex(*m_sprite, m_activeStateInfo->beg);
 	m_animIsPlaying = true;
 
 	return true;

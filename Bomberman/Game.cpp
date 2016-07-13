@@ -16,7 +16,7 @@ Game::Game(sf::RenderWindow* window)
 		m_playersAnimators.push_back(new Animator());
 	}
 
-	for (unsigned int i = 0; i < 3 + m_numberOfPlayers; ++i)//HACK this code assume that there are 3 atlases beside players
+	for (unsigned int i = 0; i < 4; ++i)
 	{
 		m_atlases.push_back(new TextureAtlas());
 	}
@@ -44,7 +44,7 @@ Game::~Game()
 		delete m_playersAnimators[i];
 	}
 
-	for (unsigned int i = 0; i < 3 + m_numberOfPlayers; ++i)//HACK this code assume that there are 3 atlases beside players
+	for (unsigned int i = 0; i < 4; ++i)
 	{
 		delete m_atlases[i];
 	}
@@ -64,7 +64,7 @@ void Game::Initialize()
 		/* terrain sprite sheet path */"data/sample_terraintextures.png",
 		/* bomb sprite sheet path */"data/sample_bombtextures.png",
 		/* bomb ray sprite sheet path */"data/sample_raytextures.png",
-		/* player sprite sheet path */"data/sample_playertextures.png",
+		/* player sprite sheet path */"data/playersheets.png",
 	};
 
 	if (!m_font->loadFromFile(resourcePaths[1]))
@@ -74,7 +74,7 @@ void Game::Initialize()
 		exit(1);
 	}
 
-	for (unsigned int i = 0; i < m_atlases.size() - m_numberOfPlayers; ++i)
+	for (unsigned int i = 0; i < m_atlases.size(); ++i)
 	{
 		if (!m_atlases[i]->LoadFromFile(resourcePaths[i + 2/* becuase we do not include level path and font path*/]))
 			{
@@ -82,15 +82,6 @@ void Game::Initialize()
 				std::cin.get();
 				std::exit(1);
 			}
-	}
-	for (unsigned int i = m_atlases.size() - m_numberOfPlayers; i < m_atlases.size(); ++i)
-	{
-		if (!m_atlases[i]->LoadFromFile(resourcePaths[resourcePathsCount - 1/*last resource - player texture*/]))
-		{
-			std::cerr << "[!] Cannot load resource: '" << resourcePaths[resourcePathsCount - 1] << std::endl;
-			std::cin.get();
-			std::exit(1);
-		}
 	}
 	/* LOADING RESOURCES - END*/
 
@@ -102,10 +93,8 @@ void Game::Initialize()
 		m_atlases[i]->TrimByGrid(TILE_SIZE, TILE_SIZE);
 	}
 
-	for (unsigned int i = m_atlases.size() - m_numberOfPlayers; i < m_atlases.size(); ++i)
-	{
-		m_atlases[i]->TrimByGrid(TILE_SIZE/2, TILE_SIZE/2);
-	}
+	m_atlases[m_atlases.size() - 1]->TrimByGrid(50, 42);
+
 	/*SETTING UP ANIMATORS - END*/
 
 	//-----------------------------
@@ -143,7 +132,6 @@ bool Game::Run()
 	while (!m_exit)
 	{
 		processEvents();
-
 		float dt = clock.getElapsedTime().asSeconds();
 		update(dt);
 		clock.restart();
@@ -307,12 +295,20 @@ void Game::initGameplay(std::string & lvlPath)
 	/*SETTING UP PLAYERS - BEGIN*/
 	for (int i = 0; i < m_numberOfPlayers; ++i)
 	{
-		m_playersAnimators[i]->AddAnimationState("default", *m_atlases[m_atlases.size() - m_numberOfPlayers + i], 0, m_atlases[m_atlases.size() - m_numberOfPlayers + i]->GetCount() - 1);
+		m_playersAnimators[i]->AddAnimationState("EAST_WITH_BOMB", *m_atlases[3], 0, 5);
+		m_playersAnimators[i]->AddAnimationState("NORTH_WITH_BOMB", *m_atlases[3], 6, 11);
+		m_playersAnimators[i]->AddAnimationState("EAST", *m_atlases[3], 12, 16);
+		m_playersAnimators[i]->AddAnimationState("NORTH", *m_atlases[3], 17, 20);
+		m_playersAnimators[i]->AddAnimationState("SOUTH", *m_atlases[3], 21, 26);
+		m_playersAnimators[i]->AddAnimationState("SOUTH_WITH_BOMB", *m_atlases[3], 27 ,32);
+		m_playersAnimators[i]->AddAnimationState("WEST_WITH_BOMB", *m_atlases[3], 33, 38);
+		m_playersAnimators[i]->AddAnimationState("WEST", *m_atlases[3],39, 43);
 		m_playersAnimators[i]->SetLoop(true);
 
-		m_players[i]->SetAnimator(*m_playersAnimators[i], m_atlases[m_atlases.size() - m_numberOfPlayers + i]->GetCellSizeX(), m_atlases[m_atlases.size() - m_numberOfPlayers + i]->GetCellSizeY());
-		m_playersAnimators[i]->ChangeActiveState("default");
-
+		m_players[i]->SetAnimator(*m_playersAnimators[i], m_atlases[3]->GetCellSizeX(), m_atlases[3]->GetCellSizeY());
+		m_playersAnimators[i]->ChangeActiveState("EAST_WITH_BOMB");
+		m_playersAnimators[i]->Stop();
+		m_playersAnimators[i]->SetDelayBetweenFrames(0.1f);
 		m_players[i]->SetRespawns(3);
 		m_players[i]->SetUpBomb(m_atlases[1], m_atlases[2]);
 		m_players[i]->SetLevelPointer(m_level);
@@ -326,8 +322,6 @@ void Game::initGameplay(std::string & lvlPath)
 
 		m_players[i]->SetColor(i);
 	}
-
-	// For position change or something, just must be in init
 
 	for (short i = 0; i < m_players.size(); ++i)
 	{
