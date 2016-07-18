@@ -32,7 +32,17 @@ GUI::GUI()
 
 GUI::~GUI()
 {
+	delete m_returnToMenuButton;
+	delete m_playAgainButton;
+	delete m_exitButton;
 
+	delete m_frameTexture;
+	delete m_frame;
+
+	delete m_winnerText;
+	
+	delete m_playerOneLives;
+	delete m_playerSecondLives;
 }
 
 void GUI::Init(sf::Font * font, short textSize, int screenWidth, int screenHeight, bool* playAgain, bool* exit, bool* enterMenu)
