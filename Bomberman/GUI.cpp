@@ -20,7 +20,8 @@ void GUI::draw(sf::RenderTarget & target, sf::RenderStates states) const
 	}
 	if (m_gameGUIView)
 	{
-
+		target.draw(*m_playerOneLives);
+		target.draw(*m_playerSecondLives);
 	}
 
 }
@@ -36,6 +37,23 @@ GUI::~GUI()
 
 void GUI::Init(sf::Font * font, short textSize, int screenWidth, int screenHeight, bool* playAgain, bool* exit, bool* enterMenu)
 {
+
+	m_playerOneLives = new sf::Text();
+	m_playerOneLives->setFont(*font);
+	m_playerOneLives->setString("Player 1 Lives: 3");
+	m_playerOneLives->setPosition(sf::Vector2f(20, 10));
+	m_playerOneLives->setColor(sf::Color(255, 255, 255));
+	m_playerOneLives->setScale(1.2f, 1.2f);
+
+
+	m_playerSecondLives = new sf::Text();
+	m_playerSecondLives->setFont(*font);
+	m_playerSecondLives->setString("Player 2 Lives: 3");
+	m_playerSecondLives->setPosition(sf::Vector2f(screenWidth-300, screenHeight-50));
+	m_playerSecondLives->setColor(sf::Color(255, 255, 255));
+	m_playerSecondLives->setScale(1.2f, 1.2f);
+
+
 	m_whoWin = -1;
 
 	m_enterMenu = enterMenu;
@@ -72,6 +90,14 @@ void GUI::UpdateStats(std::vector<Player*>* players, short mouseX, short mouseY)
 	m_gameGUIView = true;
 	for (short i = 0; i < players->size(); ++i)
 	{
+		switch (i)
+		{
+		case 0:
+			m_playerOneLives->setString("Player 1 Lives: " + std::to_string((*players)[i]->GetRespawnsCount()));
+		case 1:
+			m_playerSecondLives->setString("Player 2 Lives: " + std::to_string((*players)[i]->GetRespawnsCount()));
+		}
+
 		if ((*players)[i]->GetWin())
 		{
 			m_whoWin = i;

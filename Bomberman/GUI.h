@@ -31,6 +31,7 @@ private:
 	sf::Texture* m_frameTexture;
 	sf::Sprite* m_frame;
 
+
 	sf::Text* m_winnerText;
 	
 	bool m_endOfGameMenuView;
@@ -41,5 +42,10 @@ private:
 	bool* m_enterMenu;
 
 	int m_whoWin;
+
+	sf::Text* m_playerOneLives;
+
+	sf::Text* m_playerSecondLives;
+
 };
 
