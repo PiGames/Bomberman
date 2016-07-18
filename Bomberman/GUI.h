@@ -39,5 +39,7 @@ private:
 	bool* m_playAgain;
 	bool* m_exit;
 	bool* m_enterMenu;
+
+	int m_whoWin;
 };
 

@@ -36,6 +36,8 @@ GUI::~GUI()
 
 void GUI::Init(sf::Font * font, short textSize, int screenWidth, int screenHeight, bool* playAgain, bool* exit, bool* enterMenu)
 {
+	m_whoWin = -1;
+
 	m_enterMenu = enterMenu;
 	m_exit = exit;
 	m_playAgain = playAgain;
@@ -72,10 +74,13 @@ void GUI::UpdateStats(std::vector<Player*>* players, short mouseX, short mouseY)
 	{
 		if ((*players)[i]->GetWin())
 		{
+			m_whoWin = i;
+			m_winnerText->setString("Player "+ std::to_string(m_whoWin+1)+" Wins!");
+			break;
 		}
 		else
 		{
-			
+		
 		}
 
 	}
@@ -84,6 +89,7 @@ void GUI::UpdateStats(std::vector<Player*>* players, short mouseX, short mouseY)
 
 void GUI::UpdateStats(std::vector<Player*>* players, short mouseX, short mouseY, bool & playAgain, bool & exit, bool & enterMenu)
 {
+	UpdateStats(players, mouseX, mouseY);
 	m_endOfGameMenuView = true;
 	m_gameGUIView = false;
 }
