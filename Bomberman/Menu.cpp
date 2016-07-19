@@ -50,6 +50,17 @@ Menu::Menu(size_t width, size_t height)
 
 	m_music.play();
 	m_music.setLoop(true);
+
+	m_credits = false;
+
+	if (!m_creditsTexture.loadFromFile("data/credits.png"))
+	{
+		std::cerr << "[!] Cannot load resource: 'data/credits.png'" << std::endl;
+		std::cin.get();
+		std::exit(1);
+	}
+
+	m_creditsSprite.setTexture(m_creditsTexture);
 }
 
 Menu::~Menu()
@@ -70,6 +81,14 @@ void Menu::Run()
 void Menu::draw()
 {
 	m_window->clear(sf::Color::White);
+
+	if (m_credits)
+	{
+		m_window->draw(m_backgroundSprite);
+		m_window->draw(m_creditsSprite);
+		m_window->display();
+		return;
+	}
 
 	m_window->draw(m_backgroundSprite);
 	m_window->draw(m_pigamesLogoSprite);
@@ -101,7 +120,7 @@ void Menu::processEvents()
 			m_exit = true;
 			break;
 		}
-		if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
+		if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left && !m_credits)
 		{
 			m_buttonsPointers[0]->Update(sf::Mouse::getPosition(*m_window), false);
 			m_buttonsPointers[1]->Update(sf::Mouse::getPosition(*m_window), false);
@@ -119,16 +138,23 @@ void Menu::processEvents()
 				return;
 			}
 
+			if (m_buttonsPointers[1]->GetSpritePointer()->getGlobalBounds().contains(mouse))
+				m_credits = true;
+
 			if (m_buttonsPointers[2]->GetSpritePointer()->getGlobalBounds().contains(mouse))
 				m_exit = true;
 			
 		
 		}
-		if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+		if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && !m_credits)
 		{
 			m_buttonsPointers[0]->Update(sf::Mouse::getPosition(*m_window), true);
 			m_buttonsPointers[1]->Update(sf::Mouse::getPosition(*m_window), true);
 			m_buttonsPointers[2]->Update(sf::Mouse::getPosition(*m_window), true);
 		}
+
+		if (m_credits)
+			if (event.type == sf::Event::KeyPressed)
+				m_credits = false;
 	}
 }

@@ -3,20 +3,24 @@
 
 void GUI::draw(sf::RenderTarget & target, sf::RenderStates states) const
 {
+	sf::RectangleShape rect;
+	rect.setFillColor(sf::Color(255, 255, 255, 155));
+	rect.setSize(sf::Vector2f(m_screenWidth, m_screenHeight));
 	if (m_endOfGameMenuView)
 	{
-	target.draw(*m_frame, states);
+		target.draw(*m_frame, states);
+		target.draw(rect, states);
 
-	target.draw(*m_returnToMenuButton->GetSpritePointer(), states);
-	target.draw(*m_returnToMenuButton->GetTextPointer(), states);
+		target.draw(*m_returnToMenuButton->GetSpritePointer(), states);
+		target.draw(*m_returnToMenuButton->GetTextPointer(), states);
 
-	target.draw(*m_playAgainButton->GetSpritePointer(), states);
-	target.draw(*m_playAgainButton->GetTextPointer(), states);
+		target.draw(*m_playAgainButton->GetSpritePointer(), states);
+		target.draw(*m_playAgainButton->GetTextPointer(), states);
 
-	target.draw(*m_exitButton->GetSpritePointer(), states);
-	target.draw(*m_exitButton->GetTextPointer(), states);
+		target.draw(*m_exitButton->GetSpritePointer(), states);
+		target.draw(*m_exitButton->GetTextPointer(), states);
 
-	target.draw(*m_winnerText);
+		target.draw(*m_winnerText);
 	}
 	if (m_gameGUIView)
 	{
@@ -47,6 +51,8 @@ GUI::~GUI()
 
 void GUI::Init(sf::Font * font, short textSize, int screenWidth, int screenHeight, bool* playAgain, bool* exit, bool* enterMenu)
 {
+	m_screenWidth = screenWidth;
+	m_screenHeight = screenHeight;;
 
 	m_playerOneLives = new sf::Text();
 	m_playerOneLives->setFont(*font);
