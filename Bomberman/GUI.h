@@ -31,6 +31,7 @@ private:
 	sf::Texture* m_frameTexture;
 	sf::Sprite* m_frame;
 
+	sf::RectangleShape* rect;
 
 	sf::Text* m_winnerText;
 	

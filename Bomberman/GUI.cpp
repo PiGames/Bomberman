@@ -3,13 +3,13 @@
 
 void GUI::draw(sf::RenderTarget & target, sf::RenderStates states) const
 {
-	sf::RectangleShape rect;
-	rect.setFillColor(sf::Color(255, 255, 255, 155));
-	rect.setSize(sf::Vector2f(m_screenWidth, m_screenHeight));
+	
+	rect->setFillColor(sf::Color(255, 255, 255, 155));
+	rect->setSize(sf::Vector2f(m_screenWidth, m_screenHeight));
 	if (m_endOfGameMenuView)
 	{
 		target.draw(*m_frame, states);
-		target.draw(rect, states);
+		target.draw(*rect, states);
 
 		target.draw(*m_returnToMenuButton->GetSpritePointer(), states);
 		target.draw(*m_returnToMenuButton->GetTextPointer(), states);
@@ -36,6 +36,8 @@ GUI::GUI()
 
 GUI::~GUI()
 {
+	delete rect;
+
 	delete m_returnToMenuButton;
 	delete m_playAgainButton;
 	delete m_exitButton;
@@ -51,6 +53,8 @@ GUI::~GUI()
 
 void GUI::Init(sf::Font * font, short textSize, int screenWidth, int screenHeight, bool* playAgain, bool* exit, bool* enterMenu)
 {
+	rect = new sf::RectangleShape();
+
 	m_screenWidth = screenWidth;
 	m_screenHeight = screenHeight;;
 
