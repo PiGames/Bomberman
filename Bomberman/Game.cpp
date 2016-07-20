@@ -108,7 +108,7 @@ void Game::Initialize()
 	m_bombManager->Init(m_level, &m_players);
 
 	
-	m_gui->Init(m_font, 30, m_window->getSize().x, m_window->getSize().y);
+	m_gui->Init(m_font, 30, m_window->getSize().x, m_window->getSize().y, &m_playAgain, &m_exit, &enterMenu);
 	
 
 	if (!m_music.openFromFile("data/game.wav"))
@@ -213,6 +213,7 @@ void Game::processEvents()
 
 	if (!m_endOfGame)
 	{
+
 		std::pair<int, int> input[2];
 
 		// HACK 1st iteration only, add class Input later
@@ -245,12 +246,14 @@ void Game::processEvents()
 		{
 			m_players[i]->OnMoveKeyPressed(input[i].first, input[i].second);
 		}
-	}	
+	}
 	
 	sf::Event event;
 
 	while (m_window->pollEvent(event))
 	{
+		m_gui->processEvents(sf::Mouse::getPosition(*m_window), &event);
+
 		if (event.type == sf::Event::Closed)
 		{
 			m_exit = true;

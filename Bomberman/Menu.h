@@ -39,5 +39,9 @@ private:
 
 	sf::Music m_music;
 
+	bool m_credits;
+	sf::Sprite m_creditsSprite;
+	sf::Texture m_creditsTexture;
+
 };
 

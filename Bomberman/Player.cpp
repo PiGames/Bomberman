@@ -96,7 +96,7 @@ void Player::OnActionKeyPressed()
 		m_bombAnimator->AddAnimationState("waitingForExplosion", *m_bombTextureAtlas, 0, m_bombTextureAtlas->GetCount() - 1);
 		m_bomb->SetAnimator(*m_bombAnimator, m_bombTextureAtlas->GetCellSizeX(), m_bombTextureAtlas->GetCellSizeY());
 		m_bomb->SetUpRay(m_bombRayTextureAtlas);
-		m_bomb->SetDetonationTime(sf::seconds(3.f));
+		m_bomb->SetDetonationTime(sf::seconds(3.15f));
 		m_bomb->SetRayOnScreenTime(sf::seconds(1));
 		m_bomb->SetPosition(static_cast<int>(GetPositionX()), static_cast<int>(GetPositionY()));
 		m_bomb->SetLevelPointer(level);

@@ -57,6 +57,7 @@ void Button::DoAction()
 
 void Button::Update(sf::Vector2i mousePosition, bool buttonPressed)
 {
+	std::cout << "sprawdzam! \n";
 	if (Check(mousePosition) && buttonPressed) m_press = true;
 	else if (Check(mousePosition) && !buttonPressed)
 	{
