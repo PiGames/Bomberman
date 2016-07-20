@@ -9,6 +9,11 @@ Menu::Menu(size_t width, size_t height)
 	m_windowHeight = height;
 	m_window->create(sf::VideoMode(static_cast<int>(m_windowWidth), static_cast<int>(m_windowHeight)), "Bomberman | Created by PiGames", sf::Style::Close);
 	m_window->setFramerateLimit(60);
+	
+	sf::Image icon;
+	icon.loadFromFile("data/icon.png");
+	m_window->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+
 	m_buttonsPointers[0] = new Button(sf::Vector2f(m_window->getSize().x / 2 - 150, m_window->getSize().y/2.3f), sf::Vector2i(300, 75.f), "data/pressButton.png", "data/unpressButton.png", "START");
 	m_buttonsPointers[1] = new Button(sf::Vector2f(m_window->getSize().x / 2 - 150, m_window->getSize().y / 1.7f), sf::Vector2i(300, 75.f), "data/pressButton.png", "data/unpressButton.png", "CREDITS");
 	m_buttonsPointers[2] = new Button(sf::Vector2f(m_window->getSize().x / 2 - 150, m_window->getSize().y / 1.7f + m_window->getSize().y / 1.7f - m_window->getSize().y / 2.3f), sf::Vector2i(300, 75.f), "data/pressButton.png", "data/unpressButton.png", "EXIT");
