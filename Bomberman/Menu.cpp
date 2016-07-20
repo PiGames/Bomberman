@@ -33,7 +33,7 @@ Menu::Menu(size_t width, size_t height)
 	m_font.loadFromFile("data/micross.ttf");
 	m_gameVersion.setFont(m_font);
 	m_gameVersion.setColor(sf::Color(32, 32, 32, 128));
-	m_gameVersion.setString("Alpha Version 0.1a");
+	m_gameVersion.setString("Public 1.0.0");
 	m_gameVersion.setScale(0.6f, 0.6f);
 	m_gameVersion.setPosition(m_gameLogoSprite.getPosition().x + m_gameLogoTexture.getSize().x - 50, m_gameLogoSprite.getPosition().y + m_pigamesLogoTexture.getSize().y);
 	
