@@ -277,7 +277,7 @@ void Game::processEvents()
 	}
 }
 
-void Game::initGameplay(std::string & lvlPath)
+void Game::initGameplay(const std::string & lvlPath)
 {
 	for (int i = 0; i < 2; ++i)
 	{

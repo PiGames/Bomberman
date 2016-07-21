@@ -39,7 +39,7 @@ void Player::SetAnimator(Animator& animator, size_t width, size_t height)
 
 	m_sprite.setOrigin(w / 2.f, h / 2.f);
 	SetSize(w, h);
-	
+
 	m_animator = &animator;
 	m_animator->SetSprite(m_sprite);
 	m_sprite.setPosition(sf::Vector2f(3 * tileSize + w, 5 * tileSize + h));
@@ -124,7 +124,7 @@ void Player::SetLevelPointer(Level * level)
 }
 
 
-void Player::Update(const float & dt)
+void Player::Update(float dt)
 {
 	m_animator->Animate(dt);
 
@@ -176,7 +176,7 @@ void Player::managePlayersTextureDirection()
 		m_animator->Pause();
 		return;
 	}
-	
+
 	std::string targetState;
 
 	if (x < 0)
@@ -189,8 +189,8 @@ void Player::managePlayersTextureDirection()
 	else if (y > 0)
 		targetState = "SOUTH";
 
-	if (!(targetState == m_animator->GetActiveState()|| targetState + "_WITH_BOMB" == m_animator->GetActiveState()) 
-		|| (m_animator->GetActiveState().size() > 5 && m_bomb!=nullptr) 
+	if (!(targetState == m_animator->GetActiveState()|| targetState + "_WITH_BOMB" == m_animator->GetActiveState())
+		|| (m_animator->GetActiveState().size() > 5 && m_bomb!=nullptr)
 		|| (m_animator->GetActiveState().size() <= 5 && m_bomb == nullptr))
 	{
 		if (m_bomb == nullptr)targetState += "_WITH_BOMB";
@@ -322,7 +322,7 @@ bool Player::GetWin()
 
 void Player::SetRespawnPosition(size_t x, size_t y)
 {
-	
+
 	m_respawnPosition.x = x;
 	m_respawnPosition.y = y;
 }

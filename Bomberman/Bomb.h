@@ -48,7 +48,7 @@ public:
 
 	void SetLevelPointer(Level * level);
 
-	void Update(const float & dt);
+	void Update(float dt);
 
 	Ray* GetRayPhysicalBody(unsigned int side);
 

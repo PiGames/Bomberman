@@ -47,7 +47,7 @@ public:
 
 	/// Update player position, update states etc...
 	/// <param name="dt">delta time in seconds</param>
-	void Update(const float& dt);
+	void Update(float dt);
 
 	bool IsTileCollidingInAxisX(size_t x);
 	bool IsTileCollidingInAxisY(size_t y);
