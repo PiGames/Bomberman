@@ -335,11 +335,8 @@ void Player::SetAlive()
 
 void Player::DeleteBomb()
 {
-	if (m_bomb != nullptr)
-	{
-		delete m_bomb;
-		m_bomb = nullptr;
-	}
+	delete m_bomb;
+	m_bomb = nullptr;
 }
 
 void Player::Spawn()
