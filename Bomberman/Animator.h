@@ -39,7 +39,7 @@ public:
 	std::string GetActiveState() const;
 
 
-	/// Set animation speed, defuault: 1.0f
+	/// Set animation speed, default: 1.0f
 	/// <param name="speed">anim speed, from .0f</param>
 	void SetAnimationSpeed(float speed);
 
