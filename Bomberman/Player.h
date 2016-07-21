@@ -27,7 +27,7 @@ public:
 	void DecreaseRespawns(short val);
 	/// Return Player's respawns
 	/// <returns> Player's respawns </returns>
-	short GetRespawnsCount();
+	short GetRespawnsCount() const;
 	/// Sets the player direction, possible values: -1, 0, 1
 	/// <param name="x">direction x</param>
 	/// <param name="y">direction y</param>
@@ -35,9 +35,9 @@ public:
 
 	void SetAfterRespawnSafeTime(float value);
 
-	bool HasBomb();
+	bool HasBomb() const;
 
-	Bomb* GetBomb();
+	Bomb* GetBomb() const;
 
 	/// Sends the information about action key down (plant the bomb)
 	void OnActionKeyPressed();
@@ -49,36 +49,36 @@ public:
 	/// <param name="dt">delta time in seconds</param>
 	void Update(float dt);
 
-	bool IsTileCollidingInAxisX(size_t x);
-	bool IsTileCollidingInAxisY(size_t y);
+	bool IsTileCollidingInAxisX(size_t x) const;
+	bool IsTileCollidingInAxisY(size_t y) const;
 
 	void OnBombCollision();
 
-	bool isBombExplosion();
+	bool isBombExplosion() const;
 
 	void SetColor(int i);
 
-	Ray* GetRay(unsigned int side);
+	Ray* GetRay(unsigned int side) const;
 
-	bool GetIsAlive();
+	bool GetIsAlive() const;
 	void SetIsAlive(bool var);
 
-	int GetPositionInTilesCoordsX();
+	int GetPositionInTilesCoordsX() const;
 
-	int GetPositionInTilesCoordsY();
+	int GetPositionInTilesCoordsY() const;
 
-	bool IsCollidingWithBomb();
+	bool IsCollidingWithBomb() const;
 
 	void SetIsCollidingWithBomb(bool value);
 
-	sf::Vector2i GetSideBombCollidingWith();
+	sf::Vector2i GetSideBombCollidingWith() const;
 
 	void SetSideBombCollidingWith(int x, int y);
 
-	sf::Vector2i GetBombCollidingWithCoordinates();
+	sf::Vector2i GetBombCollidingWithCoordinates() const;
 
 	void SetWin(bool val);
-	bool GetWin();
+	bool GetWin() const;
 
 	void SetRespawnPosition(size_t x, size_t y);
 	void Spawn();

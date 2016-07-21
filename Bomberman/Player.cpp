@@ -60,7 +60,7 @@ void Player::DecreaseRespawns(short val)
 	m_respawns -= val;
 }
 
-short Player::GetRespawnsCount()
+short Player::GetRespawnsCount() const
 {
 	return m_respawns;
 }
@@ -77,12 +77,12 @@ void Player::SetAfterRespawnSafeTime(float value)
 	m_respawnSafeTime = sf::seconds(value);
 }
 
-bool Player::HasBomb()
+bool Player::HasBomb() const
 {
 	return (m_bomb != nullptr && m_bomb->GetState() == Bomb::waitingForExplosion);
 }
 
-Bomb * Player::GetBomb()
+Bomb * Player::GetBomb() const
 {
 	return m_bomb;
 }
@@ -201,12 +201,12 @@ void Player::managePlayersTextureDirection()
 }
 
 
-bool Player::IsTileCollidingInAxisX(size_t x)
+bool Player::IsTileCollidingInAxisX(size_t x) const
 {
 	return (x == GetPositionInTilesCoordsX() || x==BodyInfo.leftBound || x==BodyInfo.rightBound);
 }
 
-bool Player::IsTileCollidingInAxisY(size_t y)
+bool Player::IsTileCollidingInAxisY(size_t y) const
 {
 	return (y == GetPositionInTilesCoordsY() || y == BodyInfo.upBound || y == BodyInfo.downBound);
 }
@@ -235,7 +235,7 @@ void Player::OnBombCollision()
 	}
 }
 
-bool Player::isBombExplosion()
+bool Player::isBombExplosion() const
 {
 	return (m_bomb != nullptr && m_bomb->GetState() == Bomb::exploding);
 }
@@ -249,12 +249,12 @@ void Player::SetColor(int i)
 	}
 }
 
-Ray* Player::GetRay(unsigned int side)
+Ray* Player::GetRay(unsigned int side) const
 {
 	return m_bomb->GetRayPhysicalBody(side);
 }
 
-bool Player::GetIsAlive()
+bool Player::GetIsAlive() const
 {
 	return m_isAlive;
 }
@@ -264,17 +264,17 @@ void Player::SetIsAlive(bool var)
 	m_isAlive = var;
 }
 
-int Player::GetPositionInTilesCoordsX()
+int Player::GetPositionInTilesCoordsX() const
 {
 	return static_cast<int>(GetPositionX() / TILE_SIZE);
 }
 
-int Player::GetPositionInTilesCoordsY()
+int Player::GetPositionInTilesCoordsY() const
 {
 	return static_cast<int>(GetPositionY() / TILE_SIZE);
 }
 
-bool Player::IsCollidingWithBomb()
+bool Player::IsCollidingWithBomb() const
 {
 	return m_isCollidingWithBomb;
 }
@@ -284,7 +284,7 @@ void Player::SetIsCollidingWithBomb(bool value)
 	m_isCollidingWithBomb = value;
 }
 
-sf::Vector2i Player::GetSideBombCollidingWith()
+sf::Vector2i Player::GetSideBombCollidingWith() const
 {
 	return m_sideBombCollidingWith;
 }
@@ -305,7 +305,7 @@ void Player::SetSideBombCollidingWith(int x, int y)
 	}
 }
 
-sf::Vector2i Player::GetBombCollidingWithCoordinates()
+sf::Vector2i Player::GetBombCollidingWithCoordinates() const
 {
 	return m_bombCollidingWithLevelCoords;
 }
@@ -315,7 +315,7 @@ void Player::SetWin(bool val)
 	m_win = val;
 }
 
-bool Player::GetWin()
+bool Player::GetWin() const
 {
 	return m_win;
 }
