@@ -1,9 +1,9 @@
 #pragma once
-#include <SFML\Graphics\Drawable.hpp>
-#include <SFML\Graphics\RectangleShape.hpp>
-#include <SFML\Graphics\RenderWindow.hpp>
-#include <SFML\Graphics\Text.hpp>
-#include <SFML\Window\Mouse.hpp>
+#include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Text.hpp>
+#include <SFML/Window/Mouse.hpp>
 #include <string>
 #include <iostream>
 

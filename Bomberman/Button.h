@@ -1,5 +1,5 @@
 #pragma once
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <string>
 class Button
 {
@@ -8,7 +8,7 @@ public:
 	~Button();
 
 	bool Check(sf::Vector2i mousePosition);
-	
+
 	void Update(sf::Vector2i mousePosition, bool buttonPressed);
 
 	void DoAction();

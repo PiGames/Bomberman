@@ -1,6 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <SFML\Audio.hpp>
+#include <SFML/Audio.hpp>
 #include "PhysicalBody.h"
 #include "Animator.h"
 #include "Bomb.h"
@@ -38,11 +38,11 @@ public:
 	bool HasBomb();
 
 	Bomb* GetBomb();
-	
+
 	/// Sends the information about action key down (plant the bomb)
 	void OnActionKeyPressed();
 	void SetUpBomb(TextureAtlas* atlasBomb, TextureAtlas* atlasRay);
-	
+
 	void SetLevelPointer(Level * level);
 
 	/// Update player position, update states etc...
@@ -64,7 +64,7 @@ public:
 	void SetIsAlive(bool var);
 
 	int GetPositionInTilesCoordsX();
-	
+
 	int GetPositionInTilesCoordsY();
 
 	bool IsCollidingWithBomb();
