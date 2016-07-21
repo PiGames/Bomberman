@@ -8,7 +8,7 @@ Game::Game(sf::RenderWindow* window)
 	m_level = new Level();
 	m_levelView = new LevelView();
 	m_physicsEngine = new PhysicsEngine();
-	
+
 	m_numberOfPlayers = 2; //HACK Additional parameter should be passed to initialize this variable
 	for (unsigned int i = 0; i < m_numberOfPlayers; ++i)
 	{
@@ -25,7 +25,7 @@ Game::Game(sf::RenderWindow* window)
 
 	m_font = new sf::Font();
 
-	m_gui = new GUI(); 
+	m_gui = new GUI();
 
 	/*ALLOCATING OBJECTS - END*/
 
@@ -107,9 +107,9 @@ void Game::Initialize()
 
 	m_bombManager->Init(m_level, &m_players);
 
-	
+
 	m_gui->Init(m_font, 30, m_window->getSize().x, m_window->getSize().y, &m_playAgain, &m_exit, &enterMenu);
-	
+
 
 	if (!m_music.openFromFile("data/game.wav"))
 	{
@@ -135,7 +135,7 @@ bool Game::Run()
 		float dt = clock.getElapsedTime().asSeconds();
 		update(dt);
 		clock.restart();
-		draw();		
+		draw();
 	}
 	return enterMenu;
 }
@@ -161,7 +161,7 @@ void Game::draw()
 void Game::update(float deltaTime)
 {
 	m_physicsEngine->Update(deltaTime);
-	
+
 
 	for (short i = 0; i < m_players.size(); ++i)
 	{
@@ -179,7 +179,7 @@ void Game::update(float deltaTime)
 				m_players[1]->SetWin(true);
 				break;
 			}
-			
+
 			m_players[0]->SetWin(true);
 			break;
 		}
@@ -187,7 +187,7 @@ void Game::update(float deltaTime)
 
 	m_bombManager->Update(deltaTime);
 
-	
+
 	if (m_endOfGame && !m_exit)
 	{
 		m_gui->UpdateStats(&m_players, sf::Mouse::getPosition(*m_window).x, sf::Mouse::getPosition(*m_window).y, m_playAgain, m_exit, enterMenu);
@@ -247,7 +247,7 @@ void Game::processEvents()
 			m_players[i]->OnMoveKeyPressed(input[i].first, input[i].second);
 		}
 	}
-	
+
 	sf::Event event;
 
 	while (m_window->pollEvent(event))
@@ -260,7 +260,7 @@ void Game::processEvents()
 			enterMenu = false;
 			break;
 		}
-		
+
 		if (!m_endOfGame)
 		{
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
@@ -272,7 +272,7 @@ void Game::processEvents()
 				m_players[0]->OnActionKeyPressed();
 			}
 		}
-		
+
 		// handle more events
 	}
 }
@@ -332,12 +332,12 @@ void Game::initGameplay(std::string & lvlPath)
 		m_players[i]->SetWin(false);
 		m_players[i]->SetRespawns(3);
 		m_players[i]->SetAlive();
-		
+
 	}
 
 	m_endOfGame = false;
 	m_playAgain = false;
 
 	m_physicsEngine->Init(m_level, &m_players);
-	
+
 }
