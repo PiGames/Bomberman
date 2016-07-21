@@ -17,7 +17,7 @@ Animator::Animator()
 	m_loop = false;
 	m_animIsPlaying = false;
 
-	m_timeToChangeFrame = m_delay * 1 / m_animationSpeed;
+	m_timeToChangeFrame = m_delay / m_animationSpeed;
 }
 
 
@@ -93,7 +93,7 @@ void Animator::SetAnimationSpeed(float speed)
 	if (m_animationSpeed < 0.0001f)
 		m_animationSpeed = 0.0001f;
 
-	m_timeToChangeFrame = m_delay * 1 / m_animationSpeed;
+	m_timeToChangeFrame = m_delay / m_animationSpeed;
 }
 
 
@@ -103,7 +103,7 @@ void Animator::SetDelayBetweenFrames(float delay)
 	if (m_delay < 0.0f)
 		m_delay = 0.0f;
 
-	m_timeToChangeFrame = m_delay * 1 / m_animationSpeed;
+	m_timeToChangeFrame = m_delay / m_animationSpeed;
 }
 
 
