@@ -128,11 +128,9 @@ void Player::Update(float dt)
 {
 	m_animator->Animate(dt);
 
-	if (movementX != 0 && movementY != 0)
-	{
-		movementX /= 1.41f;
-		movementY /= 1.41f;
-	}
+	movementX /= 1.41f;
+	movementY /= 1.41f;
+
 	managePlayersTextureDirection();
 	SetPositionX(GetPositionX() + movementX);
 	SetPositionY(GetPositionY() + movementY);
