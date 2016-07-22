@@ -5,6 +5,9 @@
 
 class Menu
 {
+private:
+	void options();
+
 public:
 	Menu(size_t width, size_t height);
 	~Menu();
@@ -16,7 +19,8 @@ private:
 	void draw();
 	void processEvents();
 
-	Button* m_buttonsPointers[3];
+	Button* m_buttonsPointers[4];
+	Button* m_optionReturnButton;
 
 	sf::Texture m_backgroundTexture;
 	sf::Sprite m_backgroundSprite;
@@ -43,5 +47,6 @@ private:
 	sf::Sprite m_creditsSprite;
 	sf::Texture m_creditsTexture;
 
-};
+	bool m_options;
 
+};

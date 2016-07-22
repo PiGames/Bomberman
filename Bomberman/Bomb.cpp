@@ -1,7 +1,7 @@
 #include "Bomb.h"
 
 
-Bomb::Bomb()
+Bomb::Bomb(bool setColor)
 	:m_state(State::waitingForExplosion),
 	m_isMoving(false)
 {
@@ -16,6 +16,9 @@ Bomb::Bomb()
 	}
 
 	m_explosionSound.setBuffer(m_soundBuffer);
+
+  if (setColor)
+		m_sprite.setColor(sf::Color(243, 197, 48));
 }
 
 
@@ -185,6 +188,11 @@ void Bomb::FixPosition()
 {
 	SetPositionX(m_positionInTilesCoordsX * TILE_SIZE + TILE_SIZE / 2);
 	SetPositionY(m_positionInTilesCoordsY * TILE_SIZE + TILE_SIZE / 2);
+}
+
+void Bomb::SetVolume(float volume)
+{
+  m_explosionSound.setVolume(volume);
 }
 
 void Bomb::explode()

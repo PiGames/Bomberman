@@ -91,17 +91,19 @@ void Player::OnActionKeyPressed()
 {
 	if(m_bomb==nullptr)
 	{
-		m_bomb = new Bomb();
+		if (m_sprite.getColor() != sf::Color::White)
+			m_bomb = new Bomb(true);
+		else
+				m_bomb = new Bomb();
 		m_bombAnimator = new Animator();
 		m_bombAnimator->AddAnimationState("waitingForExplosion", *m_bombTextureAtlas, 0, m_bombTextureAtlas->GetCount() - 1);
 		m_bomb->SetAnimator(*m_bombAnimator, m_bombTextureAtlas->GetCellSizeX(), m_bombTextureAtlas->GetCellSizeY());
 		m_bomb->SetUpRay(m_bombRayTextureAtlas);
-		m_bomb->SetDetonationTime(sf::seconds(3.15f));
-		m_bomb->SetRayOnScreenTime(sf::seconds(1));
+		m_bomb->SetDetonationTime(sf::seconds(3.108f));
+		m_bomb->SetRayOnScreenTime(sf::seconds(0.9f));
 		m_bomb->SetPosition(static_cast<int>(GetPositionX()), static_cast<int>(GetPositionY()));
 		m_bomb->SetLevelPointer(level);
 		level->SetTileAsBomb(GetPositionX() / TILE_SIZE, GetPositionY() / TILE_SIZE);
-
 		m_soundPlant.play();
 	}
 }
@@ -341,6 +343,12 @@ void Player::Spawn()
 {
 	SetPositionX(static_cast<int>(m_respawnPosition.x*TILE_SIZE + TILE_SIZE / 2));
 	SetPositionY(static_cast<int>(m_respawnPosition.y*TILE_SIZE + TILE_SIZE / 2));
+}
+
+void Player::SetVolume(float volume)
+{
+	m_soundHit.setVolume(volume);
+	m_soundPlant.setVolume(volume);
 }
 
 void Player::Respawn()

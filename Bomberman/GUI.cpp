@@ -3,7 +3,7 @@
 
 void GUI::draw(sf::RenderTarget & target, sf::RenderStates states) const
 {
-	
+
 	rect->setFillColor(sf::Color(255, 255, 255, 155));
 	rect->setSize(sf::Vector2f(m_screenWidth, m_screenHeight));
 	if (m_endOfGameMenuView)
@@ -46,7 +46,7 @@ GUI::~GUI()
 	delete m_frame;
 
 	delete m_winnerText;
-	
+
 	delete m_playerOneLives;
 	delete m_playerSecondLives;
 }
@@ -88,11 +88,11 @@ void GUI::Init(sf::Font * font, short textSize, int screenWidth, int screenHeigh
 	m_frame = new sf::Sprite();
 	m_frame->setTexture(*m_frameTexture);
 	m_frame->setScale((float)m_frameTexture->getSize().x / (float)(screenWidth * 5), (float)m_frameTexture->getSize().y / (float)(screenHeight * 7));
-	m_frame->setPosition(screenWidth / 2.f - (m_frameTexture->getSize().x * m_frame->getScale().x)/2.f, screenHeight / 3.3f);
+	m_frame->setPosition(screenWidth / 2.f - (m_frameTexture->getSize().x * m_frame->getScale().x)/2.f, screenHeight / 3.3f - 50);
 
-	m_returnToMenuButton = new Button(sf::Vector2f(screenWidth / 2 - 150, screenHeight / 2.3f), sf::Vector2i(300, 75.f), "data/pressButton.png", "data/unpressButton.png", "Return to Menu");
-	m_playAgainButton = new Button(sf::Vector2f(screenWidth / 2 - 150, screenHeight / 1.7f), sf::Vector2i(300, 75.f), "data/pressButton.png", "data/unpressButton.png", "Play Again");
-	m_exitButton = new Button(sf::Vector2f(screenWidth / 2 - 150, screenHeight / 1.7f + screenHeight / 1.7f - screenHeight / 2.3f), sf::Vector2i(300, 75.f), "data/pressButton.png", "data/unpressButton.png", "Exit Game");
+	m_returnToMenuButton = new Button(sf::Vector2f(screenWidth / 2 - 150, screenHeight / 2.3f - 50), sf::Vector2i(300, 75.f), "data/pressButton.png", "data/unpressButton.png", "Return to Menu");
+	m_playAgainButton = new Button(sf::Vector2f(screenWidth / 2 - 150, screenHeight / 1.7f -50), sf::Vector2i(300, 75.f), "data/pressButton.png", "data/unpressButton.png", "Play Again");
+	m_exitButton = new Button(sf::Vector2f(screenWidth / 2 - 150, screenHeight / 1.7f + screenHeight / 1.7f - screenHeight / 2.3f - 50), sf::Vector2i(300, 75.f), "data/pressButton.png", "data/unpressButton.png", "Exit Game");
 
 	m_winnerText = new sf::Text();
 	m_winnerText->setFont(*font);
@@ -126,7 +126,7 @@ void GUI::UpdateStats(std::vector<Player*>* players, short mouseX, short mouseY)
 		}
 		else
 		{
-		
+
 		}
 
 	}
@@ -179,5 +179,3 @@ void GUI::processEvents(sf::Vector2i mousePos, sf::Event* eventPointer)
 	}
 
 }
-
-

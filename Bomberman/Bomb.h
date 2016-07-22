@@ -22,7 +22,7 @@ public:
 	};
 
 public:
-	Bomb();
+	Bomb(bool setColor = false);
 	~Bomb();
 	///Sets Animator
 	void SetAnimator(Animator& animator, size_t width, size_t height);
@@ -68,6 +68,8 @@ public:
 
 	void FixPosition();
 
+	void SetVolume(float volume);
+
 private:
 	Animator* m_animator;
 	Level* level;
@@ -99,4 +101,3 @@ private:
 	sf::Sound m_explosionSound;
 	sf::SoundBuffer m_soundBuffer;
 };
-

@@ -29,19 +29,22 @@ private:
 	/// Inits level and players (also after endGame)
 	void initGameplay(const std::string & lvlPath);
 
+void pause();
+
 public:
 	Game(sf::RenderWindow * window);
 	~Game();
-	void Initialize();
+	void Initialize(float musicVolume, float soundVolume);
 	bool Run();
 
 private:
-	size_t m_windowWidth;
-	size_t m_windowHeight;
+	unsigned m_windowWidth;
+	unsigned m_windowHeight;
 
 	bool enterMenu;
 	bool m_exit;
-
+	bool m_pause;
+	
 	Level* m_level;
 	LevelView* m_levelView;
 	int m_numberOfPlayers;
@@ -60,4 +63,3 @@ private:
 
 	sf::Music m_music;
 };
-

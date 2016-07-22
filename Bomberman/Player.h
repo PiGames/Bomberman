@@ -86,6 +86,8 @@ public:
 	void SetAlive();
 	void DeleteBomb();
 
+	void SetVolume(float volume);
+
 private:
 	Level * level;
 	sf::Sprite m_sprite;
@@ -123,4 +125,3 @@ private:
 	sf::SoundBuffer m_soundBufferHit;
 	sf::SoundBuffer m_soundBufferPlant;
 };
-

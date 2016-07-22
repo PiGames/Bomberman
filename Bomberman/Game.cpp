@@ -4,6 +4,9 @@ Game::Game(sf::RenderWindow* window)
 {
 	m_window = window;
 
+	m_windowWidth = m_window->getSize().x;
+	m_windowHeight = m_window->getSize().y;
+
 	/*ALLOCATING OBJECTS - BEGIN*/
 	m_level = new Level();
 	m_levelView = new LevelView();
@@ -30,6 +33,9 @@ Game::Game(sf::RenderWindow* window)
 	/*ALLOCATING OBJECTS - END*/
 
 
+	m_pause = false;
+
+
 }
 
 
@@ -54,7 +60,7 @@ Game::~Game()
 	delete m_gui;
 }
 
-void Game::Initialize()
+void Game::Initialize(float musicVolume, float soundVolume)
 {
 	const int resourcePathsCount = 6;
 	std::string resourcePaths[resourcePathsCount] =
@@ -118,6 +124,9 @@ void Game::Initialize()
 		std::exit(1);
 	}
 
+	m_music.setVolume(musicVolume);
+	m_players[0]->SetVolume(soundVolume);
+	m_players[1]->SetVolume(soundVolume);
 	m_music.play();
 	m_music.setLoop(true);
 }
@@ -158,8 +167,12 @@ void Game::draw()
 }
 
 
+
 void Game::update(float deltaTime)
 {
+	if(m_pause)
+		pause();
+
 	m_physicsEngine->Update(deltaTime);
 
 
@@ -271,6 +284,11 @@ void Game::processEvents()
 			{
 				m_players[0]->OnActionKeyPressed();
 			}
+
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+			{
+				m_pause = true;
+			}
 		}
 
 		// handle more events
@@ -340,4 +358,36 @@ void Game::initGameplay(const std::string & lvlPath)
 
 	m_physicsEngine->Init(m_level, &m_players);
 
+}
+
+void Game::pause()
+{
+	sf::Image scrn = m_window->capture();
+	sf::Texture scrnTexture;
+	scrnTexture.create(m_windowWidth, m_windowHeight);
+	scrnTexture.update(scrn);
+	sf::Sprite scrnSprite(scrnTexture);
+	sf::RectangleShape filter(sf::Vector2f(m_windowWidth, m_windowHeight));
+	filter.setFillColor(sf::Color(255, 255, 255, 155));
+
+	sf::Text pauseText("PAUSED", *m_font, 25);
+	pauseText.setColor(sf::Color(247, 148, 142));
+	pauseText.setPosition(m_windowWidth / 2 - pauseText.getGlobalBounds().width / 2, m_windowHeight / 2);
+
+	sf::Event events;
+
+	while (m_pause && !m_endOfGame && !m_exit)
+	{
+		while (m_window->pollEvent(events))
+			if (events.type == sf::Event::KeyPressed && events.key.code == sf::Keyboard::Escape)
+				m_pause = false;
+		if (events.type == sf::Event::Closed)
+			m_exit = true;
+
+		m_window->clear();
+		m_window->draw(scrnSprite);
+		m_window->draw(filter);
+		m_window->draw(pauseText);
+		m_window->display();
+	}
 }
