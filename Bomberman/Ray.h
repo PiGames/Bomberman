@@ -30,7 +30,7 @@ public:
 	void SetRaySpriteSize(unsigned short size);
 
 	void SetPosition(float x, float y);
-	void Update(const float &dt);
+	void Update(float dt);
 
 private:
 	/// True - horizontal, false - vertical
@@ -40,6 +40,6 @@ private:
 	Side m_side;
 	unsigned short m_size;
 	Animator* m_animator;
-	
+
 };
 

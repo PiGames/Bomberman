@@ -29,7 +29,7 @@ void PhysicalBody::SetSize(float x, float y)
 }
 
 
-bool PhysicalBody::IsCollision(const float & x, const float & y, const float & sizeX, const float & sizeY)
+bool PhysicalBody::IsCollision(float x, float y, float sizeX, float sizeY)
 {
 	return !(m_posY + m_sizeY / 2 < y - sizeY / 2) && !(m_posY - m_sizeY / 2 > y + sizeY / 2) &&
 		!(m_posX + m_sizeX / 2 < x - sizeX / 2) && !( m_posX - m_sizeX / 2 > x + sizeX / 2);

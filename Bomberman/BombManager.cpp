@@ -17,16 +17,16 @@ void BombManager::Init(Level * level, std::vector<Player*>* players)
 	m_players = players;
 }
 
-void BombManager::Update(const float & dt)
+void BombManager::Update(float dt)
 {
 	gatherBombInformation();
-	
+
 	handleBombKicking(dt);
-	
+
 	checkBombsAfterExplosionsCollisions();
 }
 
-void BombManager::handleBombKicking(const float & dt)
+void BombManager::handleBombKicking(float dt)
 {
 	for (it = bombs.begin(); it != bombs.end(); ++it)
 	{

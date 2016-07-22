@@ -100,7 +100,7 @@ void Bomb::SetLevelPointer(Level * level)
 	this->level = level;
 }
 
-void Bomb::Update(const float & dt)
+void Bomb::Update(float dt)
 {
 	m_animator->Animate(dt);
 
@@ -214,7 +214,7 @@ unsigned short Bomb::getRaySizeAfterCollisions(Ray::Side side)
 				size=i;
 			else break;
 		}
-		if (size != MAX_RAY_SIZE && m_positionInTilesCoordsY - size - 1 >= 0 && (level->GetTile(m_positionInTilesCoordsX, m_positionInTilesCoordsY - size - 1) == TT::TileType::WEAK_WALL 
+		if (size != MAX_RAY_SIZE && m_positionInTilesCoordsY - size - 1 >= 0 && (level->GetTile(m_positionInTilesCoordsX, m_positionInTilesCoordsY - size - 1) == TT::TileType::WEAK_WALL
 			|| level->GetTile(m_positionInTilesCoordsX, m_positionInTilesCoordsY - size - 1) == TT::TileType::DOUBLE_WEAK_WALL))
 			m_tilesToDeleteAfterExplosion.push_back(std::pair<int, int>(m_positionInTilesCoordsX, m_positionInTilesCoordsY - ++size));
 

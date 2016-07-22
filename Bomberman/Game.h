@@ -1,6 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <SFML\Audio.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <vector>
 #include "Level.h"
@@ -27,7 +27,7 @@ private:
 	/// Process all events
 	void processEvents();
 	/// Inits level and players (also after endGame)
-	void initGameplay(std::string & lvlPath);
+	void initGameplay(const std::string & lvlPath);
 
 public:
 	Game(sf::RenderWindow * window);

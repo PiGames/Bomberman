@@ -1,6 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <SFML\Audio.hpp>
+#include <SFML/Audio.hpp>
 #include <vector>
 #include "PhysicalBody.h"
 #include "Animator.h"
@@ -48,7 +48,7 @@ public:
 
 	void SetLevelPointer(Level * level);
 
-	void Update(const float & dt);
+	void Update(float dt);
 
 	Ray* GetRayPhysicalBody(unsigned int side);
 

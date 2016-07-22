@@ -9,7 +9,7 @@ void Ray::draw(sf::RenderTarget & target, sf::RenderStates states) const
 Ray::Ray(Side side)
 	:m_side(side)
 {
-	
+
 }
 
 
@@ -31,8 +31,8 @@ int Ray::GetSide()
 }
 
 void Ray::SetRaySpriteSize(unsigned short size)
-{	
-	
+{
+
 	m_size = size;
 	m_sprite.setTextureRect(sf::IntRect(0, 0, m_size*TILE_SIZE,TILE_SIZE));
 	m_sprite.setOrigin(0, m_sprite.getGlobalBounds().height / 2.f);
@@ -68,8 +68,8 @@ void Ray::SetRaySpriteSize(unsigned short size)
 		break;
 	default:
 		break;
-	}	
-	
+	}
+
 }
 
 void Ray::SetPosition(float x, float y)
@@ -79,8 +79,8 @@ void Ray::SetPosition(float x, float y)
 	PhysicalBody::SetPositionY(y);
 }
 
-void Ray::Update(const float & dt)
+void Ray::Update(float dt)
 {
-	
+
 }
 

@@ -14,7 +14,7 @@ public:
 	{
 		BodyPositionState state;
 
-		unsigned int upBound; 
+		unsigned int upBound;
 		unsigned int downBound;
 		unsigned int leftBound;
 		unsigned int rightBound;
@@ -33,33 +33,33 @@ public:
 	/// <param name="x">width</param>
 	/// <param name="y">height</param>
 	void SetSize(float x, float y);
-	
+
 	/// Check collision between objects
 	/// <param name="x">x position</param>
 	/// <param name="y">y position</param>
 	/// <param name="sizeX">width</param>
 	/// <param name="sizeY">height</param>
-	bool IsCollision(const float& x, const float& y, const float& sizeX, const float& sizeY);
+	bool IsCollision(float x, float y, float sizeX, float sizeY);
 	/// Check collision between objects
 	/// <param name="pyRef">PhysicalBody reference</param>
 	bool IsCollision(PhysicalBody& pyRef);
-	
+
 	float GetPositionX() const;
 	float GetPositionY() const;
-	
+
 	float GetSizeX() const;
 	float GetSizeY() const;
-	
+
 	float GetVelocityX() const;
 	float GetVelocityY() const;
 
-	/// Sets position of physical body representation 
+	/// Sets position of physical body representation
 	/// This method does not change visible position of a body!!!
 	/// <param name ="x">X axis coordinate</param>
-	
+
 	void SetPositionX(float x);
 
-	/// Sets position of physical body representation 
+	/// Sets position of physical body representation
 	/// This method does not change visible position of a body!!!
 	/// <param name ="y">Y axis coordinate</param>
 	void SetPositionY(float y);

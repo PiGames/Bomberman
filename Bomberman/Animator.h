@@ -26,8 +26,8 @@ public:
 	/// <returns>true OK</returns>
 	/// <returns>false cannot add animation</returns>
 	bool AddAnimationState(std::string name, TextureAtlas& atlas, size_t begin, size_t end, bool autoPlay=false);
-	
-	
+
+
 	/// Change active state of animation
 	/// <param name="name">name of animation state</param>
 	/// <returns>true OK</returns>
@@ -38,8 +38,8 @@ public:
 	/// Get Current Playing anim state
 	std::string GetActiveState() const;
 
-	
-	/// Set animation speed, defuault: 1.0f
+
+	/// Set animation speed, default: 1.0f
 	/// <param name="speed">anim speed, from .0f</param>
 	void SetAnimationSpeed(float speed);
 
@@ -52,18 +52,18 @@ public:
 	/// Sets animation looping
 	/// <param name="loop">looping animation</param>
 	void SetLoop(bool loop);
-	
+
 
 	/// Updates animation state
 	/// <param name="dt">delta time</param>
-	void Animate(const float& dt);
+	void Animate(float);
 
 
 	/// Check anim playing state
 	/// <returns>TRUE is playing</returns>
 	bool IsPlaying();
 
-	
+
 	/// Resume animation
 	void Play();
 

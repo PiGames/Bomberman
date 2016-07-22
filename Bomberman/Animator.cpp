@@ -17,7 +17,7 @@ Animator::Animator()
 	m_loop = false;
 	m_animIsPlaying = false;
 
-	m_timeToChangeFrame = m_delay * 1 / m_animationSpeed;
+	m_timeToChangeFrame = m_delay / m_animationSpeed;
 }
 
 
@@ -39,10 +39,10 @@ bool Animator::AddAnimationState(std::string name, TextureAtlas & atlas, size_t 
 	{
 		m_states.insert
 		(
-			std::pair <std::string, 
-			AnimationStateInfo>(name, AnimationStateInfo() = 
-			{ 
-				&atlas, begin, end 
+			std::pair <std::string,
+			AnimationStateInfo>(name, AnimationStateInfo() =
+			{
+				&atlas, begin, end
 			})
 		);
 
@@ -62,7 +62,7 @@ bool Animator::ChangeActiveState(const std::string & name)
 		std::cout << "[~] Sprite is not set! Cannot change active state...\n";
 		return false;
 	}
-	
+
 	m_statesIterator = m_states.find(name);
 	if (m_statesIterator == m_states.end())
 		return false;
@@ -92,8 +92,8 @@ void Animator::SetAnimationSpeed(float speed)
 
 	if (m_animationSpeed < 0.0001f)
 		m_animationSpeed = 0.0001f;
-	
-	m_timeToChangeFrame = m_delay * 1 / m_animationSpeed;
+
+	m_timeToChangeFrame = m_delay / m_animationSpeed;
 }
 
 
@@ -103,7 +103,7 @@ void Animator::SetDelayBetweenFrames(float delay)
 	if (m_delay < 0.0f)
 		m_delay = 0.0f;
 
-	m_timeToChangeFrame = m_delay * 1 / m_animationSpeed;
+	m_timeToChangeFrame = m_delay / m_animationSpeed;
 }
 
 
@@ -113,7 +113,7 @@ void Animator::SetLoop(bool loop)
 }
 
 
-void Animator::Animate(const float & dt)
+void Animator::Animate(float dt)
 {
 	if (!m_animIsPlaying)
 		return;

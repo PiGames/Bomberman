@@ -22,7 +22,7 @@ public:
 
 	/// Check collisions, update speeds, ...
 	/// <param name="delta">delta time in ms</param>
-	void Update(const float& delta);
+	void Update(float delta);
 
 private:
 	///Logical level representation
@@ -31,7 +31,7 @@ private:
 	///Physical level representation
 	std::vector <std::vector<PhysicalBody*>> m_physicalLevel;
 
-	
+
 	///Physical player representation
 	std::vector<Player*> m_players;
 

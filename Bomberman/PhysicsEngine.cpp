@@ -45,7 +45,7 @@ void PhysicsEngine::Init(Level * level, std::vector<Player*>* players)
 }
 
 
-void PhysicsEngine::Update(const float & delta)
+void PhysicsEngine::Update(float delta)
 {
 	for (unsigned int i = 0; i<m_players.size(); ++i)
 	{
@@ -69,7 +69,7 @@ void PhysicsEngine::Update(const float & delta)
 
 		bool moveInYAxis = true, moveInXAxis = true;
 
-		
+
 		switch (m_players[i]->BodyInfo.state)
 		{
 		case PhysicalBody::OnSingleTile:
@@ -90,7 +90,7 @@ void PhysicsEngine::Update(const float & delta)
 					m_players[i]->SetSideBombCollidingWith(0, 1);
 					m_players[i]->SetIsCollidingWithBomb(true);
 				}
-			
+
 				setBodyPositionNextToAnotherBodyInAxisY(m_players[i], m_physicalLevel[m_players[i]->BodyInfo.centerY + 1][m_players[i]->BodyInfo.centerX]);
 				moveInYAxis = false;
 			}
