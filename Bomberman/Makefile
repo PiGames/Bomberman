@@ -1,61 +1,63 @@
-
-FLAGS=-g -std=c++11
+COMPILER=g++-4.9
+FLAGS=-g -std=c++14
 
 all: Bomberman
 
-Bomberman: Animator.o Bomb.o Game.o Level.o LevelView.o main.o GUI.o PhysicalBody.o PhysicsEngine.o Player.o Ray.o TextureAtlas.o BombManager.o Button.o Menu.o Option.o
-	g++ $(FLAGS) *.o -o Bomberman -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+Bomberman: Animator.o Bomb.o Game.o Level.o LevelView.o main.o GUI.o PhysicalBody.o PhysicsEngine.o Player.o Ray.o TextureAtlas.o BombManager.o Button.o Menu.o Option.o Slider.o
+	$(COMPILER) $(FLAGS) *.o -o Bomberman -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 Animator.o: Animator.cpp
-	g++ -c $(FLAGS) Animator.cpp
+	$(COMPILER) -c $(FLAGS) Animator.cpp
 
 Bomb.o: Bomb.cpp
-	g++ -c $(FLAGS) Bomb.cpp
+	$(COMPILER) -c $(FLAGS) Bomb.cpp
 
 Button.o: Button.cpp
-	g++ -c $(FLAGS) Button.cpp
+	$(COMPILER) -c $(FLAGS) Button.cpp
 
 Game.o: Game.cpp
-	g++ -c $(FLAGS) Game.cpp
+	$(COMPILER) -c $(FLAGS) Game.cpp
 
 Level.o: Level.cpp
-	g++ -c $(FLAGS) Level.cpp
+	$(COMPILER) -c $(FLAGS) Level.cpp
 
 LevelView.o: LevelView.cpp
-	g++ -c $(FLAGS) LevelView.cpp
+	$(COMPILER) -c $(FLAGS) LevelView.cpp
 
 main.o: main.cpp
-	g++ -c $(FLAGS) main.cpp
+	$(COMPILER) -c $(FLAGS) main.cpp
 
 Menu.o: Menu.cpp
-	g++ -c $(FLAGS) Menu.cpp
+	$(COMPILER) -c $(FLAGS) Menu.cpp
 
 PhysicalBody.o: PhysicalBody.cpp
-	g++ -c $(FLAGS) PhysicalBody.cpp
+	$(COMPILER) -c $(FLAGS) PhysicalBody.cpp
 
 PhysicsEngine.o: PhysicsEngine.cpp
-	g++ -c $(FLAGS) PhysicsEngine.cpp
+	$(COMPILER) -c $(FLAGS) PhysicsEngine.cpp
 
 Player.o: Player.cpp
-	g++ -c $(FLAGS) Player.cpp
+	$(COMPILER) -c $(FLAGS) Player.cpp
 
 Ray.o: Ray.cpp
-	g++ -c $(FLAGS) Ray.cpp
+	$(COMPILER) -c $(FLAGS) Ray.cpp
 
 Option.o: Option.cpp
-	g++ -c $(FLAGS) Option.cpp
+	$(COMPILER) -c $(FLAGS) Option.cpp
 
 TextureAtlas.o: TextureAtlas.cpp
-	g++ -c $(FLAGS) TextureAtlas.cpp
+	$(COMPILER) -c $(FLAGS) TextureAtlas.cpp
 
 GUI.o: GUI.cpp
-	g++ -c $(FLAGS) GUI.cpp
+	$(COMPILER) -c $(FLAGS) GUI.cpp
 
 BombManager.o: BombManager.cpp
-	g++ -c $(FLAGS) BombManager.cpp
+	$(COMPILER) -c $(FLAGS) BombManager.cpp
+
+Slider.o: Slider.cpp
+	$(COMPILER) -c $(FLAGS) Slider.cpp
 clean: *.o
 	rm *.o
 
 rebuild: *.cpp
-	g++ -g -std=c++11 *.cpp -o Bomberman -lsfml-graphics -lsfml-window -lsfml-system
-
+	$(COMPILER) -g $(FLAGS) *.cpp -o Bomberman -lsfml-graphics -lsfml-window -lsfml-system
