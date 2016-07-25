@@ -1,5 +1,5 @@
-COMPILER=g++-4.9
-FLAGS=-g -std=c++14
+COMPILER=g++
+FLAGS=-g -std=c++11
 
 all: Bomberman
 
