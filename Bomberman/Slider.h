@@ -20,7 +20,7 @@ public:
 	float GetValue() const;
 
 private:
-	std::unique_ptr<sf::RectangleShape> belt;
+	sf::RectangleShape* belt;
 	decltype(belt) slider;
 	decltype(belt) sliderAfterGrasper;
 	decltype(belt) grasper;
