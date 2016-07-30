@@ -34,7 +34,7 @@ void pause();
 public:
 	Game(sf::RenderWindow * window);
 	~Game();
-	void Initialize(float musicVolume, float soundVolume);
+	void Initialize(float musicVolume, float soundVolume, int numberOfLives);
 	bool Run();
 
 private:
@@ -60,6 +60,6 @@ private:
 
 	bool m_endOfGame;
 	bool m_playAgain;
-
+	int numberOfRespawns;
 	sf::Music m_music;
 };

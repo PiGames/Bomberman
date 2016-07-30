@@ -20,13 +20,8 @@ Button::Button(sf::Vector2f position, sf::Vector2i size, std::string pressTextur
 	m_text.setString(text);
 	m_text.setColor(sf::Color(0.f,107,139));
 
-	
-
 	m_pressSprite.setPosition(position);
 	m_unpressSprite.setPosition(position);
-
-	//m_text.setPosition(sf::Vector2f(position.x+size.x/2-40,position.y+size.y/4));
-
 
 	sf::FloatRect textRect = m_text.getLocalBounds();
 	m_text.setOrigin(textRect.left + textRect.width / 2.0f,0);
@@ -52,12 +47,10 @@ bool Button::Check(sf::Vector2i mousePosition)
 
 void Button::DoAction()
 {
-	std::cout << "Klik!" << std::endl;
 }
 
 void Button::Update(sf::Vector2i mousePosition, bool buttonPressed)
 {
-	std::cout << "sprawdzam! \n";
 	if (Check(mousePosition) && buttonPressed) m_press = true;
 	else if (Check(mousePosition) && !buttonPressed)
 	{

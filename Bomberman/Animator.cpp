@@ -59,7 +59,6 @@ bool Animator::ChangeActiveState(const std::string & name)
 {
 	if (m_sprite == nullptr)
 	{
-		std::cout << "[~] Sprite is not set! Cannot change active state...\n";
 		return false;
 	}
 

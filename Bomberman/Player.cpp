@@ -68,7 +68,7 @@ short Player::GetRespawnsCount() const
 
 void Player::OnMoveKeyPressed(int x, int y)
 {
-	const float speed = 120;
+	const float speed = 150;
 	SetVelocity(speed*x, speed*y);
 }
 
@@ -104,6 +104,7 @@ void Player::OnActionKeyPressed()
 		m_bomb->SetPosition(static_cast<int>(GetPositionX()), static_cast<int>(GetPositionY()));
 		m_bomb->SetLevelPointer(level);
 		level->SetTileAsBomb(GetPositionX() / TILE_SIZE, GetPositionY() / TILE_SIZE);
+		m_bomb->SetVolume(m_soundPlant.getVolume());
 		m_soundPlant.play();
 	}
 }
@@ -129,10 +130,11 @@ void Player::SetLevelPointer(Level * level)
 void Player::Update(float dt)
 {
 	m_animator->Animate(dt);
-
-	movementX /= 1.41f;
-	movementY /= 1.41f;
-
+	if (movementX != 0 && movementY != 0)
+	{
+		movementX /= 1.41f;
+		movementY /= 1.41f;
+	}
 	managePlayersTextureDirection();
 	SetPositionX(GetPositionX() + movementX);
 	SetPositionY(GetPositionY() + movementY);

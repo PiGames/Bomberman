@@ -73,13 +73,13 @@ void Slider::draw(sf::RenderTarget & target, sf::RenderStates states) const
 	target.draw(*grasper, states);
 }
 
-void Slider::Update(sf::Vector2i mousePos, sf::Event* eventPoitner)
+void Slider::Update(sf::Vector2i mousePos, sf::Event* eventPointer)
 {
 	if (grasper->getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)) || mouseButtonPressed)
 	{
-		if (eventPoitner->type == sf::Event::MouseButtonPressed)
+		if (eventPointer->type == sf::Event::MouseButtonPressed)
 		{
-			if (eventPoitner->mouseButton.button == sf::Mouse::Left)
+			if (eventPointer->mouseButton.button == sf::Mouse::Left)
 			{
 				oldMousePositionX = mousePos.x;
 				oldMousePositionY = mousePos.y;
@@ -88,42 +88,42 @@ void Slider::Update(sf::Vector2i mousePos, sf::Event* eventPoitner)
 
 		}
 
-		if (eventPoitner->type == sf::Event::MouseButtonReleased)
+		if (eventPointer->type == sf::Event::MouseButtonReleased)
 		{
-			if (eventPoitner->mouseButton.button == sf::Mouse::Left)
+			if (eventPointer->mouseButton.button == sf::Mouse::Left)
 			{
 				mouseButtonPressed = false;
 			}
 		}
 
-		if (eventPoitner->type == sf::Event::MouseMoved && sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		if (eventPointer->type == sf::Event::MouseMoved && sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
 			if (sliderOrient == sliderOrientation::horizontal)
 			{
-				if (grasper->getPosition().x + eventPoitner->mouseMove.x - oldMousePositionX + grasper->getSize().x <= slider->getPosition().x + slider->getSize().x && grasper->getPosition().x + eventPoitner->mouseMove.x - oldMousePositionX >= slider->getPosition().x)
+				if (grasper->getPosition().x + eventPointer->mouseMove.x - oldMousePositionX + grasper->getSize().x <= slider->getPosition().x + slider->getSize().x && grasper->getPosition().x + eventPointer->mouseMove.x - oldMousePositionX >= slider->getPosition().x)
 				{
 					float grasperOldXPos = grasper->getPosition().x;
-					grasper->setPosition(grasper->getPosition().x + eventPoitner->mouseMove.x - oldMousePositionX, grasper->getPosition().y);
+					grasper->setPosition(grasper->getPosition().x + eventPointer->mouseMove.x - oldMousePositionX, grasper->getPosition().y);
 					sliderAfterGrasper->setPosition(grasper->getPosition().x, sliderAfterGrasper->getPosition().y);
 					sliderAfterGrasper->setSize(sf::Vector2f(sliderAfterGrasper->getSize().x - (grasper->getPosition().x - grasperOldXPos), sliderAfterGrasper->getSize().y));
-					oldMousePositionX = eventPoitner->mouseMove.x;
+					oldMousePositionX = eventPointer->mouseMove.x;
 
 					value = (grasper->getPosition().x + (grasper->getSize().x / 2.f) - slider->getPosition().x) / (slider->getSize().x);
-					std::cout << "value: " << value << "\n";
+					
 				}
 			}
 			else if (sliderOrient == sliderOrientation::vertical)
 			{
-				if (grasper->getPosition().y + eventPoitner->mouseMove.y - oldMousePositionY + grasper->getSize().y <= slider->getPosition().y + slider->getSize().y && grasper->getPosition().y + eventPoitner->mouseMove.y - oldMousePositionY >= slider->getPosition().y)
+				if (grasper->getPosition().y + eventPointer->mouseMove.y - oldMousePositionY + grasper->getSize().y <= slider->getPosition().y + slider->getSize().y && grasper->getPosition().y + eventPointer->mouseMove.y - oldMousePositionY >= slider->getPosition().y)
 				{
 					float grasperOldYPos = grasper->getPosition().y;
-					grasper->setPosition(grasper->getPosition().x, grasper->getPosition().y + eventPoitner->mouseMove.y - oldMousePositionY);
+					grasper->setPosition(grasper->getPosition().x, grasper->getPosition().y + eventPointer->mouseMove.y - oldMousePositionY);
 					sliderAfterGrasper->setPosition(sliderAfterGrasper->getPosition().x, grasper->getPosition().y);
 					sliderAfterGrasper->setSize(sf::Vector2f(sliderAfterGrasper->getSize().x, sliderAfterGrasper->getSize().y - (grasper->getPosition().y - grasperOldYPos)));
-					oldMousePositionY = eventPoitner->mouseMove.y;
+					oldMousePositionY = eventPointer->mouseMove.y;
 
 					value = (grasper->getPosition().y + (grasper->getSize().y / 2.f) - slider->getPosition().y) / (slider->getSize().y);
-					std::cout << "value: " << value << "\n";
+					
 				}
 			}
 			

@@ -71,7 +71,7 @@ bool Level::DestroyTile(size_t x, size_t y, bool destroyTexture)
 	if(m_data[y][x] <= TT::TileType::NONE_WITH_SHADOW)
 		return false;
 
-	if (m_data[y - 1][x] >= TT::TileType::WEAK_WALL)
+	if (m_data[y - 1][x] >= TT::TileType::WEAK_WALL && m_data[y - 1][x] != TT::TileType::BOMB)
 	{
 		m_data[y][x] = TT::TileType::NONE_WITH_SHADOW;
 		m_view->ChangeTileTexture(x, y, TT::TileType::NONE_WITH_SHADOW);

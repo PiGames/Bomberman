@@ -60,7 +60,7 @@ Game::~Game()
 	delete m_gui;
 }
 
-void Game::Initialize(float musicVolume, float soundVolume)
+void Game::Initialize(float musicVolume, float soundVolume, int numberOfLives)
 {
 	const int resourcePathsCount = 6;
 	std::string resourcePaths[resourcePathsCount] =
@@ -105,6 +105,8 @@ void Game::Initialize(float musicVolume, float soundVolume)
 
 	//-----------------------------
 
+	numberOfRespawns = numberOfLives;
+
 	initGameplay(resourcePaths[0]);
 
 	/*SETTING UP PLAYERS - END*/
@@ -129,6 +131,7 @@ void Game::Initialize(float musicVolume, float soundVolume)
 	m_players[1]->SetVolume(soundVolume);
 	m_music.play();
 	m_music.setLoop(true);
+
 }
 
 
@@ -348,7 +351,7 @@ void Game::initGameplay(const std::string & lvlPath)
 	{
 		m_players[i]->Update(0);
 		m_players[i]->SetWin(false);
-		m_players[i]->SetRespawns(3);
+		m_players[i]->SetRespawns(numberOfRespawns);
 		m_players[i]->SetAlive();
 
 	}

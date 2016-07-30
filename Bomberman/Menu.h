@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "Button.h"
 #include "Game.h"
+#include "Slider.h"
 
 class Menu
 {
@@ -22,6 +23,11 @@ private:
 	Button* m_buttonsPointers[4];
 	Button* m_optionReturnButton;
 
+	Slider* m_playersSlider;
+	Slider* m_volumeSlider;
+
+	float playersLives, volume;
+	sf::Text optionsText[4];
 	sf::Texture m_backgroundTexture;
 	sf::Sprite m_backgroundSprite;
 
