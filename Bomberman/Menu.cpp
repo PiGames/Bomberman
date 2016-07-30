@@ -59,26 +59,27 @@ Menu::Menu(size_t width, size_t height)
 	m_buttonsPointers[2] = new Button(sf::Vector2f(m_window->getSize().x / 2 - 150, m_window->getSize().y / 1.7f + 100 - 50), sf::Vector2i(300, 75.f), "data/pressButton.png", "data/unpressButton.png", "CREDITS");
 	m_buttonsPointers[3] = new Button(sf::Vector2f(m_window->getSize().x / 2 - 150, m_window->getSize().y / 1.7f + 200 - 50), sf::Vector2i(300, 75.f), "data/pressButton.png", "data/unpressButton.png", "EXIT");
 
-	m_playersSlider = new Slider(Slider::horizontal, sf::Vector2f(450, 180), 100, 30, 460, 80, 20, 10, sf::Color(0, 148, 154), sf::Color(229, 229, 229), sf::Color(160, 160, 160), sf::Color(255, 255, 255), false);
-	m_volumeSlider = new Slider(Slider::horizontal, sf::Vector2f(450, 260), 100, 30, 460, 80, 20, 10, sf::Color(0, 148, 154), sf::Color(229, 229, 229), sf::Color(160, 160, 160), sf::Color(255, 255, 255), false);
+	m_playersSlider = new Slider(Slider::horizontal, sf::Vector2f(460, 180), 100, 30, 470, 80, 20, 10, sf::Color(0, 148, 154), sf::Color(229, 229, 229), sf::Color(160, 160, 160), sf::Color(255, 255, 255), false);
+	m_volumeSlider = new Slider(Slider::horizontal, sf::Vector2f(460, 260), 100, 30, 470, 80, 20, 10, sf::Color(0, 148, 154), sf::Color(229, 229, 229), sf::Color(160, 160, 160), sf::Color(255, 255, 255), false);
 
 	for (int i = 0; i < 4; ++i)
 	{
-		optionsText[i].setColor(sf::Color::Black);
+		optionsText[i].setColor(sf::Color(0.f, 107, 139));
 		optionsText[i].setCharacterSize(25);
 		optionsText[i].setFont(m_font);
+		optionsText[i].setStyle(sf::Text::Bold);
 		
 	}
 
-	optionsText[0].setString("HP per game: ");
+	optionsText[0].setString("HP PER GAME:");
 	optionsText[2].setString("3");
-	optionsText[1].setString("Volume level: ");
+	optionsText[1].setString("VOLUME LEVEL:");
 	optionsText[3].setString("60%");
 
-	optionsText[0].setPosition(220, 180);
+	optionsText[0].setPosition(160, 180);
 	optionsText[2].setPosition(400, 180);
-	optionsText[1].setPosition(220, 260);
-	optionsText[3].setPosition(380, 260);
+	optionsText[1].setPosition(160, 260);
+	optionsText[3].setPosition(385, 260);
 
 	m_playersSlider->SetValue(0.4f);
 	playersLives = 2;
