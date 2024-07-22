@@ -18,7 +18,7 @@ Button::Button(sf::Vector2f position, sf::Vector2i size, std::string pressTextur
 	m_font.loadFromFile("data/ahronbd.ttf");
 	m_text.setFont(m_font);
 	m_text.setString(text);
-	m_text.setColor(sf::Color(0.f,107,139));
+    m_text.setFillColor(sf::Color(0.f,107,139));
 
 	m_pressSprite.setPosition(position);
 	m_unpressSprite.setPosition(position);

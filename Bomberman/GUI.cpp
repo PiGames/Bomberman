@@ -62,7 +62,7 @@ void GUI::Init(sf::Font * font, short textSize, int screenWidth, int screenHeigh
 	m_playerOneLives->setFont(*font);
 	m_playerOneLives->setString("Player 1 Lives: 3");
 	m_playerOneLives->setPosition(sf::Vector2f(20, 10));
-	m_playerOneLives->setColor(sf::Color(255, 255, 255));
+    m_playerOneLives->setFillColor(sf::Color(255, 255, 255));
 	m_playerOneLives->setScale(1.2f, 1.2f);
 
 
@@ -70,7 +70,7 @@ void GUI::Init(sf::Font * font, short textSize, int screenWidth, int screenHeigh
 	m_playerSecondLives->setFont(*font);
 	m_playerSecondLives->setString("Player 2 Lives: 3");
 	m_playerSecondLives->setPosition(sf::Vector2f(screenWidth-300, screenHeight-50));
-	m_playerSecondLives->setColor(sf::Color(255, 255, 255));
+    m_playerSecondLives->setFillColor(sf::Color(255, 255, 255));
 	m_playerSecondLives->setScale(1.2f, 1.2f);
 
 
@@ -100,7 +100,7 @@ void GUI::Init(sf::Font * font, short textSize, int screenWidth, int screenHeigh
 	sf::FloatRect textRect = m_winnerText->getLocalBounds();
 	m_winnerText->setOrigin(textRect.left + textRect.width / 2.0f, 0);
 	m_winnerText->setPosition(sf::Vector2f(screenWidth / 2.f,m_frame->getPosition().y+20));
-	m_winnerText->setColor(sf::Color(0.f, 107, 139));
+    m_winnerText->setFillColor(sf::Color(0.f, 107, 139));
 	m_winnerText->setScale(1.2f, 1.2f);
 }
 

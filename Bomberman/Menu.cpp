@@ -64,7 +64,7 @@ Menu::Menu(size_t width, size_t height)
 
 	for (int i = 0; i < 4; ++i)
 	{
-		optionsText[i].setColor(sf::Color(0.f, 107, 139));
+        optionsText[i].setFillColor(sf::Color(0.f, 107, 139));
 		optionsText[i].setCharacterSize(25);
 		optionsText[i].setFont(m_font);
 		optionsText[i].setStyle(sf::Text::Bold);
@@ -105,7 +105,7 @@ Menu::Menu(size_t width, size_t height)
 
 	m_font.loadFromFile("data/micross.ttf");
 	m_gameVersion.setFont(m_font);
-	m_gameVersion.setColor(sf::Color(32, 32, 32, 128));
+    m_gameVersion.setFillColor(sf::Color(32, 32, 32, 128));
 	m_gameVersion.setString("Public 1.0.1");
 	m_gameVersion.setScale(0.6f, 0.6f);
 	m_gameVersion.setPosition(m_gameLogoSprite.getPosition().x + m_gameLogoTexture.getSize().x - 50, m_gameLogoSprite.getPosition().y + m_pigamesLogoTexture.getSize().y);

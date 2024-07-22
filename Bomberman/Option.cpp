@@ -19,8 +19,7 @@ Option::Option(sf::Font * fontPointer, std::string optionName, short characterSi
 	m_rectangle.setPosition(posX, posY);
 	m_rectangle.setSize(sf::Vector2f(tempText.getGlobalBounds().width, tempText.getGlobalBounds().height * 1.8));
 	m_rectangle.setFillColor(buttonCol);
-	m_buttonNormal = buttonCol;
-	m_buttonSelected = m_buttonSelected;
+    m_buttonNormal = buttonCol;
 }
 
 Option::~Option()
