@@ -303,7 +303,7 @@ void Player::SetSideBombCollidingWith(int x, int y)
 	}
 	else
 	{
-		m_bombCollidingWithLevelCoords = sf::Vector2i(NULL,NULL);
+        m_bombCollidingWithLevelCoords = sf::Vector2i(0, 0);
 	}
 }
 

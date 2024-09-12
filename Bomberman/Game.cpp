@@ -374,7 +374,7 @@ void Game::pause()
 	filter.setFillColor(sf::Color(255, 255, 255, 155));
 
 	sf::Text pauseText("PAUSED", *m_font, 25);
-	pauseText.setColor(sf::Color(247, 148, 142));
+    pauseText.setFillColor(sf::Color(247, 148, 142));
 	pauseText.setPosition(m_windowWidth / 2 - pauseText.getGlobalBounds().width / 2, m_windowHeight / 2);
 
 	sf::Event events;
